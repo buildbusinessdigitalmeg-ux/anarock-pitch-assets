@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anarock Growth | Barbell Underwriting Calculator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0A0D14;
+            --bg-secondary: #111522;
+            --bg-tertiary: #1B2032;
+            --primary: #FF3366; /* Crimson Red */
+            --accent: #E5A93C; /* Premium Gold */
+            --cyan: #00E5FF;
+            --success: #00E676;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2.5rem 1.5rem;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 51, 102, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--cyan);
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        header h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p.subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* LAYOUT GRID */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .calc-panel {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 2.2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .calc-panel h3 {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            border-left: 3px solid var(--accent);
+            padding-left: 0.6rem;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .slider-header label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .slider-header span.val-display {
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(229, 169, 60, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-control input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.08);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(229, 169, 60, 0.5);
+            transition: var(--transition);
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .slider-control span.range-limit {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            width: 50px;
+        }
+
+        .slider-control span.range-limit.right {
+            text-align: right;
+        }
+
+        /* RESULTS PANEL */
+        .results-panel {
+            background: rgba(10, 13, 20, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 2.2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: fit-content;
+        }
+
+        .results-panel h3 {
+            font-size: 1.25rem;
+            color: var(--cyan);
+            border-left: 3px solid var(--cyan);
+            padding-left: 0.6rem;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding-bottom: 0.8rem;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .result-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .result-value.highlight {
+            color: var(--success);
+            font-size: 1.6rem;
+        }
+
+        /* PROGRESS FILL MOCK */
+        .barbell-preview {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .barbell-bar {
+            height: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            width: 100%;
+        }
+
+        .barbell-part {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #080B10;
+            transition: width 0.3s ease;
+        }
+
+        .part-compact { background: var(--cyan); }
+        .part-premium { background: var(--accent); }
+        .part-luxury { background: var(--primary); color: #FFF; }
+
+        .barbell-legend {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* UNDERWRITING STATUS */
+        .underwriting-status-box {
+            border-left: 4px solid var(--success);
+            background: rgba(0, 230, 118, 0.04);
+            padding: 1rem 1.2rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .underwriting-status-box strong {
+            color: var(--success);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        footer {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <span class="header-badge">Stage 2 Deliverable: Underwriting Tool</span>
+            <h1>Anarock GTM Barbell Underwriting Calculator</h1>
+            <p class="subtitle">Evaluate and design price-volume matrices dynamically to model gross transaction value (GTV) and base price realization averages</p>
+        </header>
+
+        <!-- CALCULATOR BODY -->
+        <div class="calculator-grid">
+            
+            <!-- PANEL 1: INPUT LEVERS -->
+            <div class="calc-panel">
+                <h3>1. Configuration Levers (Barbell Allocation)</h3>
+                
+                <!-- SLIDER 1 -->
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label for="slider-compact-pct">Compact Layout Inventory Share (%)</label>
+                        <span class="val-display" id="val-compact-pct">35%</span>
+                    </div>
+                    <div class="slider-control">
+                        <span class="range-limit">10%</span>
+                        <input type="range" id="slider-compact-pct" min="10" max="60" step="5" value="35" oninput="calculateModel()">
+                        <span class="range-limit right">60%</span>
+                    </div>
+                </div>
+
+                <!-- SLIDER 2 -->
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label for="slider-premium-pct">Core Premium Inventory Share (%)</label>
+                        <span class="val-display" id="val-premium-pct">45%</span>
+                    </div>
+                    <div class="slider-control">
+                        <span class="range-limit">20%</span>
+                        <input type="range" id="slider-premium-pct" min="20" max="70" step="5" value="45" oninput="calculateModel()">
+                        <span class="range-limit right">70%</span>
+                    </div>
+                </div>
+
+                <h3>2. Base Rate Assumptions</h3>
+
+                <!-- SLIDER 3 -->
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label for="slider-compact-rate">Compact Unit Base Rate (₹/sft)</label>
+                        <span class="val-display" id="val-compact-rate">₹7,800</span>
+                    </div>
+                    <div class="slider-control">
+                        <span class="range-limit">₹6.5k</span>
+                        <input type="range" id="slider-compact-rate" min="6500" max="9500" step="100" value="7800" oninput="calculateModel()">
+                        <span class="range-limit right">₹9.5k</span>
+                    </div>
+                </div>
+
+                <!-- SLIDER 4 -->
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label for="slider-premium-rate">Core Premium Base Rate (₹/sft)</label>
+                        <span class="val-display" id="val-premium-rate">₹9,200</span>
+                    </div>
+                    <div class="slider-control">
+                        <span class="range-limit">₹8.0k</span>
+                        <input type="range" id="slider-premium-rate" min="8000" max="11000" step="100" value="9200" oninput="calculateModel()">
+                        <span class="range-limit right">₹11.0k</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 2: LIVE METRICS -->
+            <div class="results-panel">
+                <h3>Underwriting Outcomes</h3>
+                
+                <div class="result-row">
+                    <span class="result-label">Blended Base Realization Average</span>
+                    <span class="result-value" id="res-blended-rate">₹8,970 /sft</span>
+                </div>
+
+                <div class="result-row">
+                    <span class="result-label">Total GTV Valuation (Phase 1)</span>
+                    <span class="result-value highlight" id="res-total-gtv">₹348.5 Cr</span>
+                </div>
+
+                <div class="result-row">
+                    <span class="result-label">Est. EOI Volume Acceleration</span>
+                    <span class="result-value" id="res-eoi-velocity" style="color: var(--cyan);">High Velocity</span>
+                </div>
+
+                <!-- Visual Barbell Allocation -->
+                <div class="barbell-preview">
+                    <span class="result-label" style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Visual Inventory Barbell</span>
+                    <div class="barbell-bar">
+                        <div class="barbell-part part-compact" id="bar-compact" style="width: 35%;">35%</div>
+                        <div class="barbell-part part-premium" id="bar-premium" style="width: 45%;">45%</div>
+                        <div class="barbell-part part-luxury" id="bar-luxury" style="width: 20%;">20%</div>
+                    </div>
+                    <div class="barbell-legend">
+                        <div class="legend-item"><div class="legend-color part-compact"></div>Compact (Value Hub)</div>
+                        <div class="legend-item"><div class="legend-color part-premium"></div>Premium (Margin Engine)</div>
+                        <div class="legend-item"><div class="legend-color part-luxury"></div>Penthouses (Brand Hook)</div>
+                    </div>
+                </div>
+
+                <!-- Gating recommendation -->
+                <div class="underwriting-status-box" id="underwriting-verdict-box">
+                    <strong id="underwriting-verdict-title">Model Status: Approved</strong>
+                    <p id="underwriting-verdict-desc">This layout configuration yields &ge; ₹8,700/sft blended base realization target and supports rapid launch velocity.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            Strategic Underwriting Asset &bull; Prepared by Meghana Grama Satyan &bull; Anarock Growth Businesses
+        </footer>
+    </div>
+
+    <!-- CALCULATOR ENGINE -->
+    <script>
+        function calculateModel() {
+            // Get inputs
+            let compactPct = parseInt(document.getElementById('slider-compact-pct').value);
+            let premiumPct = parseInt(document.getElementById('slider-premium-pct').value);
+            
+            // Constrain percentages (compact + premium + luxury = 100%)
+            if (compactPct + premiumPct > 90) {
+                // If sum exceeds 90%, reduce premiumPct to leave at least 10% for luxury
+                premiumPct = 90 - compactPct;
+                document.getElementById('slider-premium-pct').value = premiumPct;
+            }
+            let luxuryPct = 100 - (compactPct + premiumPct);
+
+            let compactRate = parseInt(document.getElementById('slider-compact-rate').value);
+            let premiumRate = parseInt(document.getElementById('slider-premium-rate').value);
+            let luxuryRate = premiumRate + 2500; // Luxury is positioned as premium + ₹2,500/sft
+
+            // Update sliders label
+            document.getElementById('val-compact-pct').innerText = compactPct + '%';
+            document.getElementById('val-premium-pct').innerText = premiumPct + '%';
+            document.getElementById('val-compact-rate').innerText = '₹' + compactRate.toLocaleString();
+            document.getElementById('val-premium-rate').innerText = '₹' + premiumRate.toLocaleString();
+
+            // Sizing metrics (Total Area: 350,000 sft for Phase 1 project)
+            const totalSft = 350000;
+            
+            // Blended Rate
+            let blendedRate = Math.round((compactRate * (compactPct/100)) + (premiumRate * (premiumPct/100)) + (luxuryRate * (luxuryPct/100)));
+            
+            // Total GTV
+            let totalGtv = (totalSft * blendedRate) / 10000000; // In ₹ Crores
+
+            // Update display results
+            document.getElementById('res-blended-rate').innerText = '₹' + blendedRate.toLocaleString() + ' /sft';
+            document.getElementById('res-total-gtv').innerText = '₹' + totalGtv.toFixed(1) + ' Cr';
+
+            // Update Barbell Preview Widths
+            document.getElementById('bar-compact').style.width = compactPct + '%';
+            document.getElementById('bar-compact').innerText = compactPct + '%';
+            
+            document.getElementById('bar-premium').style.width = premiumPct + '%';
+            document.getElementById('bar-premium').innerText = premiumPct + '%';
+            
+            document.getElementById('bar-luxury').style.width = luxuryPct + '%';
+            document.getElementById('bar-luxury').innerText = luxuryPct + '%';
+
+            // Update Velocity Rating
+            let velocityEl = document.getElementById('res-eoi-velocity');
+            if (compactPct >= 35) {
+                velocityEl.innerText = 'High Velocity';
+                velocityEl.style.color = colors.success;
+            } else if (compactPct >= 20) {
+                velocityEl.innerText = 'Moderate Velocity';
+                velocityEl.style.color = colors.accent;
+            } else {
+                velocityEl.innerText = 'Slow Velocity';
+                velocityEl.style.color = colors.danger;
+            }
+
+            // Gating recommendation check (Threshold is ₹8,700/sft blended base realization average)
+            let statusBox = document.getElementById('underwriting-verdict-box');
+            let statusTitle = document.getElementById('underwriting-verdict-title');
+            let statusDesc = document.getElementById('underwriting-verdict-desc');
+
+            if (blendedRate >= 8700) {
+                statusBox.style.borderLeftColor = colors.success;
+                statusBox.style.backgroundColor = 'rgba(0, 230, 118, 0.04)';
+                statusTitle.innerText = 'Model Status: Approved';
+                statusTitle.style.color = colors.success;
+                statusDesc.innerText = 'This layout configuration yields ≥ ₹8,700/sft blended base realization target and supports rapid launch velocity.';
+            } else {
+                statusBox.style.borderLeftColor = colors.danger;
+                statusBox.style.backgroundColor = 'rgba(255, 23, 68, 0.04)';
+                statusTitle.innerText = 'Model Status: Risk Flagged';
+                statusTitle.style.color = colors.danger;
+                statusDesc.innerText = 'Realization is below the contract threshold of ₹8,700/sft. Recommendation: Shift barbell inventory split or increase Core Premium base rates.';
+            }
+        }
+
+        // Run calculations at start
+        window.addEventListener('DOMContentLoaded', () => {
+            calculateModel();
+        });
+    </script>
+</body>
+</html>
