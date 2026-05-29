@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anarock Growth | Client Mandate Performance Scorecard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js CDN for Interactive Dashboard Visuals -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            /* Palette adapted to ANAROCK corporate styling: Crimson Red, Deep Slate/Dark Mode, Cyber Gold & Mint Green */
+            --bg-primary: #080B10;
+            --bg-secondary: #0F1322;
+            --bg-tertiary: #171C30;
+            --card-bg: rgba(22, 27, 45, 0.75);
+            --card-border: rgba(255, 51, 102, 0.15);
+            
+            --primary: #FF3366; /* Vibrant Crimson/Red */
+            --primary-gradient: linear-gradient(135deg, #FF3366, #C3002F);
+            --accent: #E5A93C; /* Cyber Gold */
+            --accent-gradient: linear-gradient(135deg, #F9D04F, #D4AF37);
+            
+            --success: #00E676; /* Mint Green */
+            --success-gradient: linear-gradient(135deg, #00E676, #00B0FF);
+            --warning: #FFAB00;
+            --danger: #FF1744;
+            --cyan: #00E5FF;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(15, 19, 34, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 5% 10%, rgba(255, 51, 102, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 95% 90%, rgba(0, 229, 255, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4, .font-outfit {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 5rem 1.5rem;
+        }
+
+        /* HEADER BLOCK */
+        header {
+            position: relative;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(15, 19, 34, 0) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 4rem 1.5rem 3.5rem 1.5rem;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--cyan);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulse-cyan 1.5s infinite;
+        }
+
+        @keyframes pulse-cyan {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFFFFF 30%, #F1F5F9 70%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0.5rem auto 1.5rem auto;
+            font-weight: 300;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--accent);
+        }
+
+        /* INTRO EXPLAINER */
+        .intro-banner {
+            background: linear-gradient(90deg, rgba(22, 27, 45, 0.8) 0%, rgba(23, 28, 48, 0.8) 100%);
+            border: 1px solid var(--glass-border);
+            border-left: 5px solid var(--cyan);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .intro-banner {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .intro-text h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            color: var(--cyan);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .intro-text p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .pitch-utility {
+            background: rgba(0, 229, 255, 0.05);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .pitch-utility strong {
+            color: var(--cyan);
+        }
+
+        .metric-count-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .count-card {
+            background: rgba(10, 13, 20, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+
+        .count-card .num {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 0.2rem;
+        }
+
+        .count-card.blue .num { color: #00E5FF; }
+        .count-card.pink .num { color: #FF3366; }
+        .count-card.gold .num { color: #E5A93C; }
+        .count-card.green .num { color: #00E676; }
+
+        .count-card .lbl {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* GRID FOR 4 PERSPECTIVES */
+        .perspectives-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .perspectives-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .perspective-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .perspective-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .perspective-card.fin::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--cyan); }
+        .perspective-card.cust::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--primary); }
+        .perspective-card.partner::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--accent); }
+        .perspective-card.telemetry::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--success); }
+
+        .p-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .p-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .perspective-card.fin .p-icon { background: linear-gradient(135deg, #00E5FF, #0086C3); }
+        .perspective-card.cust .p-icon { background: linear-gradient(135deg, #FF3366, #C3002F); }
+        .perspective-card.partner .p-icon { background: linear-gradient(135deg, #F9D04F, #D4AF37); }
+        .perspective-card.telemetry .p-icon { background: linear-gradient(135deg, #00E676, #009624); }
+
+        .p-title-group h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .p-title-group p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* KPI TABLE INSIDE CARD */
+        .kpi-table-spec {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .kpi-row-item {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .kpi-row-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .kpi-row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.6rem;
+        }
+
+        .kpi-row-header h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .kpi-row-header h4 span.tag-ai {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .perspective-card.fin h4 span.tag-ai { background: rgba(0, 229, 255, 0.1); color: var(--cyan); border: 1px solid rgba(0,229,255,0.2); }
+        .perspective-card.cust h4 span.tag-ai { background: rgba(255, 51, 102, 0.1); color: var(--primary); border: 1px solid rgba(255,51,102,0.2); }
+        .perspective-card.partner h4 span.tag-ai { background: rgba(229, 169, 60, 0.1); color: var(--accent); border: 1px solid rgba(229,169,60,0.2); }
+        .perspective-card.telemetry h4 span.tag-ai { background: rgba(0, 230, 118, 0.1); color: var(--success); border: 1px solid rgba(0,230,118,0.2); }
+
+        .kpi-target-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .perspective-card.fin .kpi-target-badge { color: var(--cyan); border-color: rgba(0,229,255,0.15); background: rgba(0,229,255,0.03); }
+        .perspective-card.cust .kpi-target-badge { color: var(--primary); border-color: rgba(255,51,102,0.15); background: rgba(255,51,102,0.03); }
+        .perspective-card.partner .kpi-target-badge { color: var(--accent); border-color: rgba(229,169,60,0.15); background: rgba(229,169,60,0.03); }
+        .perspective-card.telemetry .kpi-target-badge { color: var(--success); border-color: rgba(0,230,118,0.15); background: rgba(0,230,118,0.03); }
+
+        .kpi-row-body {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .kpi-meta-row {
+            margin-top: 0.6rem;
+            display: flex;
+            gap: 1rem;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 0.4rem;
+        }
+
+        .kpi-meta-item strong {
+            color: var(--text-secondary);
+        }
+
+        /* INTERACTIVE DASHBOARD VIEWER SPEC */
+        .bi-spec-section {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin: 3.5rem 0;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .bi-spec-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--cyan), var(--primary), var(--accent), var(--success));
+            border-radius: 24px 24px 0 0;
+        }
+
+        .bi-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .bi-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .bi-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .bi-layout-spec {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .bi-layout-spec {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .bi-nav-spec {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .bi-nav-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .bi-nav-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateX(3px);
+        }
+
+        .bi-nav-item.active {
+            background: var(--bg-tertiary);
+            border-color: rgba(0, 229, 255, 0.3);
+            border-left: 4px solid var(--cyan);
+        }
+
+        .bi-nav-item h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            color: var(--text-primary);
+        }
+
+        .bi-nav-item p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* POWER BI DASHBOARD MOCK */
+        .bi-mock-screen {
+            background: #080A10;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+            min-height: 400px;
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .bi-mock-screen.active {
+            display: block;
+        }
+
+        .bi-mock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bi-mock-title h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bi-mock-title h3 span {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--cyan);
+            border: 1px solid rgba(0,229,255,0.2);
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .bi-mock-refresh {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* POWER BI WIDGETS */
+        .bi-grid-widgets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .bi-grid-widgets {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bi-widget-card {
+            background: rgba(22, 27, 45, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .bi-widget-card .lbl {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }
+
+        .bi-widget-card .val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .bi-widget-card .trend {
+            font-size: 0.7rem;
+            margin-top: 0.2rem;
+            font-weight: 600;
+        }
+
+        .trend.pos { color: var(--success); }
+        .trend.neg { color: var(--danger); }
+
+        .bi-widget-chart-placeholder {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .chart-spec-list {
+            text-align: left;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .chart-spec-list li {
+            margin-bottom: 0.4rem;
+            list-style: none;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .chart-spec-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--cyan);
+            font-weight: bold;
+        }
+
+        /* DYNAMIC CHART VISUALS STYLING */
+        .bi-charts-container {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .bi-charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bi-chart-card {
+            background: rgba(22, 27, 45, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.3s ease;
+        }
+
+        .bi-chart-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .bi-chart-card h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-left: 3px solid var(--cyan);
+            padding-left: 0.6rem;
+            text-align: left;
+            margin-bottom: 0.2rem;
+        }
+
+        .bi-chart-canvas-wrapper {
+            position: relative;
+            height: 240px;
+            width: 100%;
+        }
+
+        /* STRATEGIC RADAR & KPI GAUGE CSS */
+        .intro-visuals {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            width: 100%;
+        }
+
+        .radar-card {
+            background: rgba(10, 13, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+
+        .radar-card h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
+            border-left: 2px solid var(--cyan);
+            padding-left: 0.4rem;
+            text-align: left;
+        }
+
+        .radar-canvas-wrapper {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+
+        .kpi-progress-container {
+            margin-top: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .kpi-progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .kpi-progress-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 1s ease-in-out;
+        }
+
+        .perspective-card.fin .kpi-progress-fill { background: linear-gradient(90deg, var(--cyan), #0086C3); }
+        .perspective-card.cust .kpi-progress-fill { background: linear-gradient(90deg, var(--primary), #C3002F); }
+        .perspective-card.partner .kpi-progress-fill { background: linear-gradient(90deg, var(--accent), #D4AF37); }
+        .perspective-card.telemetry .kpi-progress-fill { background: linear-gradient(90deg, var(--success), #009624); }
+
+        .kpi-progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .kpi-progress-text span.status-pos { color: var(--success); font-weight: 600; }
+        .kpi-progress-text span.status-neg { color: var(--danger); font-weight: 600; }
+
+        /* DATA PIPELINE DETAILS */
+        .pipeline-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .pipeline-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .pipeline-card h2 svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--cyan);
+        }
+
+        .pipeline-card p.subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .pipeline-node {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .pipeline-node:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .pipeline-node h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .pipeline-node h4 span.tag-source {
+            font-size: 0.65rem;
+            background: rgba(229, 169, 60, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(229, 169, 60, 0.2);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .pipeline-node p {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+        }
+
+        .pipeline-tech-tag {
+            font-size: 0.72rem;
+            font-family: Consolas, monospace;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--text-muted);
+            display: inline-block;
+        }
+
+        /* FOOTER & CTA */
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer p.pitch-quote {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--cyan);
+            max-width: 800px;
+            margin: 0 auto 1.5rem auto;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        footer p.footer-sig {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        @media print {
+            body {
+                background-color: #080B10 !important;
+                color: #FFFFFF !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 1rem !important;
+            }
+            /* Show all dashboard pages instead of toggling them */
+            .bi-mock-screen {
+                display: block !important;
+                opacity: 1 !important;
+                page-break-after: always;
+                break-inside: avoid;
+                margin-bottom: 2rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                background-color: #080A10 !important;
+            }
+            /* Hide the simulator switcher buttons */
+            .bi-nav-spec {
+                display: none !important;
+            }
+            /* Expand the dashboard to full width */
+            .bi-layout-spec {
+                display: block !important;
+            }
+            /* Perspective cards layout adjustments for printing */
+            .perspectives-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 1.5rem !important;
+                page-break-after: always;
+                break-after: page;
+            }
+            .perspective-card {
+                break-inside: avoid;
+            }
+            .pipeline-card {
+                page-break-before: always;
+                break-before: page;
+                break-inside: avoid;
+            }
+            footer {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo-badge">
+            <span></span> ANAROCK GROWTH • PITCH PACKAGE
+        </div>
+        <h1>Developer Mandate Health Balanced Scorecard</h1>
+        <p class="subtitle">A Transparent, Client-Facing Performance Measurement Matrix to Underwrite Sales Velocity, CP Engagement, and AI-Funnel Efficiency</p>
+        <div class="header-meta">
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                Pitch Lead: <strong>Meghana Grama Satyan (ISB Alumna & Real Estate Strategist)</strong>
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                Prepared For: <strong>Sunil Mishra (CEO, Anarock Growth Businesses & CS&AO)</strong>
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Focus: <strong>Mandate Underwriting Transparency & Developer Acquisition</strong>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- INTRO BANNER -->
+        <div class="intro-banner">
+            <div class="intro-text">
+                <h2>
+                    <svg style="width: 24px; height: 24px; fill: var(--cyan);" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    Framing Developer Trust & Yield Transparency
+                </h2>
+                <p>Traditional developer dashboards track structural items (safety reports, floor plans, concrete cycles). For Anarock's developer clients, however, <strong>unlocked margins are driven entirely by Sales Velocity, CP mobilization stability, digital Lead conversions, and CAC performance</strong>.</p>
+                <p>This **Mandate Performance Balanced Scorecard** serves as our primary pitching weapon when acquiring new Tier-1 developer mandates. It provides them with absolute, real-time funnel visibility, proving how Anarock.AI tools (Genie, Astra, CP Ranker) actively compress CAC and accelerate cash collections.</p>
+                <div class="pitch-utility">
+                    <strong>Operational Objective:</strong> This scorecard demonstrates how developer mandates leverage the proprietary <strong>Anarock.AI</strong> suite to stabilize channel partner contributions, compress B2C lead response times, and optimize marketing spend to keep customer acquisition costs well below target caps.
+                </div>
+            </div>
+            
+            <div class="intro-visuals">
+                <div class="metric-count-grid">
+                    <div class="count-card blue">
+                        <div class="num font-outfit">3</div>
+                        <div class="lbl">Financial KPIs</div>
+                    </div>
+                    <div class="count-card pink">
+                        <div class="num font-outfit">3</div>
+                        <div class="lbl">Customer & Brand</div>
+                    </div>
+                    <div class="count-card gold">
+                        <div class="num font-outfit">3</div>
+                        <div class="lbl">CP Partner KPIs</div>
+                    </div>
+                    <div class="count-card green">
+                        <div class="num font-outfit">3</div>
+                        <div class="lbl">AI & Digital Funnel</div>
+                    </div>
+                </div>
+                <div class="radar-card">
+                    <h4>Strategic Balanced Scorecard Index</h4>
+                    <div class="radar-canvas-wrapper">
+                        <canvas id="chart-radar-index"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 PERSPECTIVES GRID -->
+        <div class="perspectives-grid">
+            
+            <!-- 1. FINANCIAL PERSPECTIVE -->
+            <div class="perspective-card fin">
+                <div class="p-header">
+                    <div class="p-icon">$</div>
+                    <div class="p-title-group">
+                        <h2>1. Financial Perspective</h2>
+                        <p>Underwriting realizations, collections, and marketing yields</p>
+                    </div>
+                </div>
+                <div class="kpi-table-spec">
+                    <!-- KPI 1 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Blended Revenue Realization</h4>
+                            <span class="kpi-target-badge">&ge; ₹8,700/sft</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Net booking revenues divided by total sold area. Governs base price realization averages across compact, premium, and signature penthouse barbell layout mixes.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 87.45%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>₹8,745 /sft achieved</span>
+                                <span class="status-pos">100.5% of Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>SAP S/4 HANA</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Monthly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>VP Finance</strong></div>
+                        </div>
+                    </div>
+                    
+                    <!-- KPI 2 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Collection Efficiency</h4>
+                            <span class="kpi-target-badge">&ge; 85% on demand</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Percentage of demanded customer installments successfully collected on schedule, tracking collection aging flows to ensure liquidity stability.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 88.2%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>88.2% collection rate</span>
+                                <span class="status-pos">+3.20% over Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>SAP FICO Modules</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Monthly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>CFO</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 3 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Actual CAC vs. Budgeted Cap</h4>
+                            <span class="kpi-target-badge">&le; 2.5% GTV</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Gross customer acquisition cost (digital spends + broker commissions + collateral costs) capped relative to Gross Transaction Value (GTV) of inventory closed.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 84%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>2.1% GTV CAC recorded</span>
+                                <span class="status-pos">-0.40% under Cap</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>Marketing Ledger + Salesforce</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Weekly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>CMO</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. CUSTOMER & BRAND PERSPECTIVE -->
+            <div class="perspective-card cust">
+                <div class="p-header">
+                    <div class="p-icon">★</div>
+                    <div class="p-title-group">
+                        <h2>2. Customer & Brand Perspective</h2>
+                        <p>Buyer engagement, site conversion metrics, and NPS brand values</p>
+                    </div>
+                </div>
+                <div class="kpi-table-spec">
+                    <!-- KPI 1 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Brand Net Promoter Score (NPS)</h4>
+                            <span class="kpi-target-badge">&ge; 70</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Strategic customer satisfaction score. Benchmarks post-sales relationship health against Oberoi (78) and Sobha (72) to underwrite premium developer credibility.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 74%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>Brand NPS at 74</span>
+                                <span class="status-pos">105.7% of Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>Post-Interaction Survey</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Quarterly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>CX Head</strong></div>
+                        </div>
+                    </div>
+                    
+                    <!-- KPI 2 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Site-Visit to Booking Conversion</h4>
+                            <span class="kpi-target-badge">&ge; 12%</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Percentage of physical walk-in leads successfully converting into finalized bookings. Measures physical site-team closing effectiveness.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 67.5%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>13.5% conversion rate</span>
+                                <span class="status-pos">112.5% of Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>Salesforce CRM</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Weekly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>VP Sales</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 3 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Lead Response Time</h4>
+                            <span class="kpi-target-badge">&lt; 5 mins</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Average elapsed time from digital form submission to initial phone/WhatsApp connection by a dedicated sales strategist.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 84%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>4.2 mins average</span>
+                                <span class="status-pos">16% Faster than Cap</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>CRM Activity Timestamp</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Real-Time</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>Sales Lead</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. PARTNER (CP) PERSPECTIVE -->
+            <div class="perspective-card partner">
+                <div class="p-header">
+                    <div class="p-icon">⚙</div>
+                    <div class="p-title-group">
+                        <h2>3. Channel Partner (CP) Perspective</h2>
+                        <p>Broker database mobilization and concentration risk controls</p>
+                    </div>
+                </div>
+                <div class="kpi-table-spec">
+                    <!-- KPI 1 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Active CP Mobilization</h4>
+                            <span class="kpi-target-badge">&ge; 200 brokers</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Number of unique external brokers generating at least 1 verified customer site-visit within a rolling 30-day period, ensuring active sub-broker network pull.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 90%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>214 brokers mobilized</span>
+                                <span class="status-pos">107% of Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>CP Portal Ledger</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Monthly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>VP CP Relations</strong></div>
+                        </div>
+                    </div>
+                    
+                    <!-- KPI 2 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Top-5% CP Sales Contribution</h4>
+                            <span class="kpi-target-badge">&le; 45%</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Concentration risk indicator capping the percentage of total broker-driven sales generated by the top 5% of brokers to prevent portfolio vulnerability.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 93.5%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>42.1% concentration</span>
+                                <span class="status-pos">-2.90% under Risk Cap</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>Salesforce Analytics</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Quarterly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>VP CP Relations</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 3 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>CP Ranker Accuracy Index <span class="tag-ai">AI Engine</span></h4>
+                            <span class="kpi-target-badge">&ge; 90%</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Match accuracy of the **CP Ranker** AI matchmaking engine, tracking whether recommended brokers match local buyer affinity metrics and close opportunities successfully.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 92.4%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>92.4% match accuracy</span>
+                                <span class="status-pos">+2.40% over Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>Anarock.AI Analytics</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Monthly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>Product Head</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. DIGITAL TELEMETRY & AI FUNNEL -->
+            <div class="perspective-card telemetry">
+                <div class="p-header">
+                    <div class="p-icon">↑</div>
+                    <div class="p-title-group">
+                        <h2>4. Digital Telemetry & AI Funnel Perspective</h2>
+                        <p>Conversational AI effectiveness, predictive lead scoring, and automated re-engagement</p>
+                    </div>
+                </div>
+                <div class="kpi-table-spec">
+                    <!-- KPI 1 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Genie AI Lead Qualification Rate <span class="tag-ai">AI Engine</span></h4>
+                            <span class="kpi-target-badge">&ge; 85%</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            The percentage of incoming B2C chats successfully scored, parsed, and qualified by the **Walk-in Genie** agent before passing to human strategists.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 89.1%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>89.1% Genie qualification</span>
+                                <span class="status-pos">+4.10% over Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>Genie Chat Logs</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Daily</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>CTO</strong></div>
+                        </div>
+                    </div>
+                    
+                    <!-- KPI 2 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>Astra Phoenix Lead Revival Rate <span class="tag-ai">AI Engine</span></h4>
+                            <span class="kpi-target-badge">&ge; 10%</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Conversion rate of failed/cold CRM leads resurrected through automated generative WhatsApp re-outreach (Astra Phoenix) combined with n8n workflow triggers.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 57%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>11.4% cold leads resurrected</span>
+                                <span class="status-pos">114% of Hurdle Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>n8n CRM Webhooks</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Weekly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>CTO</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 3 -->
+                    <div class="kpi-row-item">
+                        <div class="kpi-row-header">
+                            <h4>WhatsApp Conversational Engagement CSAT</h4>
+                            <span class="kpi-target-badge">&ge; 4.0 / 5.0</span>
+                        </div>
+                        <div class="kpi-row-body">
+                            Average user satisfaction rating returned on automated post-engagement survey tokens triggered following Genie conversational chats.
+                        </div>
+                        <div class="kpi-progress-container">
+                            <div class="kpi-progress-bar">
+                                <div class="kpi-progress-fill" style="width: 86%;"></div>
+                            </div>
+                            <div class="kpi-progress-text">
+                                <span>4.3 / 5.0 rating achieved</span>
+                                <span class="status-pos">107.5% of Target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-meta-row">
+                            <div class="kpi-meta-item">Source: <strong>IoT Survey Table</strong></div>
+                            <div class="kpi-meta-item">Freq: <strong>Weekly</strong></div>
+                            <div class="kpi-meta-item">Owner: <strong>CX Head</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- POWER BI WIDGETS SPEC VIEW -->
+        <div class="bi-spec-section">
+            <div class="bi-header">
+                <h2>Power BI Mandate Dashboard Specifications</h2>
+                <p>The core strategic telemetry environment deployed for developer executives to underwrite lead cycles and collection efficiency in real-time.</p>
+            </div>
+            
+            <div class="bi-layout-spec">
+                <!-- Navigation -->
+                <div class="bi-nav-spec">
+                    <button class="bi-nav-item active" onclick="switchBIPage(1)" id="bi-btn-1">
+                        <h4>Page 1: Executive Overview</h4>
+                        <p>Blended realizations, collection efficiency & sales runs</p>
+                    </button>
+                    <button class="bi-nav-item" onclick="switchBIPage(2)" id="bi-btn-2">
+                        <h4>Page 2: Partner & CP Telemetry</h4>
+                        <p>CP database activity maps & broker concentration charts</p>
+                    </button>
+                    <button class="bi-nav-item" onclick="switchBIPage(3)" id="bi-btn-3">
+                        <h4>Page 3: AI Funnel & Telemetry</h4>
+                        <p>Genie AI chat qualification rates & n8n revival counts</p>
+                    </button>
+                    <button class="bi-nav-item" onclick="switchBIPage(4)" id="bi-btn-4">
+                        <h4>Page 4: CAC & Marketing ROI</h4>
+                        <p>Direct digital vs CP CAC trends & realization barbell splits</p>
+                    </button>
+                </div>
+                
+                <!-- Display Mock Screen -->
+                <div class="bi-mock-display">
+                    
+                    <!-- PAGE 1 MOCK -->
+                    <div class="bi-mock-screen active" id="bi-screen-1">
+                        <div class="bi-mock-header">
+                            <div class="bi-mock-title">
+                                <h3>Page 1: Executive Client Mandate Summary <span>Executive</span></h3>
+                            </div>
+                            <div class="bi-mock-refresh">
+                                <svg style="width: 14px; height: 14px; fill: var(--text-muted);" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                                Daily Refresh Schedule Active
+                            </div>
+                        </div>
+                        <div class="bi-grid-widgets">
+                            <div class="bi-widget-card">
+                                <div class="lbl">Revenue Realization</div>
+                                <div class="val">₹8,745 /sft</div>
+                                <div class="trend pos">+0.51% vs Target</div>
+                            </div>
+                            <div class="bi-widget-card">
+                                <div class="lbl">Collection Efficiency</div>
+                                <div class="val">88.2%</div>
+                                <div class="trend pos">+3.20% vs Target</div>
+                            </div>
+                            <div class="bi-widget-card">
+                                <div class="lbl">Blended Launch CAC</div>
+                                <div class="val">2.1% GTV</div>
+                                <div class="trend pos">-0.40% under Cap</div>
+                            </div>
+                        </div>
+                        <div class="bi-charts-container">
+                            <div class="bi-chart-card">
+                                <h4>Sales Realization & Deductions Waterfall Breakdown</h4>
+                                <div class="bi-chart-canvas-wrapper">
+                                    <canvas id="chart-waterfall"></canvas>
+                                </div>
+                            </div>
+                            <div class="bi-chart-card">
+                                <h4>Demanded Milestones vs. Cash Collections (₹ Cr)</h4>
+                                <div class="bi-chart-canvas-wrapper">
+                                    <canvas id="chart-collections"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAGE 2 MOCK -->
+                    <div class="bi-mock-screen" id="bi-screen-2">
+                        <div class="bi-mock-header">
+                            <div class="bi-mock-title">
+                                <h3>Page 2: Channel Partner (CP) Telemetry <span>CP Relations</span></h3>
+                            </div>
+                            <div class="bi-mock-refresh">
+                                Real-Time Push Active
+                            </div>
+                        </div>
+                        <div class="bi-grid-widgets">
+                            <div class="bi-widget-card">
+                                <div class="lbl">Active CP Brokers</div>
+                                <div class="val">214 Brokers</div>
+                                <div class="trend pos">+14 brokers over Target</div>
+                            </div>
+                            <div class="bi-widget-card">
+                                <div class="lbl">Top-5% CP Sales Share</div>
+                                <div class="val">42.1%</div>
+                                <div class="trend pos">-2.90% under Risk Cap</div>
+                            </div>
+                            <div class="bi-widget-card">
+                                <div class="lbl">CP Ranker Accuracy</div>
+                                <div class="val">92.4%</div>
+                                <div class="trend pos">+2.40% vs Target</div>
+                            </div>
+                        </div>
+                        <div class="bi-charts-container">
+                            <div class="bi-chart-card">
+                                <h4>Micro-market CP Densities & Walk-ins Generated</h4>
+                                <div class="bi-chart-canvas-wrapper">
+                                    <canvas id="chart-micro-market"></canvas>
+                                </div>
+                            </div>
+                            <div class="bi-chart-card">
+                                <h4>Broker GTV Concentration (Lorenz Curve Risk Model)</h4>
+                                <div class="bi-chart-canvas-wrapper">
+                                    <canvas id="chart-lorenz-curve"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAGE 3 MOCK -->
+                    <div class="bi-mock-screen" id="bi-screen-3">
+                        <div class="bi-mock-header">
+                            <div class="bi-mock-title">
+                                <h3>Page 3: Conversational AI & Funnel Telemetry <span>Anarock.AI</span></h3>
+                            </div>
+                            <div class="bi-mock-refresh">
+                                Hourly Refresh Schedule
+                            </div>
+                        </div>
+                        <div class="bi-grid-widgets">
+                            <div class="bi-widget-card">
+                                <div class="lbl">Genie AI Qual Rate</div>
+                                <div class="val">89.1%</div>
+                                <div class="trend pos">+4.10% vs Hurdle</div>
+                            </div>
+                            <div class="bi-widget-card">
+                                <div class="lbl">Astra Phoenix Lead Revival</div>
+                                <div class="val">11.4%</div>
+                                <div class="trend pos">+1.40% vs Hurdle</div>
+                            </div>
+                            <div class="bi-widget-card">
+                                <div class="lbl">WhatsApp Chat CSAT</div>
+                                <div class="val">4.3 / 5.0</div>
+                                <div class="trend pos">+7.50% vs target</div>
+                            </div>
+                        </div>
+                        <div class="bi-charts-container">
+                            <div class="bi-chart-card">
+                                <h4>Genie Conversational Funnel Conversion Efficiency</h4>
+                                <div class="bi-chart-canvas-wrapper">
+                                    <canvas id="chart-genie-funnel"></canvas>
+                                </div>
+                            </div>
+                            <div class="bi-chart-card">
+                                <h4>Astra Phoenix Outbound & Lead Revival Trends</h4>
+                                <div class="bi-chart-canvas-wrapper">
+                                    <canvas id="chart-astra-revival"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAGE 4 MOCK -->
+                    <div class="bi-mock-screen" id="bi-screen-4">
+                        <div class="bi-mock-header">
+                            <div class="bi-mock-title">
+                                <h3>Page 4: CAC & Marketing ROI Perspective <span>Marketing ROI</span></h3>
+                            </div>
+                            <div class="bi-mock-refresh">
+                                Daily Refresh Schedule
+                            </div>
+                        </div>
+                        <div class="bi-grid-widgets">
+                            <div class="bi-widget-card">
+                                <div class="lbl">Direct Digital CAC</div>
+                                <div class="val">₹1.85 L</div>
+                                <div class="trend pos">Optimized Realizations</div>
+                            </div>
+                            <div class="bi-widget-card">
+                                <div class="lbl">CP Sourced CAC</div>
+                                <div class="val">₹2.30 L</div>
+                                <div class="trend pos">-8.0% lower vs budget</div>
+                            </div>
+                            <div class="bi-widget-card">
+                                <div class="lbl">Blended Marketing ROI</div>
+                                <div class="val">42.5x</div>
+                                <div class="trend pos">+2.5x over Target</div>
+                            </div>
+                        </div>
+                        <div class="bi-charts-container">
+                            <div class="bi-chart-card">
+                                <h4>Direct Digital CAC vs. CP Commission Payouts</h4>
+                                <div class="bi-chart-canvas-wrapper">
+                                    <canvas id="chart-cac-trend"></canvas>
+                                </div>
+                            </div>
+                            <div class="bi-chart-card">
+                                <h4>Barbell Inventory Layout Revenue Split (Doughnut)</h4>
+                                <div class="bi-chart-canvas-wrapper">
+                                    <canvas id="chart-barbell-split"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- PIPELINE DATA SOURCES -->
+        <div class="pipeline-card">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                Developer Mandate Data Architecture & Integration
+            </h2>
+            <p class="subtitle">Ensuring absolute database integrity and zero lag between developer CRM records and corporate Power BI engines.</p>
+            <div class="pipeline-grid">
+                <div class="pipeline-node">
+                    <h4>SAP S/4 HANA <span class="tag-source">Financials</span></h4>
+                    <p>Feeds blended booking collections, base price realizations, cost variances, and demanding cycles dynamically via the SAP BW connector.</p>
+                    <span class="pipeline-tech-tag">Tables: GL_Actuals, AR_Aging, PO_Master</span>
+                </div>
+                
+                <div class="pipeline-node">
+                    <h4>Salesforce CRM <span class="tag-source">Sales Funnel</span></h4>
+                    <p>Pushes real-time site-visits, lead responses, physical conversions, referral tags, and direct broker lead routing records via the Salesforce REST API.</p>
+                    <span class="pipeline-tech-tag">Tables: Leads, Opportunities, Bookings</span>
+                </div>
+
+                <div class="pipeline-node">
+                    <h4>Anarock.AI IoT Platform <span class="tag-source">AI Telemetry</span></h4>
+                    <p>Aggregates Genie qualification volumes, Astra scores, post-chat CSAT feedback surveys, and Astra Phoenix n8n revival logs via Azure event streams.</p>
+                    <span class="pipeline-tech-tag">Tables: Genie_Chats, Astra_Logs, Survey_CSAT</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER & CALL TO ACTION -->
+        <footer>
+            <p class="pitch-quote">"True developer mandate strategy begins where construction dashboards end—bridging marketing telemetry and financial collections to establish absolute trust."</p>
+            <p class="footer-sig">Strategic Pitch Material • Prepared for Sunil Mishra (CEO, Anarock Growth) by Meghana Grama Satyan</p>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT FOR SWITCHING BI PAGES & CHART INITIALIZATION -->
+    <script>
+        const colors = {
+            cyan: '#00E5FF',
+            primary: '#FF3366',
+            accent: '#E5A93C',
+            success: '#00E676',
+            textMuted: '#64748B',
+            textPrimary: '#FFFFFF',
+            gridColor: 'rgba(255, 255, 255, 0.05)'
+        };
+
+        // Set global Chart.js defaults
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.color = colors.textMuted;
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.plugins.legend.labels.color = colors.textPrimary;
+            Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 19, 34, 0.9)';
+            Chart.defaults.plugins.tooltip.borderColor = 'rgba(255, 255, 255, 0.1)';
+            Chart.defaults.plugins.tooltip.borderWidth = 1;
+            Chart.defaults.plugins.tooltip.titleColor = '#FFFFFF';
+            Chart.defaults.plugins.tooltip.bodyColor = '#FFFFFF';
+        }
+
+        const chartInstances = {};
+
+        function switchBIPage(pageNum) {
+            // Remove active classes
+            document.querySelectorAll('.bi-nav-item').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.bi-mock-screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+
+            // Add active classes to targets
+            document.getElementById('bi-btn-' + pageNum).classList.add('active');
+            document.getElementById('bi-screen-' + pageNum).classList.add('active');
+
+            // Initialize charts for the active page
+            initChartsForPage(pageNum);
+        }
+
+        function initChartsForPage(pageNum) {
+            if (typeof Chart === 'undefined') return;
+
+            if (pageNum === 1) {
+                if (!chartInstances.waterfall) {
+                    const ctx1 = document.getElementById('chart-waterfall').getContext('2d');
+                    chartInstances.waterfall = new Chart(ctx1, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Gross Rev', 'Direct CAC', 'CP Commission', 'Opex', 'Net Realization'],
+                            datasets: [{
+                                label: '₹ per sft',
+                                data: [
+                                    [0, 10000],          // Gross
+                                    [9600, 10000],       // Direct CAC (400)
+                                    [9000, 9600],        // CP Commission (600)
+                                    [8700, 9000],        // Opex (300)
+                                    [0, 8700]            // Net
+                                ],
+                                backgroundColor: [
+                                    'rgba(0, 229, 255, 0.65)',
+                                    'rgba(255, 51, 102, 0.65)',
+                                    'rgba(229, 169, 60, 0.65)',
+                                    'rgba(100, 116, 139, 0.65)',
+                                    'rgba(0, 230, 118, 0.65)'
+                                ],
+                                borderColor: [
+                                    colors.cyan, colors.primary, colors.accent, '#64748B', colors.success
+                                ],
+                                borderWidth: 1.5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    grid: { color: colors.gridColor },
+                                    ticks: { color: colors.textMuted }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: colors.textMuted, font: { size: 9 } }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                if (!chartInstances.collections) {
+                    const ctx2 = document.getElementById('chart-collections').getContext('2d');
+                    chartInstances.collections = new Chart(ctx2, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                            datasets: [
+                                {
+                                    type: 'bar',
+                                    label: 'Demanded Milestones (₹ Cr)',
+                                    data: [45, 55, 40, 65, 75, 85],
+                                    backgroundColor: 'rgba(0, 229, 255, 0.25)',
+                                    borderColor: colors.cyan,
+                                    borderWidth: 1.5
+                                },
+                                {
+                                    type: 'line',
+                                    label: 'Cash Inflows (₹ Cr)',
+                                    data: [38, 48, 36, 58, 68, 78],
+                                    borderColor: colors.success,
+                                    borderWidth: 2.5,
+                                    tension: 0.3,
+                                    fill: false,
+                                    pointBackgroundColor: colors.success
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { labels: { color: colors.textPrimary, boxWidth: 12 } }
+                            },
+                            scales: {
+                                y: {
+                                    grid: { color: colors.gridColor },
+                                    ticks: { color: colors.textMuted }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: colors.textMuted }
+                                }
+                            }
+                        }
+                    });
+                }
+            } else if (pageNum === 2) {
+                if (!chartInstances.microMarket) {
+                    const ctx1 = document.getElementById('chart-micro-market').getContext('2d');
+                    chartInstances.microMarket = new Chart(ctx1, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Whitefield', 'Sarjapur Rd', 'Manyata Ring', 'Kanakapura', 'Elec City'],
+                            datasets: [
+                                {
+                                    label: 'Active CPs',
+                                    data: [85, 62, 54, 45, 38],
+                                    backgroundColor: 'rgba(229, 169, 60, 0.65)',
+                                    borderColor: colors.accent,
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Walk-ins Generated',
+                                    data: [190, 130, 110, 95, 80],
+                                    backgroundColor: 'rgba(0, 229, 255, 0.65)',
+                                    borderColor: colors.cyan,
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { labels: { color: colors.textPrimary, boxWidth: 12 } }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { color: colors.gridColor },
+                                    ticks: { color: colors.textMuted }
+                                },
+                                y: {
+                                    grid: { display: false },
+                                    ticks: { color: colors.textMuted }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                if (!chartInstances.lorenzCurve) {
+                    const ctx2 = document.getElementById('chart-lorenz-curve').getContext('2d');
+                    chartInstances.lorenzCurve = new Chart(ctx2, {
+                        type: 'line',
+                        data: {
+                            labels: ['0%', '20%', '40%', '60%', '80%', '100%'],
+                            datasets: [
+                                {
+                                    label: 'Broker GTV Concentration',
+                                    data: [0, 8, 20, 38, 65, 100],
+                                    borderColor: colors.primary,
+                                    borderWidth: 2.5,
+                                    tension: 0.4,
+                                    fill: true,
+                                    backgroundColor: 'rgba(255, 51, 102, 0.06)',
+                                    pointBackgroundColor: colors.primary
+                                },
+                                {
+                                    label: 'Line of Equality',
+                                    data: [0, 20, 40, 60, 80, 100],
+                                    borderColor: 'rgba(255, 255, 255, 0.15)',
+                                    borderWidth: 1,
+                                    borderDash: [5, 5],
+                                    fill: false,
+                                    pointRadius: 0
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { labels: { color: colors.textPrimary, boxWidth: 12 } }
+                            },
+                            scales: {
+                                y: {
+                                    grid: { color: colors.gridColor },
+                                    ticks: { color: colors.textMuted, callback: value => value + '%' }
+                                },
+                                x: {
+                                    grid: { color: colors.gridColor },
+                                    ticks: { color: colors.textMuted }
+                                }
+                            }
+                        }
+                    });
+                }
+            } else if (pageNum === 3) {
+                if (!chartInstances.genieFunnel) {
+                    const ctx1 = document.getElementById('chart-genie-funnel').getContext('2d');
+                    chartInstances.genieFunnel = new Chart(ctx1, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Inbound Clicks', 'Genie Chats', 'Qualified Leads', 'Scheduled Visits', 'Closed Bookings'],
+                            datasets: [{
+                                data: [10000, 8500, 5200, 1200, 144],
+                                backgroundColor: [
+                                    'rgba(0, 229, 255, 0.75)',
+                                    'rgba(0, 229, 255, 0.6)',
+                                    'rgba(0, 229, 255, 0.45)',
+                                    'rgba(229, 169, 60, 0.65)',
+                                    'rgba(0, 230, 118, 0.75)'
+                                ],
+                                borderColor: colors.cyan,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { color: colors.gridColor },
+                                    ticks: { color: colors.textMuted }
+                                },
+                                y: {
+                                    grid: { display: false },
+                                    ticks: { color: colors.textPrimary, font: { weight: '600' } }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                if (!chartInstances.astraRevival) {
+                    const ctx2 = document.getElementById('chart-astra-revival').getContext('2d');
+                    chartInstances.astraRevival = new Chart(ctx2, {
+                        type: 'line',
+                        data: {
+                            labels: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5', 'Wk 6'],
+                            datasets: [
+                                {
+                                    label: 'WhatsApp Pings',
+                                    data: [850, 920, 1100, 980, 1200, 1400],
+                                    borderColor: colors.cyan,
+                                    borderWidth: 2,
+                                    tension: 0.3,
+                                    fill: false,
+                                    pointBackgroundColor: colors.cyan
+                                },
+                                {
+                                    label: 'Astra Phoenix Revivals',
+                                    data: [85, 96, 125, 110, 140, 165],
+                                    borderColor: colors.success,
+                                    borderWidth: 2.5,
+                                    tension: 0.3,
+                                    fill: false,
+                                    pointBackgroundColor: colors.success
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { labels: { color: colors.textPrimary, boxWidth: 12 } }
+                            },
+                            scales: {
+                                y: {
+                                    grid: { color: colors.gridColor },
+                                    ticks: { color: colors.textMuted }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: colors.textMuted }
+                                }
+                            }
+                        }
+                    });
+                }
+            } else if (pageNum === 4) {
+                if (!chartInstances.cacTrend) {
+                    const ctx1 = document.getElementById('chart-cac-trend').getContext('2d');
+                    chartInstances.cacTrend = new Chart(ctx1, {
+                        type: 'line',
+                        data: {
+                            labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
+                            datasets: [
+                                {
+                                    label: 'Direct Digital CAC (₹ k)',
+                                    data: [220, 205, 190, 185, 175, 160],
+                                    borderColor: colors.cyan,
+                                    borderWidth: 2.5,
+                                    tension: 0.4,
+                                    fill: false,
+                                    pointBackgroundColor: colors.cyan
+                                },
+                                {
+                                    label: 'Channel Partner CAC (₹ k)',
+                                    data: [240, 240, 235, 230, 230, 225],
+                                    borderColor: colors.primary,
+                                    borderWidth: 2.5,
+                                    tension: 0.4,
+                                    fill: false,
+                                    pointBackgroundColor: colors.primary
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { labels: { color: colors.textPrimary, boxWidth: 12 } }
+                            },
+                            scales: {
+                                y: {
+                                    grid: { color: colors.gridColor },
+                                    ticks: { color: colors.textMuted }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: colors.textMuted }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                if (!chartInstances.barbellSplit) {
+                    const ctx2 = document.getElementById('chart-barbell-split').getContext('2d');
+                    chartInstances.barbellSplit = new Chart(ctx2, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Compact Value', 'Core Premium', 'Signature Penthouses'],
+                            datasets: [{
+                                data: [35, 45, 20],
+                                backgroundColor: [
+                                    'rgba(0, 229, 255, 0.7)',
+                                    'rgba(229, 169, 60, 0.7)',
+                                    'rgba(255, 51, 102, 0.7)'
+                                ],
+                                borderColor: 'rgba(15, 19, 34, 0.8)',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                    labels: { color: colors.textPrimary, font: { size: 10 }, boxWidth: 10 }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        // Initialize first page on load
+        window.addEventListener('DOMContentLoaded', () => {
+            switchBIPage(1);
+
+            // Initialize Radar chart
+            if (document.getElementById('chart-radar-index')) {
+                const ctxRadar = document.getElementById('chart-radar-index').getContext('2d');
+                new Chart(ctxRadar, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Financial Realization', 'Brand & CX (NPS)', 'CP Mobilization', 'AI Funnel Compressions'],
+                        datasets: [{
+                            label: 'Current Index',
+                            data: [92, 88, 90, 95],
+                            backgroundColor: 'rgba(0, 229, 255, 0.12)',
+                            borderColor: colors.cyan,
+                            borderWidth: 2,
+                            pointBackgroundColor: colors.cyan,
+                            pointBorderColor: '#FFFFFF',
+                            pointHoverBackgroundColor: '#FFFFFF',
+                            pointHoverBorderColor: colors.cyan
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            r: {
+                                grid: { color: 'rgba(255, 255, 255, 0.07)' },
+                                angleLines: { color: 'rgba(255, 255, 255, 0.07)' },
+                                pointLabels: {
+                                    color: colors.textMuted,
+                                    font: { size: 9, weight: '500' }
+                                },
+                                ticks: {
+                                    display: false,
+                                    maxTicksLimit: 3
+                                },
+                                suggestMin: 50,
+                                suggestMax: 100
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
