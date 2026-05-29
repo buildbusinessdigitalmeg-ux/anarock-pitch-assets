@@ -1,0 +1,92 @@
+[
+  {
+    "broker_id": "CP-BLR-001",
+    "broker_firm_name": "Valuation & Alliance Realty",
+    "rera_number": "PRM/KA/RERA/1251/310/AG/220512/004123",
+    "micro_market_focus": "Whitefield & ITPL Corridor",
+    "target_project_affinity_score": 96,
+    "active_walkins_generated_past_30d": 24,
+    "past_deals_closed_target_ticket_range": 8,
+    "predicted_match_tier": "Tier 1: High Affinity Strategic Partner",
+    "commission_structure": {
+      "base_payout_percentage": 2.5,
+      "volume_milestone_slab_3cr": "+0.5%",
+      "volume_milestone_slab_10cr": "+1.0%"
+    }
+  },
+  {
+    "broker_id": "CP-BLR-002",
+    "broker_firm_name": "Premium Square Feet Advisors",
+    "rera_number": "PRM/KA/RERA/1251/310/AG/230104/004561",
+    "micro_market_focus": "Hebbal & Thanisandra Corridor",
+    "target_project_affinity_score": 92,
+    "active_walkins_generated_past_30d": 18,
+    "past_deals_closed_target_ticket_range": 6,
+    "predicted_match_tier": "Tier 1: High Affinity Strategic Partner",
+    "commission_structure": {
+      "base_payout_percentage": 2.5,
+      "volume_milestone_slab_3cr": "+0.5%",
+      "volume_milestone_slab_10cr": "+1.0%"
+    }
+  },
+  {
+    "broker_id": "CP-BLR-003",
+    "broker_firm_name": "Cyber City Realtors",
+    "rera_number": "PRM/KA/RERA/1251/308/AG/210815/003890",
+    "micro_market_focus": "Sarjapur Road & ORR Tech Belt",
+    "target_project_affinity_score": 88,
+    "active_walkins_generated_past_30d": 14,
+    "past_deals_closed_target_ticket_range": 5,
+    "predicted_match_tier": "Tier 1: High Affinity Strategic Partner",
+    "commission_structure": {
+      "base_payout_percentage": 2.5,
+      "volume_milestone_slab_3cr": "+0.5%",
+      "volume_milestone_slab_10cr": "+1.0%"
+    }
+  },
+  {
+    "broker_id": "CP-BLR-004",
+    "broker_firm_name": "Gold Coast Realty Capital",
+    "rera_number": "PRM/KA/RERA/1251/310/AG/240319/005112",
+    "micro_market_focus": "Kanakapura Road & South BLR",
+    "target_project_affinity_score": 78,
+    "active_walkins_generated_past_30d": 8,
+    "past_deals_closed_target_ticket_range": 3,
+    "predicted_match_tier": "Tier 2: Moderate Affinity Core Partner",
+    "commission_structure": {
+      "base_payout_percentage": 2.25,
+      "volume_milestone_slab_3cr": "+0.25%",
+      "volume_milestone_slab_10cr": "+0.75%"
+    }
+  },
+  {
+    "broker_id": "CP-BLR-005",
+    "broker_firm_name": "Metropolitan Realty Partners",
+    "rera_number": "PRM/KA/RERA/1251/310/AG/220930/004250",
+    "micro_market_focus": "Sarjapur Road & Harlur",
+    "target_project_affinity_score": 75,
+    "active_walkins_generated_past_30d": 9,
+    "past_deals_closed_target_ticket_range": 2,
+    "predicted_match_tier": "Tier 2: Moderate Affinity Core Partner",
+    "commission_structure": {
+      "base_payout_percentage": 2.25,
+      "volume_milestone_slab_3cr": "+0.25%",
+      "volume_milestone_slab_10cr": "+0.75%"
+    }
+  },
+  {
+    "broker_id": "CP-BLR-006",
+    "broker_firm_name": "Alliance Real Solutions",
+    "rera_number": "PRM/KA/RERA/1251/310/AG/231102/004812",
+    "micro_market_focus": "Electronic City Tech Zones",
+    "target_project_affinity_score": 62,
+    "active_walkins_generated_past_30d": 4,
+    "past_deals_closed_target_ticket_range": 1,
+    "predicted_match_tier": "Tier 3: Secondary Coverage Partner",
+    "commission_structure": {
+      "base_payout_percentage": 2.0,
+      "volume_milestone_slab_3cr": "None",
+      "volume_milestone_slab_10cr": "+0.5%"
+    }
+  }
+]
