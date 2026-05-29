@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anarock Growth | Mandate GTM Stage-Gate Playbook</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Palette adapted to ANAROCK corporate styling: Crimson Red, Deep Charcoal/Dark Mode, Premium Gold */
+            --bg-primary: #0A0D14;
+            --bg-secondary: #111522;
+            --bg-tertiary: #1B2032;
+            --card-bg: rgba(22, 27, 45, 0.7);
+            --card-border: rgba(255, 51, 102, 0.15);
+            
+            --primary: #FF3366; /* Vibrant Crimson/Red */
+            --primary-gradient: linear-gradient(135deg, #FF3366, #C3002F);
+            --accent: #E5A93C; /* Premium Gold */
+            --accent-gradient: linear-gradient(135deg, #F9D04F, #D4AF37);
+            
+            --success: #00E676;
+            --warning: #FFAB00;
+            --danger: #FF1744;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            --glass-bg: rgba(17, 21, 34, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 51, 102, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(229, 169, 60, 0.06) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4, .font-outfit {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 5rem 1.5rem;
+        }
+
+        /* HEADER BLOCK */
+        header {
+            position: relative;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(17, 21, 34, 0) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 4rem 1.5rem 3rem 1.5rem;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.25);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFFFFF 30%, #F1F5F9 70%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0.5rem auto 1.5rem auto;
+            font-weight: 300;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--accent);
+        }
+
+        /* STRATEGIC PIVOT SUMMARY CARD */
+        .pivot-banner {
+            background: linear-gradient(90deg, rgba(22, 27, 45, 0.8) 0%, rgba(27, 32, 50, 0.8) 100%);
+            border: 1px solid var(--glass-border);
+            border-left: 5px solid var(--accent);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .pivot-banner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pivot-text h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pivot-text p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .pivot-highlight {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .pivot-tags {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(229, 169, 60, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(229, 169, 60, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .pivot-schema {
+            background: rgba(10, 13, 20, 0.6);
+            border-radius: 12px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .schema-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .schema-label {
+            color: var(--text-muted);
+        }
+
+        .schema-val {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .schema-val.old {
+            color: #EF4444;
+            text-decoration: line-through;
+        }
+
+        .schema-val.new {
+            color: #10B981;
+        }
+
+        .schema-arrow {
+            color: var(--text-secondary);
+            margin: 0 0.5rem;
+        }
+
+        /* TIMELINE TRACK & SELECTOR */
+        .stage-navigator {
+            margin-bottom: 3rem;
+        }
+
+        .stage-navigator-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .timeline-stepper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-stepper {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .step-node {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            z-index: 2;
+            box-shadow: var(--shadow);
+            border-bottom: 4px solid var(--text-muted);
+        }
+
+        .step-node:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 51, 102, 0.3);
+            background: var(--bg-tertiary);
+        }
+
+        .step-node.active {
+            background: linear-gradient(180deg, var(--bg-tertiary) 0%, rgba(27, 32, 50, 0.4) 100%);
+            border-color: var(--primary);
+            border-bottom: 4px solid var(--primary);
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.15);
+        }
+
+        .step-node.active .step-num {
+            background: var(--primary-gradient);
+            color: var(--text-primary);
+        }
+
+        .step-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .step-duration {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            background: rgba(229, 169, 60, 0.1);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .step-node h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .step-node p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .gate-connector {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        /* DETAIL LAYOUT */
+        .stage-detail-container {
+            margin-bottom: 4rem;
+        }
+
+        .stage-card {
+            display: none;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage-card.active {
+            display: block;
+        }
+
+        .stage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--primary-gradient);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card-title-group h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title-group p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .stage-badge-large {
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(255, 51, 102, 0.02));
+            border: 1px solid rgba(255, 51, 102, 0.2);
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        /* GRID FOR STAGE CONTENT */
+        .stage-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .stage-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .stage-col h3.section-label {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-label svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent);
+        }
+
+        /* DELIVERABLE ITEMS */
+        .deliverable-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .deliverable-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .deliverable-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+
+        .deliv-icon-box {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 51, 102, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 51, 102, 0.15);
+        }
+
+        .deliv-icon-box svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--primary);
+        }
+
+        .deliv-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .deliv-content p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .deliv-anarock-ai {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: rgba(229, 169, 60, 0.1);
+            border: 1px solid rgba(229, 169, 60, 0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        /* GATING PANEL */
+        .gate-panel {
+            background: rgba(10, 13, 20, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .gate-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .gate-title-row h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .gate-badge {
+            background: rgba(229, 169, 60, 0.15);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .gate-criteria-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gate-criterion {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .criterion-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .crit-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .crit-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .crit-threshold {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(229, 169, 60, 0.05);
+            border: 1px solid rgba(229, 169, 60, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .gate-outcome-banner {
+            border-left: 4px solid var(--success);
+            background: rgba(0, 230, 118, 0.05);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .gate-outcome-banner strong {
+            color: var(--success);
+            display: block;
+            margin-bottom: 0.2rem;
+            font-size: 0.9rem;
+        }
+
+        .gate-outcome-banner p {
+            color: var(--text-secondary);
+        }
+
+        /* INTERACTIVE GATE SIMULATOR */
+        .simulator-section {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .simulator-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--accent-gradient);
+            border-radius: 24px 24px 0 0;
+        }
+
+        .sim-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .sim-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .sim-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .sim-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .sim-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .sim-sliders {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .slider-group {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .slider-header label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .slider-header span.val-display {
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(229, 169, 60, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-control input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(229, 169, 60, 0.5);
+            transition: var(--transition);
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .slider-control span.range-limit {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            width: 40px;
+        }
+
+        .slider-control span.range-limit.right {
+            text-align: right;
+        }
+
+        .sim-results {
+            background: rgba(10, 13, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            justify-content: space-between;
+        }
+
+        .sim-results-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sim-results-header h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .sim-score-badge {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: #fff;
+            padding: 0.25rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .gate-status-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .gate-status-row {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 0.9rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .gate-status-row.passed {
+            border-left: 4px solid var(--success);
+            background: rgba(0, 230, 118, 0.02);
+        }
+
+        .gate-status-row.failed {
+            border-left: 4px solid var(--danger);
+            background: rgba(255, 23, 68, 0.02);
+        }
+
+        .gate-status-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gate-status-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .gate-status-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .gate-status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .passed .gate-status-indicator {
+            background: rgba(0, 230, 118, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+        }
+
+        .failed .gate-status-indicator {
+            background: rgba(255, 23, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 23, 68, 0.2);
+        }
+
+        .sim-summary-panel {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 2px solid var(--accent);
+        }
+
+        /* RISK MITIGATION SECTION */
+        .risk-section {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .risk-section h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .risk-section h2 svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary);
+        }
+
+        .risk-section p.subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .risk-table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        table.risk-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        table.risk-table th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 1rem 1.2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        table.risk-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        table.risk-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.risk-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+            color: var(--text-primary);
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .risk-badge.high {
+            background: rgba(255, 23, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(255, 23, 68, 0.25);
+        }
+
+        .risk-badge.medium {
+            background: rgba(255, 171, 0, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(255, 171, 0, 0.25);
+        }
+
+        .risk-badge.low {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(0, 230, 118, 0.25);
+        }
+
+        .risk-mitigation {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* FOOTER / CALL TO ACTION */
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer p.pitch-quote {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--accent);
+            max-width: 800px;
+            margin: 0 auto 1.5rem auto;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        footer p.footer-sig {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-gradient);
+            color: var(--text-primary);
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.5);
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        @media print {
+            body {
+                background-color: #0A0D14 !important;
+                color: #FFFFFF !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 1rem !important;
+            }
+            /* Show all stages instead of toggling them */
+            .stage-card {
+                display: block !important;
+                opacity: 1 !important;
+                page-break-after: always;
+                break-inside: avoid;
+                margin-bottom: 3rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                background-color: #111522 !important;
+            }
+            /* Hide the stage navigator stepper since we show all stages */
+            .stage-navigator {
+                display: none !important;
+            }
+            /* Hide buttons and interactive elements */
+            .btn {
+                display: none !important;
+            }
+            /* Stack the simulator layout vertically */
+            .sim-layout {
+                display: block !important;
+            }
+            .sim-sliders {
+                margin-bottom: 2rem !important;
+                break-inside: avoid;
+            }
+            .sim-results {
+                width: 100% !important;
+                background-color: rgba(10, 13, 20, 0.8) !important;
+                break-inside: avoid;
+            }
+            .simulator-section {
+                page-break-before: always;
+                break-before: page;
+                break-inside: avoid;
+            }
+            .risk-section {
+                page-break-before: always;
+                break-before: page;
+                break-inside: avoid;
+            }
+            footer {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo-badge">
+            <span></span> ANAROCK GROWTH • STRATEGIC PITCH ASSET
+        </div>
+        <h1>The "Mandate GTM" Stage-Gate Playbook</h1>
+        <p class="subtitle">Proprietary GTM Launch Lifecycle & Decision Gate Framework Designed for Exclusive Developer Mandates</p>
+        <div class="header-meta">
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                Target: <strong>Sunil Mishra (CEO, Anarock Growth Businesses & CS&AO)</strong>
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                Published: <strong>May 2026</strong>
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Context: <strong>Bangalore Micro-market Ticket Sizes (₹1.2 Cr – ₹3.5 Cr)</strong>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- PIVOT BANNER -->
+        <div class="pivot-banner">
+            <div class="pivot-text">
+                <h2>
+                    <svg style="width: 24px; height: 24px; fill: var(--accent);" viewBox="0 0 24 24"><path d="M19 15l-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"/></svg>
+                    Strategic Pivot: Construction vs. Mandate GTM
+                </h2>
+                <p>Traditional Stage-Gate frameworks focus on <i>developer-level construction milestones</i> (drawings, structural completion, slab casting). Under Anarock's <strong>Exclusive Mandate Model</strong>, our primary financial and operational risks lie in <strong>marketing delays, mispriced product structures, slow sales velocity, and rising Lead CAC</strong>.</p>
+                <p>This playbook pivots the Cooper Stage-Gate model to govern the <strong>sales launch and GTM execution lifecycle</strong>, integrating Anarock's proprietary AI suite to compress velocity targets.</p>
+                <div class="pivot-tags">
+                    <span class="tag">Sales Velocity Index (SVI)</span>
+                    <span class="tag">Anarock.AI Integration</span>
+                    <span class="tag">Barbell Pricing Model</span>
+                    <span class="tag">CAC Compression</span>
+                </div>
+            </div>
+            
+            <div class="pivot-schema">
+                <div class="schema-row">
+                    <span class="schema-label">Focus Area</span>
+                    <span class="schema-val" style="color: var(--text-primary)">Lifecycle Phase</span>
+                </div>
+                <div class="schema-row" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem;">
+                    <span class="schema-label">Old Focus (ISB Purva)</span>
+                    <span class="schema-val old">Physical Construction</span>
+                </div>
+                <div class="schema-row">
+                    <span class="schema-label">New Focus (Anarock GTM)</span>
+                    <span class="schema-val new">Sales Velocity & Marketing Yield</span>
+                </div>
+                <div class="schema-row" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem;">
+                    <span class="schema-label">Primary Risk</span>
+                    <span class="schema-val" style="color: var(--danger)">Mandate GTM Delay / Cost Leakage</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STAGE NAVIGATOR -->
+        <div class="stage-navigator">
+            <div class="stage-navigator-title">Select a Stage to Explore Deliverables & Decision Gates</div>
+            <div class="timeline-stepper">
+                <div class="step-node active" onclick="switchStage(1)" id="step-1">
+                    <div class="step-header-row">
+                        <span class="step-num font-outfit">S1</span>
+                        <span class="step-duration">Month 1-2</span>
+                    </div>
+                    <h3>Pre-Mandate Discovery</h3>
+                    <p>Competitor price-volume analyses & micro-market demand heatmapping.</p>
+                </div>
+                
+                <div class="step-node" onclick="switchStage(2)" id="step-2">
+                    <div class="step-header-row">
+                        <span class="step-num font-outfit">S2</span>
+                        <span class="step-duration">Month 3-4</span>
+                    </div>
+                    <h3>GTM & Creative Prep</h3>
+                    <p>Barbell pricing structures, CP mapping & Walk-in Genie setup.</p>
+                </div>
+                
+                <div class="step-node" onclick="switchStage(3)" id="step-3">
+                    <div class="step-header-row">
+                        <span class="step-num font-outfit">S3</span>
+                        <span class="step-duration">Month 5</span>
+                    </div>
+                    <h3>Pre-Launch Soft Bookings</h3>
+                    <p>Concierge MVP trials, Astra lead scoring & token aggregations.</p>
+                </div>
+                
+                <div class="step-node" onclick="switchStage(4)" id="step-4">
+                    <div class="step-header-row">
+                        <span class="step-num font-outfit">S4</span>
+                        <span class="step-duration">Month 6+</span>
+                    </div>
+                    <h3>Public Launch & Sustenance</h3>
+                    <p>Omnichannel 360 campaigns, funnel tracking & AI Lead Revival.</p>
+                </div>
+                
+                <div class="gate-connector"></div>
+            </div>
+        </div>
+
+        <!-- STAGE DETAILS PANELS -->
+        <div class="stage-detail-container">
+            
+            <!-- STAGE 1 CARD -->
+            <div class="stage-card active" id="stage-card-1">
+                <div class="card-header-row">
+                    <div class="card-title-group">
+                        <h2>Stage 1: Pre-Mandate Discovery & Pricing Analysis</h2>
+                        <p>Establishing market feasibility, baseline absorption velocity, and underwrite the developer's price-volume expectations before committing underwriting risk.</p>
+                    </div>
+                    <span class="stage-badge-large">DISCOVERY PHASE</span>
+                </div>
+                
+                <div class="stage-grid">
+                    <div class="stage-col">
+                        <h3 class="section-label">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            Key Deliverables & Action Items
+                        </h3>
+                        <div class="deliverable-list">
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Competitor Price-Volume Conjoint Analysis</h4>
+                                    <p>Comprehensive statistical study mapping buyer utility against apartment configurations, specifications, and pricing tiers across North and East Bangalore. Benchmarks price elasticity curves to maximize blended realizations.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Micro-Market Demand Heatmaps</h4>
+                                    <p>Spatial data models detailing sub-locality absorption patterns. Formulated on past Bangalore absorption data to pinpoint exact tech-belt and airport-corridor buyer profile movements.</p>
+                                </div>
+                            </div>
+
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Financial Hurdle Models</h4>
+                                    <p>Baseline debt-service and equity IRR models for the developer's land parcel, assessing project margins under various run rates.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-col">
+                        <div class="gate-panel">
+                            <div class="gate-title-row">
+                                <h4>Gate 1: Mandate Sign-Off & Feasibility Assessment</h4>
+                                <span class="gate-badge">GO/NO-GO</span>
+                            </div>
+                            <div class="gate-criteria-list">
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Estimated Project IRR</span>
+                                        <span class="crit-desc">Estimated Project blended equity IRR at proposed launch ticket pricing</span>
+                                    </div>
+                                    <span class="crit-threshold">&ge; 20.0%</span>
+                                </div>
+                                
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Prelim Developer EOI</span>
+                                        <span class="crit-desc">Preliminary developer Expression of Interest (EOI) digital target in 6 months</span>
+                                    </div>
+                                    <span class="crit-threshold">&ge; 500 units</span>
+                                </div>
+                                
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Local Inventory Overhang Index</span>
+                                        <span class="crit-desc">Local micro-market inventory overhang index</span>
+                                    </div>
+                                    <span class="crit-threshold">&le; 18 months</span>
+                                </div>
+                            </div>
+                            
+                            <div class="gate-outcome-banner">
+                                <strong>Gating Outcome</strong>
+                                <p>Exclusivity terms signed. Authorized to proceed to Stage 2 conceptual design and collateral lock-in.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 2 CARD -->
+            <div class="stage-card" id="stage-card-2">
+                <div class="card-header-row">
+                    <div class="card-title-group">
+                        <h2>Stage 2: GTM Strategy & Creative Readiness</h2>
+                        <p>Structuring the pricing architecture, setting up digital pipelines, and initializing Anarock's tech integrations.</p>
+                    </div>
+                    <span class="stage-badge-large">PREPARATION PHASE</span>
+                </div>
+                
+                <div class="stage-grid">
+                    <div class="stage-col">
+                        <h3 class="section-label">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            Key Deliverables & Action Items
+                        </h3>
+                        <div class="deliverable-list">
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Barbell Pricing Architecture</h4>
+                                    <p>Formulating a 3-tier product layout (compact 2 BHK value entry-tier to accelerate cash-flow volume + core premium 3 BHK units as the margin generator + signature luxury penthouses).</p>
+                                </div>
+                            </div>
+                            
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Anarock.AI Walk-in Genie Prompts</h4>
+                                    <p>Training and fine-tuning B2C Generative AI conversational scripts with developer USPs and smart-home automation specs.</p>
+                                    <span class="deliv-anarock-ai">Genie Suite</span>
+                                </div>
+                            </div>
+
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Channel Partner (CP) Mobilization Database</h4>
+                                    <p>Running predictive broker matching via **CP Ranker** to isolate and align the top 200 active micro-market brokers on custom commission structures.</p>
+                                    <span class="deliv-anarock-ai">CP 360 & CP Genie</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-col">
+                        <div class="gate-panel">
+                            <div class="gate-title-row">
+                                <h4>Gate 2: Marketing & Creative Readiness</h4>
+                                <span class="gate-badge">GO/NO-GO</span>
+                            </div>
+                            <div class="gate-criteria-list">
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">RERA Approval Status</span>
+                                        <span class="crit-desc">Official RERA Karnataka Registration Number active and validated</span>
+                                    </div>
+                                    <span class="crit-threshold" style="color: var(--success); border-color: rgba(0,230,118,0.2); background: rgba(0,230,118,0.05);">RERA ISSUED</span>
+                                </div>
+                                
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Pre-Registered CPs</span>
+                                        <span class="crit-desc">Channel Partners pre-registered on launch commission terms</span>
+                                    </div>
+                                    <span class="crit-threshold">&ge; 150 CPs</span>
+                                </div>
+                                
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Physical Experience Office & Collateral Kit</span>
+                                        <span class="crit-desc">Physical site experience office and high-fidelity creative kit signed-off</span>
+                                    </div>
+                                    <span class="crit-threshold" style="color: var(--success); border-color: rgba(0,230,118,0.2); background: rgba(0,230,118,0.05);">100% COMPLETE</span>
+                                </div>
+                            </div>
+                            
+                            <div class="gate-outcome-banner">
+                                <strong>Gating Outcome</strong>
+                                <p>RERA verified, marketing pipelines open. Authorized to run public pre-sales and token campaigns.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 3 CARD -->
+            <div class="stage-card" id="stage-card-3">
+                <div class="card-header-row">
+                    <div class="card-title-group">
+                        <h2>Stage 3: Pre-Launch Soft Bookings</h2>
+                        <p>Executing high-intent concierge MVP previews, scoring incoming leads, and locking in booking tokens.</p>
+                    </div>
+                    <span class="stage-badge-large">PRE-LAUNCH PHASE</span>
+                </div>
+                
+                <div class="stage-grid">
+                    <div class="stage-col">
+                        <h3 class="section-label">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            Key Deliverables & Action Items
+                        </h3>
+                        <div class="deliverable-list">
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Concierge MVP Previews</h4>
+                                    <p>Hosting private walkthroughs for HNI and pre-qualified buyers at physical mock site to validate base pricing tolerances.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Astra Platinum Lead Propensity Scoring</h4>
+                                    <p>Running real-time predictive models on registered leads to focus physical sales teams on highest-converting profiles.</p>
+                                    <span class="deliv-anarock-ai">Astra Platinum</span>
+                                </div>
+                            </div>
+
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>EOI Token Aggregation</h4>
+                                    <p>Collecting soft cheques and digital token corpus to feed launching cash flows.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-col">
+                        <div class="gate-panel">
+                            <div class="gate-title-row">
+                                <h4>Gate 3: Pre-Launch Soft Bookings</h4>
+                                <span class="gate-badge">GO/NO-GO</span>
+                            </div>
+                            <div class="gate-criteria-list">
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Launch Phase Pre-Sales</span>
+                                        <span class="crit-desc">Launch phase pre-sales volume (% of phase 1 inventory)</span>
+                                    </div>
+                                    <span class="crit-threshold">&ge; 15.0%</span>
+                                </div>
+                                
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Booking Tokens Gathered</span>
+                                        <span class="crit-desc">High-commitment EOI token corpus gathered</span>
+                                    </div>
+                                    <span class="crit-threshold">&ge; ₹12.0 Cr</span>
+                                </div>
+                                
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Astra Conversion Prediction Accuracy</span>
+                                        <span class="crit-desc">Astra conversion prediction accuracy index</span>
+                                    </div>
+                                    <span class="crit-threshold">&ge; 85.0%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="gate-outcome-banner" style="border-left-color: var(--success); background: rgba(0, 230, 118, 0.05);">
+                                <strong>Gating Outcome</strong>
+                                <p>Market pricing validated, funding cash flows stabilized. Authorized to trigger public 360-degree digital launch campaigns.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 4 CARD -->
+            <div class="stage-card" id="stage-card-4">
+                <div class="card-header-row">
+                    <div class="card-title-group">
+                        <h2>Stage 4: Public Launch & Sustenance Velocity</h2>
+                        <p>Scaling digital acquisition, tracking real-time sales runs, and executing AI-driven lead revival campaigns.</p>
+                    </div>
+                    <span class="stage-badge-large">SUSTENANCE PHASE</span>
+                </div>
+                
+                <div class="stage-grid">
+                    <div class="stage-col">
+                        <h3 class="section-label">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            Key Deliverables & Action Items
+                        </h3>
+                        <div class="deliverable-list">
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>360-Degree Omnichannel Launches</h4>
+                                    <p>Activating simultaneous digital performance (Meta/Google), local OOH, and CP networks.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-8v2h8v-2zm0-4h-8v2h8V9zm0-4h-8v2h8V5z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>n8n Lead-Revival Webhooks</h4>
+                                    <p>Connecting lead dropout CRM logs to n8n pipelines, routing "stalled" leads through LLM prompt engines for Whatsapp offers (representing the Astra Phoenix engine).</p>
+                                    <span class="deliv-anarock-ai">Astra Phoenix & n8n</span>
+                                </div>
+                            </div>
+
+                            <div class="deliverable-item">
+                                <div class="deliv-icon-box">
+                                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                                </div>
+                                <div class="deliv-content">
+                                    <h4>Developer Mandate Health Dashboard</h4>
+                                    <p>Delivering Power BI spec dashboard showing real-time digital impressions to site-visit conversions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-col">
+                        <div class="gate-panel">
+                            <div class="gate-title-row">
+                                <h4>Gate 4: Public Launch & Sustenance Gating</h4>
+                                <span class="gate-badge">ONGOING RUN</span>
+                            </div>
+                            <div class="gate-criteria-list">
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Weekly Sales Velocity Index</span>
+                                        <span class="crit-desc">Weekly Sales Velocity Index (SVI) maintained</span>
+                                    </div>
+                                    <span class="crit-threshold">&ge; 12 units/mo</span>
+                                </div>
+                                
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Overall Customer Acquisition Cost (CAC)</span>
+                                        <span class="crit-desc">Overall Customer Acquisition Cost (CAC) maintained below GTV cap</span>
+                                    </div>
+                                    <span class="crit-threshold">&le; 2.50%</span>
+                                </div>
+                                
+                                <div class="gate-criterion">
+                                    <div class="criterion-info">
+                                        <span class="crit-name">Astra Phoenix Lead Revival Success</span>
+                                        <span class="crit-desc">Astra Phoenix lead re-activation success rate</span>
+                                    </div>
+                                    <span class="crit-threshold">&ge; 10.0%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="gate-outcome-banner" style="border-left-color: var(--warning); background: rgba(255, 171, 0, 0.05);">
+                                <strong>Gating Outcome (Continuous Run)</strong>
+                                <p>If CAC spikes above 2.5% or velocity falls, the playbook triggers automated pricing adjustments (Barbell flex pricing) or routes marketing ad spends away from programmatic ads and into n8n Lead-Revival pipelines to lower CPA.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- INTERACTIVE SIMULATOR -->
+        <div class="simulator-section">
+            <div class="sim-header">
+                <h2>Interactive Gate Performance Simulator</h2>
+                <p>Adjust the operational levers below based on actual Bangalore micro-market campaign runs to see real-time Gate compliance outcomes.</p>
+            </div>
+            
+            <div class="sim-layout">
+                <div class="sim-sliders">
+                    <!-- SLIDER 1 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="slider-irr">Estimated Project IRR (%)</label>
+                            <span class="val-display" id="val-irr">22.0%</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">10%</span>
+                            <input type="range" id="slider-irr" min="10" max="35" step="0.5" value="22" oninput="updateSimulator()">
+                            <span class="range-limit right">35%</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER 2 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="slider-cps">Pre-registered CPs ( brokers )</label>
+                            <span class="val-display" id="val-cps">165</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">50</span>
+                            <input type="range" id="slider-cps" min="50" max="300" step="5" value="165" oninput="updateSimulator()">
+                            <span class="range-limit right">300</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER 3 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="slider-presales">Launch Phase Pre-sales (%)</label>
+                            <span class="val-display" id="val-presales">16.5%</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">5%</span>
+                            <input type="range" id="slider-presales" min="5" max="30" step="0.5" value="16.5" oninput="updateSimulator()">
+                            <span class="range-limit right">30%</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER 4 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="slider-tokens">Booking Tokens Gathered (₹ Cr)</label>
+                            <span class="val-display" id="val-tokens">₹13.5 Cr</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">₹2 Cr</span>
+                            <input type="range" id="slider-tokens" min="2" max="25" step="0.5" value="13.5" oninput="updateSimulator()">
+                            <span class="range-limit right">₹25 Cr</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER 5 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="slider-cac">Customer Acquisition Cost (CAC) (%)</label>
+                            <span class="val-display" id="val-cac">2.1%</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">1.0%</span>
+                            <input type="range" id="slider-cac" min="1.0" max="4.5" step="0.1" value="2.1" oninput="updateSimulator()">
+                            <span class="range-limit right">4.5%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sim-results">
+                    <div>
+                        <div class="sim-results-header">
+                            <h3>Gate Compliance Dashboard</h3>
+                            <span class="sim-score-badge" id="sim-overall-status">ALL GATES CLEAR</span>
+                        </div>
+                        
+                        <div class="gate-status-grid">
+                            <!-- Gate 1 Row -->
+                            <div class="gate-status-row passed" id="row-gate1">
+                                <div class="gate-status-info">
+                                    <span class="gate-status-name">Gate 1: Mandate Sign-Off & Feasibility Assessment</span>
+                                    <span class="gate-status-desc" id="desc-gate1">IRR: 22.0% (Target: &ge;20.0%)</span>
+                                </div>
+                                <span class="gate-status-indicator">Clear</span>
+                            </div>
+
+                            <!-- Gate 2 Row -->
+                            <div class="gate-status-row passed" id="row-gate2">
+                                <div class="gate-status-info">
+                                    <span class="gate-status-name">Gate 2: Marketing & Creative Readiness</span>
+                                    <span class="gate-status-desc" id="desc-gate2">CPs: 165 (Target: &ge;150 CPs)</span>
+                                </div>
+                                <span class="gate-status-indicator">Clear</span>
+                            </div>
+
+                            <!-- Gate 3 Row -->
+                            <div class="gate-status-row passed" id="row-gate3">
+                                <div class="gate-status-info">
+                                    <span class="gate-status-name">Gate 3: Pre-Launch Soft Bookings</span>
+                                    <span class="gate-status-desc" id="desc-gate3">Sales: 16.5% | Tokens: ₹13.5 Cr</span>
+                                </div>
+                                <span class="gate-status-indicator">Clear</span>
+                            </div>
+
+                            <!-- Gate 4 Row -->
+                            <div class="gate-status-row passed" id="row-gate4">
+                                <div class="gate-status-info">
+                                    <span class="gate-status-name">Gate 4: Public Launch & Sustenance Gating</span>
+                                    <span class="gate-status-desc" id="desc-gate4">CAC: 2.1% (Target: &le;2.5%)</span>
+                                </div>
+                                <span class="gate-status-indicator">Clear</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sim-summary-panel" id="sim-feedback-box">
+                        <strong>Strategic Analyst Note:</strong> Feasibility cash flows and partner alignments are optimal. The current metrics indicate high project margin stability and healthy launch run rates.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RISK MITIGATION SECTION -->
+        <div class="risk-section">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                Risk-Adjusted Stage-Gate Mitigations
+            </h2>
+            <p class="subtitle">Operational protocols designed to address launch delays and conversion anomalies before margin erosion occurs.</p>
+            
+            <div class="risk-table-container">
+                <table class="risk-table">
+                    <thead>
+                        <tr>
+                            <th>Risk Category</th>
+                            <th>Critical Stage</th>
+                            <th>Impact Severity</th>
+                            <th>Stage-Gate Mitigation Mechanism</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 600; color: var(--text-primary);">RERA Certification Delays</td>
+                            <td>Stage 2 (Creative Prep)</td>
+                            <td><span class="risk-badge high">High</span></td>
+                            <td class="risk-mitigation">Gate 2 requires a validated RERA certificate. Zero marketing spend is unlocked until the Karnataka RERA registration is active, shielding the developer from regulatory penalty exposure.</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600; color: var(--text-primary);">Broker Apathy / Low CP Pull</td>
+                            <td>Stage 2 (GTM Strategy)</td>
+                            <td><span class="risk-badge medium">Medium</span></td>
+                            <td class="risk-mitigation">If Gate 2 CP pre-registration falls below 150, CP Ranker triggers an auto-tiering incentive, raising payouts for top 5% brokers while utilizing CP Genie campaigns to re-mobilize the database.</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600; color: var(--text-primary);">Weak Soft-Booking EOI Corpus</td>
+                            <td>Stage 3 (Pre-Launch)</td>
+                            <td><span class="risk-badge high">High</span></td>
+                            <td class="risk-mitigation">Gate 3 mandates a ₹12 Cr token pool. If unsatisfied, the public launch is postponed. Lead profiling scoring targets are recalibrated in Astra Platinum, and concierge MVP previews are expanded to corporate partners.</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600; color: var(--text-primary);">Acquisition CAC Inflation</td>
+                            <td>Stage 4 (Sustenance)</td>
+                            <td><span class="risk-badge medium">Medium</span></td>
+                            <td class="risk-mitigation">If weekly CAC climbs above 2.5% GTV, the system shifts digital spend to cold lead revival via Astra Phoenix. It triggers webhook workflows in n8n to re-engage cold leads via custom LLM prompts, bypassing fresh digital ad spends.</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600; color: var(--text-primary);">Overhang Absorption Lag</td>
+                            <td>Stage 4 (Sustenance)</td>
+                            <td><span class="risk-badge low">Low</span></td>
+                            <td class="risk-mitigation">Weekly Sales Velocity Index (SVI) falling below 12 units triggers the activation of "Barbell pricing" adjustment. Sub-units are structured under flexible payment plans (e.g. 10-90 structure) to reset demand.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FOOTER & CALL TO ACTION -->
+        <footer>
+            <p class="pitch-quote">"Strategic real estate growth is not just about aggressive marketing—it's about rigorous gating, predictable underwriting, and the precise application of conversational AI to lead generation."</p>
+            <p class="footer-sig">Strategic Pitch Material • Prepared for Sunil Mishra (CEO, Anarock Growth) by Meghana Grama Satyan</p>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT FOR DYNAMIC STAGE SELECTOR & SIMULATOR -->
+    <script>
+        // SWITCH STAGES
+        function switchStage(stageNum) {
+            // Remove active classes
+            document.querySelectorAll('.step-node').forEach(node => {
+                node.classList.remove('active');
+            });
+            document.querySelectorAll('.stage-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to clicked step and matching card
+            document.getElementById('step-' + stageNum).classList.add('active');
+            document.getElementById('stage-card-stage-' + stageNum);
+            
+            // Wait, cards are id'ed as stage-card-1, stage-card-2, etc.
+            const targetCard = document.getElementById('stage-card-' + stageNum);
+            if (targetCard) {
+                targetCard.classList.add('active');
+            }
+        }
+
+        // UPDATE SIMULATOR
+        function updateSimulator() {
+            // Get values
+            const irr = parseFloat(document.getElementById('slider-irr').value);
+            const cps = parseInt(document.getElementById('slider-cps').value);
+            const presales = parseFloat(document.getElementById('slider-presales').value);
+            const tokens = parseFloat(document.getElementById('slider-tokens').value);
+            const cac = parseFloat(document.getElementById('slider-cac').value);
+
+            // Update displays
+            document.getElementById('val-irr').innerText = irr.toFixed(1) + '%';
+            document.getElementById('val-cps').innerText = cps;
+            document.getElementById('val-presales').innerText = presales.toFixed(1) + '%';
+            document.getElementById('val-tokens').innerText = '₹' + tokens.toFixed(1) + ' Cr';
+            document.getElementById('val-cac').innerText = cac.toFixed(1) + '%';
+
+            // Check parameters
+            const g1Clear = (irr >= 20.0);
+            const g2Clear = (cps >= 150);
+            const g3Clear = (presales >= 15.0 && tokens >= 12.0);
+            const g4Clear = (cac <= 2.5);
+
+            // Update Gate 1 row
+            const r1 = document.getElementById('row-gate1');
+            const d1 = document.getElementById('desc-gate1');
+            if (g1Clear) {
+                r1.className = 'gate-status-row passed';
+                r1.querySelector('.gate-status-indicator').innerText = 'Clear';
+                d1.innerText = `IRR: ${irr.toFixed(1)}% (Target: ≥20.0%)`;
+            } else {
+                r1.className = 'gate-status-row failed';
+                r1.querySelector('.gate-status-indicator').innerText = 'Blocked';
+                d1.innerText = `IRR: ${irr.toFixed(1)}% is below developer underwriting hurdle!`;
+            }
+
+            // Update Gate 2 row
+            const r2 = document.getElementById('row-gate2');
+            const d2 = document.getElementById('desc-gate2');
+            if (g2Clear) {
+                r2.className = 'gate-status-row passed';
+                r2.querySelector('.gate-status-indicator').innerText = 'Clear';
+                d2.innerText = `CPs: ${cps} aligned (Target: ≥150 CPs)`;
+            } else {
+                r2.className = 'gate-status-row failed';
+                r2.querySelector('.gate-status-indicator').innerText = 'Blocked';
+                d2.innerText = `CP base is insufficient to drive launch site-visits!`;
+            }
+
+            // Update Gate 3 row
+            const r3 = document.getElementById('row-gate3');
+            const d3 = document.getElementById('desc-gate3');
+            if (g3Clear) {
+                r3.className = 'gate-status-row passed';
+                r3.querySelector('.gate-status-indicator').innerText = 'Clear';
+                d3.innerText = `Sales: ${presales.toFixed(1)}% | Tokens: ₹${tokens.toFixed(1)} Cr`;
+            } else {
+                r3.className = 'gate-status-row failed';
+                r3.querySelector('.gate-status-indicator').innerText = 'Blocked';
+                let failReasons = [];
+                if (presales < 15.0) failReasons.push(`Pre-sales (${presales.toFixed(1)}% < 15.0%)`);
+                if (tokens < 12.0) failReasons.push(`Tokens (₹${tokens.toFixed(1)} Cr < ₹12.0 Cr)`);
+                d3.innerText = `Insufficient pre-launch backing: ${failReasons.join(' and ')}`;
+            }
+
+            // Update Gate 4 row
+            const r4 = document.getElementById('row-gate4');
+            const d4 = document.getElementById('desc-gate4');
+            if (g4Clear) {
+                r4.className = 'gate-status-row passed';
+                r4.querySelector('.gate-status-indicator').innerText = 'Clear';
+                d4.innerText = `CAC: ${cac.toFixed(1)}% (Target: ≤2.5%)`;
+            } else {
+                r4.className = 'gate-status-row failed';
+                r4.querySelector('.gate-status-indicator').innerText = 'Blocked';
+                d4.innerText = `Ad spend CAC is eroding developer gross margins!`;
+            }
+
+            // Update Overall Status
+            const mainBadge = document.getElementById('sim-overall-status');
+            const feedbackBox = document.getElementById('sim-feedback-box');
+            
+            if (g1Clear && g2Clear && g3Clear && g4Clear) {
+                mainBadge.innerText = 'ALL GATES CLEAR';
+                mainBadge.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+                feedbackBox.innerHTML = '<strong>Strategic Analyst Note:</strong> Feasibility cash flows and partner alignments are optimal. The current metrics indicate high project margin stability and healthy launch run rates.';
+                feedbackBox.style.borderTopColor = 'var(--success)';
+            } else {
+                let blockList = [];
+                if (!g1Clear) blockList.push('Gate 1');
+                if (!g2Clear) blockList.push('Gate 2');
+                if (!g3Clear) blockList.push('Gate 3');
+                if (!g4Clear) blockList.push('Gate 4');
+                
+                mainBadge.innerText = `${blockList.length} GATE${blockList.length > 1 ? 'S' : ''} BLOCKED`;
+                mainBadge.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+                
+                let feedbackText = '<strong>Strategic Action Needed:</strong> ';
+                if (!g1Clear) {
+                    feedbackText += 'Negotiate land base parameters or adjust price-tier models to improve underwriting IRR. ';
+                }
+                if (!g2Clear) {
+                    feedbackText += 'Deploy CP Ranker marketing boosts to mobilize independent broker networks in micro-markets. ';
+                }
+                if (!g3Clear) {
+                    feedbackText += 'Rethink pricing structure barbell sizing or launch exclusive pre-RERA concierge channels to secure token allocations. ';
+                }
+                if (!g4Clear) {
+                    feedbackText += 'Redirect marketing budgets immediately from active digital platforms into <strong>n8n/LLM automatic Lead-Revival pipelines</strong> (Astra Phoenix) to lower overall lead CAC. ';
+                }
+                feedbackBox.innerHTML = feedbackText;
+                feedbackBox.style.borderTopColor = 'var(--danger)';
+            }
+        }
+    </script>
+</body>
+</html>
