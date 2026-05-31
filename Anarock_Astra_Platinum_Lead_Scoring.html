@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anarock Growth | Astra Platinum Lead Propensity Engine</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --bg-primary: #0A0D14;
+            --bg-secondary: #111522;
+            --bg-tertiary: #1B2032;
+            --card-bg: rgba(22, 27, 45, 0.7);
+            --card-border: rgba(255, 51, 102, 0.15);
+            
+            --primary: #FF3366; /* Vibrant Crimson/Red */
+            --primary-gradient: linear-gradient(135deg, #FF3366, #C3002F);
+            --accent: #E5A93C; /* Premium Gold */
+            --accent-gradient: linear-gradient(135deg, #F9D04F, #D4AF37);
+            
+            --success: #00E676;
+            --warning: #FFAB00;
+            --danger: #FF1744;
+            --cyan: #00E5FF;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            --glass-bg: rgba(17, 21, 34, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 5% 15%, rgba(0, 229, 255, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 95% 85%, rgba(255, 51, 102, 0.06) 0%, transparent 35%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4, .font-outfit {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 5rem 1.5rem;
+        }
+
+        /* HEADER BLOCK */
+        header {
+            position: relative;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(17, 21, 34, 0) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 3rem 1.5rem 2.5rem 1.5rem;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--cyan);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFFFFF 30%, #F1F5F9 70%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0.5rem auto 1.2rem auto;
+            font-weight: 300;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--accent);
+        }
+
+        /* NAVIGATION SHORTCUTS */
+        .nav-shortcuts {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.8rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-shortcut {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-shortcut:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: rgba(0, 229, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-shortcut.active-asset {
+            background: rgba(0, 229, 255, 0.05);
+            border-color: rgba(0, 229, 255, 0.3);
+            color: var(--cyan);
+        }
+
+        .btn-shortcut svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* MAIN CONTENT GRID */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyan), var(--accent));
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        /* SLIDERS & CONTROLS */
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255,255,255,0.03);
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .slider-group:hover {
+            border-color: rgba(0, 229, 255, 0.15);
+            background: rgba(0, 229, 255, 0.01);
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .slider-header label {
+            color: var(--text-secondary);
+        }
+
+        .slider-header .weight-val {
+            color: var(--cyan);
+            font-weight: 700;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-control input[type="range"] {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            outline: none;
+            -webkit-appearance: none;
+            accent-color: var(--cyan);
+        }
+
+        .slider-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* LEAD LIST VIEW */
+        .lead-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .lead-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .lead-list-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.01);
+        }
+        .lead-list-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .lead-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lead-item:hover, .lead-item.selected {
+            background: rgba(0, 229, 255, 0.04);
+            border-color: rgba(0, 229, 255, 0.25);
+            transform: translateX(3px);
+        }
+
+        .lead-item.selected {
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.08);
+        }
+
+        .lead-details-brief {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .lead-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .lead-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .score-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-align: center;
+            min-width: 65px;
+        }
+
+        .score-high {
+            background: rgba(0, 230, 118, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(0, 230, 118, 0.25);
+        }
+
+        .score-medium {
+            background: rgba(255, 171, 0, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(255, 171, 0, 0.25);
+        }
+
+        .score-low {
+            background: rgba(255, 23, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 23, 68, 0.25);
+        }
+
+        /* DETAIL PANEL */
+        .detail-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .profile-header {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        @media (max-width: 600px) {
+            .profile-header {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .profile-title h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .profile-title p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .score-metric-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 1.2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .score-metric-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--cyan);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .score-metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .profile-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .spec-item {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .spec-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .spec-val {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* EXPLAINABILITY PROGRESS BARS */
+        .factors-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .factor-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .factor-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .factor-bar-bg {
+            background: var(--bg-tertiary);
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .factor-bar-fill {
+            height: 100%;
+            background: var(--cyan);
+            border-radius: 10px;
+        }
+
+        /* RECOMMENDATIONS BLOCK */
+        .rec-box {
+            background: rgba(0, 229, 255, 0.03);
+            border-left: 4px solid var(--cyan);
+            padding: 1.2rem;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .rec-box strong {
+            color: var(--cyan);
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .rec-action-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .rec-action-btn:hover {
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* FOOTER & STRATEGIC NOTE */
+        footer {
+            text-align: center;
+            padding: 2.5rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 4rem;
+        }
+
+        footer p.footer-sig {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo-badge">
+            <span></span> ANAROCK.AI • ASTRA PLATINUM ENGINE
+        </div>
+        <h1>Astra Platinum Lead Propensity Engine</h1>
+        <p class="subtitle">Proprietary Real-Time Conversion Predictive Modeling Suite for Meda East Winds (Panathur Corridor)</p>
+        <div class="header-meta">
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                Active Campaign: <strong>Stage 3 Pre-Sales</strong>
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Context: <strong>Meda East Winds (542 Units / ₹833.6 Cr GTV)</strong>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION SHORTCUTS -->
+    <div class="nav-shortcuts">
+        <a href="Anarock_GTM_Stage_Gate_Playbook.html" class="btn-shortcut">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            GTM Stage-Gate Playbook
+        </a>
+        <a href="Anarock_Micro_Market_Demand_Heat_Map.html" class="btn-shortcut">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Micro-Market Demand Heatmap
+        </a>
+        <a href="Anarock_Developer_Mandate_Scorecard.html" class="btn-shortcut">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+            Developer Mandate Scorecard
+        </a>
+        <a href="Anarock_Financial_Hurdle_Models.html" class="btn-shortcut">
+            <svg viewBox="0 0 24 24"><path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5z"/></svg>
+            Financial Hurdle Models
+        </a>
+        <a href="#" class="btn-shortcut active-asset">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+            Astra Lead Propensity Engine
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="main-layout">
+            
+            <!-- LEFT PANEL: CONTROLS & ALGORITHM WEIGHTS -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                
+                <!-- WEIGHT CONFIGURATION CARD -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>Algorithm Predictive Weights</span>
+                        <svg style="width: 20px; height: 20px; fill: var(--cyan);" viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+                    </div>
+                    
+                    <!-- WEIGHT 1 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="w-budget">Budget Fit Match</label>
+                            <span class="weight-val" id="val-w-budget">30%</span>
+                        </div>
+                        <div class="slider-control">
+                            <input type="range" id="w-budget" min="10" max="50" step="5" value="30" oninput="updateWeights()">
+                        </div>
+                        <p class="slider-desc">Weight multiplier mapping lead's budget tolerance to Meda tier values.</p>
+                    </div>
+
+                    <!-- WEIGHT 2 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="w-visits">Site Walkthrough History</label>
+                            <span class="weight-val" id="val-w-visits">25%</span>
+                        </div>
+                        <div class="slider-control">
+                            <input type="range" id="w-visits" min="10" max="50" step="5" value="25" oninput="updateWeights()">
+                        </div>
+                        <p class="slider-desc">Weight multiplier assigned to physical site visits completed or scheduled.</p>
+                    </div>
+
+                    <!-- WEIGHT 3 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="w-genie">Genie AI Chat Depth</label>
+                            <span class="weight-val" id="val-w-genie">25%</span>
+                        </div>
+                        <div class="slider-control">
+                            <input type="range" id="w-genie" min="10" max="40" step="5" value="25" oninput="updateWeights()">
+                        </div>
+                        <p class="slider-desc">Weight based on number of qualification nodes completed in B2C WhatsApp Genie.</p>
+                    </div>
+
+                    <!-- WEIGHT 4 -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="w-employer">Tech Park Proximity</label>
+                            <span class="weight-val" id="val-w-employer">20%</span>
+                        </div>
+                        <div class="slider-control">
+                            <input type="range" id="w-employer" min="5" max="30" step="5" value="20" oninput="updateWeights()">
+                        </div>
+                        <p class="slider-desc">Weight reflecting physical proximity of the buyer's office to RMZ Ecoworld/Cessna.</p>
+                    </div>
+                </div>
+
+                <!-- LEAD SCORE DISTRIBUTION CARD -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>Cohort Propensity Split</span>
+                    </div>
+                    <div style="height: 200px; position: relative; display: flex; align-items: center; justify-content: center;">
+                        <canvas id="propensityChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT PANEL: LEADS & PREDICTIVE DETAILS -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                
+                <!-- LEAD DATA SELECTOR -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>Registered Lead Pipeline</span>
+                        <span style="font-size: 0.8rem; font-weight: 500; color: var(--text-muted);">Select a lead to diagnose predictive telemetry</span>
+                    </div>
+                    
+                    <div class="lead-list-container" id="leadList">
+                        <!-- Dynamic lead list injected here -->
+                    </div>
+                </div>
+
+                <!-- PREDICTIVE DIAGNOSTICS DETAIL -->
+                <div class="card" style="border-top: 4px solid var(--cyan);">
+                    <div class="card-title">
+                        <span>Predictive Propensity Diagnostics</span>
+                        <span class="logo-badge" style="margin-bottom: 0; padding: 0.3rem 0.8rem; font-size: 0.7rem;">Active Profile</span>
+                    </div>
+                    
+                    <div class="detail-panel" id="detailPanel">
+                        <!-- Dynamic details injected here -->
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-sig">Strategic Pitch Material • Prepared by Meghana Grama Satyan</p>
+    </footer>
+
+    <!-- INTERACTIVE ENGINE SCRIPTS -->
+    <script>
+        // Real-world lead models
+        const leadsData = [
+            {
+                id: 1,
+                name: "Rohan Sharma",
+                company: "Adobe Systems",
+                location: "RMZ Ecoworld (0.8 km)",
+                budget: "₹1.85 Cr (3 BHK)",
+                source: "Google Ad Campaign",
+                metrics: {
+                    budgetFit: 95,
+                    siteVisits: 100, // Visited site experience office
+                    genieDepth: 90,   // Complete chat
+                    employerProx: 95  // Extremely close
+                },
+                notes: "High intent. Visited experience flat in Week 2. Work commute distance is a primary factor. Ready to convert under standard subvention terms."
+            },
+            {
+                id: 2,
+                name: "Priya Patel",
+                company: "Google India",
+                location: "Cessna Business Park (1.2 km)",
+                budget: "₹1.45 Cr (2.5 BHK)",
+                source: "Channel Partner Mobilization",
+                metrics: {
+                    budgetFit: 90,
+                    siteVisits: 50,  // Site visit scheduled
+                    genieDepth: 85,  // Complete qualification
+                    employerProx: 90  // Near Cessna
+                },
+                notes: "Active lead. Interacted with Walk-in Genie chatbot for 12 minutes, verified budget tolerance and validated 2.5 BHK demand."
+            },
+            {
+                id: 3,
+                name: "Karthik Reddy",
+                company: "Goldman Sachs",
+                location: "Embassy TechVillage (1.5 km)",
+                budget: "₹2.60 Cr (Signature Penthouse)",
+                source: "Organic Referral",
+                metrics: {
+                    budgetFit: 100,
+                    siteVisits: 0,   // No site visit yet
+                    genieDepth: 40,   // Short chat
+                    employerProx: 85  // Very close
+                },
+                notes: "HNI client inquiring about signature premium tier inventory. Low digital chat history but high financial profile match. Requires high-touch concierge intervention."
+            },
+            {
+                id: 4,
+                name: "Amit Verma",
+                company: "Wipro Technologies",
+                location: "Sarjapur Road (4.5 km)",
+                budget: "₹0.95 Cr (2 BHK Compact)",
+                source: "Facebook Lead Form",
+                metrics: {
+                    budgetFit: 70,
+                    siteVisits: 0,   // No site visit
+                    genieDepth: 30,   // Low engagement
+                    employerProx: 50  // Outer boundary
+                },
+                notes: "Stalled lead. Budget is tight for 2 BHK compact configuration. Has not responded to site invitation. Flagged for Astra Phoenix lead revival webhook queue."
+            },
+            {
+                id: 5,
+                name: "Meera Nair",
+                company: "Intel Corporation",
+                location: "Outer Ring Road (2.2 km)",
+                budget: "₹1.60 Cr (3 BHK Compact)",
+                source: "Direct Walk-in",
+                metrics: {
+                    budgetFit: 85,
+                    siteVisits: 100, // Completed walk-in
+                    genieDepth: 75,   // Qualified
+                    employerProx: 75  // Mid commute
+                },
+                notes: "Strong buyer profile. Visited site with spouse on Sunday. Showed interest in middle floor units with inner courtyard views."
+            }
+        ];
+
+        let selectedLeadId = 1;
+        let chartInstance = null;
+
+        // Weights
+        let wBudget = 30;
+        let wVisits = 25;
+        let wGenie = 25;
+        let wEmployer = 20;
+
+        function updateWeights() {
+            wBudget = parseInt(document.getElementById("w-budget").value);
+            wVisits = parseInt(document.getElementById("w-visits").value);
+            wGenie = parseInt(document.getElementById("w-genie").value);
+            wEmployer = parseInt(document.getElementById("w-employer").value);
+
+            // Re-normalize weights to equal exactly 100% in case they fluctuate, or show display as absolute weight multiplier
+            document.getElementById("val-w-budget").innerText = wBudget + "%";
+            document.getElementById("val-w-visits").innerText = wVisits + "%";
+            document.getElementById("val-w-genie").innerText = wGenie + "%";
+            document.getElementById("val-w-employer").innerText = wEmployer + "%";
+
+            calculateScores();
+        }
+
+        function calculateScores() {
+            const listContainer = document.getElementById("leadList");
+            listContainer.innerHTML = "";
+
+            leadsData.forEach(lead => {
+                // Calculate Score
+                const totalWeight = wBudget + wVisits + wGenie + wEmployer;
+                const normalizedBudget = (lead.metrics.budgetFit * wBudget) / totalWeight;
+                const normalizedVisits = (lead.metrics.siteVisits * wVisits) / totalWeight;
+                const normalizedGenie = (lead.metrics.genieDepth * wGenie) / totalWeight;
+                const normalizedEmployer = (lead.metrics.employerProx * wEmployer) / totalWeight;
+                
+                lead.calculatedScore = Math.round(normalizedBudget + normalizedVisits + normalizedGenie + normalizedEmployer);
+
+                // Create DOM Node
+                const isSelected = lead.id === selectedLeadId;
+                const leadItem = document.createElement("div");
+                leadItem.className = `lead-item ${isSelected ? 'selected' : ''}`;
+                leadItem.onclick = () => selectLead(lead.id);
+
+                let scoreClass = 'score-low';
+                if (lead.calculatedScore >= 80) scoreClass = 'score-high';
+                else if (lead.calculatedScore >= 60) scoreClass = 'score-medium';
+
+                leadItem.innerHTML = `
+                    <div class="lead-details-brief">
+                        <span class="lead-name">${lead.name}</span>
+                        <div class="lead-meta">
+                            <span>${lead.company}</span>
+                            <span>•</span>
+                            <span>${lead.budget}</span>
+                        </div>
+                    </div>
+                    <div class="score-badge ${scoreClass}">
+                        ${lead.calculatedScore}
+                    </div>
+                `;
+                listContainer.appendChild(leadItem);
+            });
+
+            // Update Current Detail
+            renderDetails();
+            renderChart();
+        }
+
+        function selectLead(id) {
+            selectedLeadId = id;
+            calculateScores();
+        }
+
+        function renderDetails() {
+            const lead = leadsData.find(l => l.id === selectedLeadId);
+            const panel = document.getElementById("detailPanel");
+
+            let scoreClass = 'score-low';
+            if (lead.calculatedScore >= 80) scoreClass = 'score-high';
+            else if (lead.calculatedScore >= 60) scoreClass = 'score-medium';
+
+            let actionBtnText = "Route to Sales Priority Desk";
+            let recText = "";
+
+            if (lead.calculatedScore >= 80) {
+                recText = `<strong>Priority Action: Immediate Concierge Outreach Recommended</strong>
+                           Lead matches corporate professional profile with a verified high propensity score. Route directly to premium senior sales desk to schedule unit booking lock-in.`;
+            } else if (lead.calculatedScore >= 60) {
+                recText = `<strong>Nurturing Action: Mobilize Channel Partner Follow-up</strong>
+                           Lead holds active interest. Trigger target WhatsApp teaser containing compact barbell unit configurations and local price benchmarking data via Walk-in Genie.`;
+                actionBtnText = "Trigger WhatsApp Nudge";
+            } else {
+                recText = `<strong>Cold Revival Action: Queue for Astra Phoenix Revival</strong>
+                           Lead score falls below key threshold. Add to n8n webhook revival database. System will automatically push revival templates via WhatsApp after 48 hours.`;
+                actionBtnText = "Queue in Astra Phoenix n8n Webhook";
+            }
+
+            panel.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-title">
+                        <h3>${lead.name}</h3>
+                        <p>${lead.company} • ${lead.location}</p>
+                    </div>
+                    <div class="score-metric-box">
+                        <div class="score-metric-value">${lead.calculatedScore}</div>
+                        <div class="score-metric-label">Propensity Score</div>
+                    </div>
+                </div>
+
+                <div class="profile-specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-lbl">Required Configuration</span>
+                        <span class="spec-val">${lead.budget}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-lbl">Source Channel</span>
+                        <span class="spec-val">${lead.source}</span>
+                    </div>
+                </div>
+
+                <div class="factors-section">
+                    <h4 class="font-outfit" style="font-size: 1.05rem; font-weight: 600; color: var(--accent);">Predictive Telemetry Sub-Metrics</h4>
+                    
+                    <div class="factor-row">
+                        <div class="factor-header">
+                            <span>Budget Conformity Match</span>
+                            <span>${lead.metrics.budgetFit}%</span>
+                        </div>
+                        <div class="factor-bar-bg">
+                            <div class="factor-bar-fill" style="width: ${lead.metrics.budgetFit}%; background: var(--cyan);"></div>
+                        </div>
+                    </div>
+
+                    <div class="factor-row">
+                        <div class="factor-header">
+                            <span>Site Visit Commitment</span>
+                            <span>${lead.metrics.siteVisits}%</span>
+                        </div>
+                        <div class="factor-bar-bg">
+                            <div class="factor-bar-fill" style="width: ${lead.metrics.siteVisits}%; background: var(--primary);"></div>
+                        </div>
+                    </div>
+
+                    <div class="factor-row">
+                        <div class="factor-header">
+                            <span>Genie AI Chat Qualification Depth</span>
+                            <span>${lead.metrics.genieDepth}%</span>
+                        </div>
+                        <div class="factor-bar-bg">
+                            <div class="factor-bar-fill" style="width: ${lead.metrics.genieDepth}%; background: var(--accent);"></div>
+                        </div>
+                    </div>
+
+                    <div class="factor-row">
+                        <div class="factor-header">
+                            <span>Employer Commute Adjacency</span>
+                            <span>${lead.metrics.employerProx}%</span>
+                        </div>
+                        <div class="factor-bar-bg">
+                            <div class="factor-bar-fill" style="width: ${lead.metrics.employerProx}%; background: var(--success);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; padding: 1.2rem; font-size: 0.85rem; color: var(--text-secondary);">
+                    <strong>Lead Background Context:</strong><br>
+                    ${lead.notes}
+                </div>
+
+                <div class="rec-box">
+                    ${recText}
+                </div>
+
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                    <button class="rec-action-btn" onclick="triggerAction('${lead.name}', '${actionBtnText}')">${actionBtnText}</button>
+                    ${lead.calculatedScore < 60 ? `
+                        <a href="Astra_Phoenix_Lead_Revival_n8n_Workflow.json" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--cyan); border: 1px solid rgba(0, 229, 255, 0.2); padding: 0.8rem 1.2rem; border-radius: 8px;" class="font-outfit">
+                            View n8n Webhook JSON
+                        </a>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function triggerAction(name, action) {
+            alert(`[Astra Platinum Engine Action Success]\n"${action}" has been successfully executed for ${name}.`);
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('propensityChart').getContext('2d');
+            
+            // Count score ranges
+            let high = 0, medium = 0, low = 0;
+            leadsData.forEach(lead => {
+                if (lead.calculatedScore >= 80) high++;
+                else if (lead.calculatedScore >= 60) medium++;
+                else low++;
+            });
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['High Propensity (Score >= 80)', 'Medium Propensity (60-79)', 'Cold Pipeline (Score < 60)'],
+                    datasets: [{
+                        data: [high, medium, low],
+                        backgroundColor: ['#00E676', '#FFAB00', '#FF1744'],
+                        borderColor: '#111522',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                color: '#94A3B8',
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
+
+        // Initial launch
+        calculateScores();
+    </script>
+</body>
+</html>

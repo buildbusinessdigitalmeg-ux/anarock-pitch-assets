@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anarock Growth | Mandate Underwriting & Strategy Hub</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Palette adapted to ANAROCK corporate styling: Crimson Red, Deep Slate/Dark Mode, Cyber Gold & Mint Green */
+            --bg-primary: #06090e;
+            --bg-secondary: #0c0f1d;
+            --bg-tertiary: #12172a;
+            --card-bg: rgba(18, 23, 42, 0.7);
+            --card-border: rgba(255, 51, 102, 0.12);
+            
+            --primary: #FF3366; /* Vibrant Crimson/Red */
+            --primary-gradient: linear-gradient(135deg, #FF3366, #C3002F);
+            --accent: #E5A93C; /* Cyber Gold */
+            --accent-gradient: linear-gradient(135deg, #F9D04F, #D4AF37);
+            
+            --success: #00E676; /* Mint Green */
+            --cyan: #00E5FF;
+            --purple: #A855F7;
+            --blue: #3B82F6;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --glow-cyan: 0 0 15px rgba(0, 229, 255, 0.2);
+            --glow-primary: 0 0 15px rgba(255, 51, 102, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 5% 10%, rgba(255, 51, 102, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 95% 85%, rgba(0, 229, 255, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 50% 50%, rgba(229, 169, 60, 0.03) 0%, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        h1, h2, h3, h4, .font-outfit {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+            width: 100%;
+        }
+
+        /* HEADER BLOCK */
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .logo-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--cyan);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.3); opacity: 1; }
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #FFFFFF 30%, #E2E8F0 70%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 850px;
+            margin: 0 auto;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* CATEGORY SECTION HEADER */
+        .category-header {
+            margin-top: 3.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.8rem;
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .category-title span.indicator {
+            width: 4px;
+            height: 24px;
+            border-radius: 2px;
+            display: inline-block;
+        }
+        .cat-interactive span.indicator { background-color: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+        .cat-ai span.indicator { background-color: var(--purple); box-shadow: 0 0 8px var(--purple); }
+        .cat-gtm span.indicator { background-color: var(--accent); box-shadow: 0 0 8px var(--accent); }
+        .cat-docs span.indicator { background-color: var(--primary); box-shadow: 0 0 8px var(--primary); }
+
+        .category-count {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* GRID LAYOUTS */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .portfolio-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-top: 4px solid var(--text-muted);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.01) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* COLOR CODE BORDERS */
+        .portfolio-card.interactive { border-top-color: var(--cyan); }
+        .portfolio-card.ai-spec { border-top-color: var(--purple); }
+        .portfolio-card.gtm-asset { border-top-color: var(--accent); }
+        .portfolio-card.doc-asset { border-top-color: var(--primary); }
+
+        .portfolio-card.interactive:hover { box-shadow: 0 15px 40px rgba(0, 229, 255, 0.1), var(--shadow); }
+        .portfolio-card.ai-spec:hover { box-shadow: 0 15px 40px rgba(168, 85, 247, 0.1), var(--shadow); }
+        .portfolio-card.gtm-asset:hover { box-shadow: 0 15px 40px rgba(229, 169, 60, 0.1), var(--shadow); }
+        .portfolio-card.doc-asset:hover { box-shadow: 0 15px 40px rgba(255, 51, 102, 0.1), var(--shadow); }
+
+        /* HEADERS */
+        .card-header-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .interactive .card-tag { background: rgba(0, 229, 255, 0.08); color: var(--cyan); border: 1px solid rgba(0, 229, 255, 0.15); }
+        .ai-spec .card-tag { background: rgba(168, 85, 247, 0.08); color: var(--purple); border: 1px solid rgba(168, 85, 247, 0.15); }
+        .gtm-asset .card-tag { background: rgba(229, 169, 60, 0.08); color: var(--accent); border: 1px solid rgba(229, 169, 60, 0.15); }
+        .doc-asset .card-tag { background: rgba(255, 51, 102, 0.08); color: var(--primary); border: 1px solid rgba(255, 51, 102, 0.15); }
+
+        /* FILE FORMAT BADGES */
+        .format-badge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .format-badge.html { background: rgba(0, 229, 255, 0.12); color: var(--cyan); border: 1px solid rgba(0, 229, 255, 0.25); }
+        .format-badge.json { background: rgba(168, 85, 247, 0.12); color: var(--purple); border: 1px solid rgba(168, 85, 247, 0.25); }
+        .format-badge.md { background: rgba(236, 72, 153, 0.12); color: #EC4899; border: 1px solid rgba(236, 72, 153, 0.25); }
+        .format-badge.pdf { background: rgba(239, 68, 68, 0.12); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.25); }
+        .format-badge.docx { background: rgba(59, 130, 246, 0.12); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.25); }
+        .format-badge.mp4 { background: rgba(16, 185, 129, 0.12); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.25); }
+
+        .card-header-block h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+            margin-top: 0.2rem;
+        }
+
+        .card-body p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ACTIONS */
+        .btn-launch {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: auto;
+        }
+
+        .interactive .btn-launch {
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(0, 134, 195, 0.08));
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            color: var(--cyan);
+        }
+        .interactive .btn-launch:hover {
+            background: var(--cyan);
+            color: #06090e;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.35);
+        }
+
+        .ai-spec .btn-launch {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(124, 58, 237, 0.08));
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            color: var(--purple);
+        }
+        .ai-spec .btn-launch:hover {
+            background: var(--purple);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.35);
+        }
+
+        .gtm-asset .btn-launch {
+            background: linear-gradient(135deg, rgba(229, 169, 60, 0.08), rgba(212, 175, 55, 0.08));
+            border: 1px solid rgba(229, 169, 60, 0.25);
+            color: var(--accent);
+        }
+        .gtm-asset .btn-launch:hover {
+            background: var(--accent);
+            color: #06090e;
+            box-shadow: 0 0 15px rgba(229, 169, 60, 0.35);
+        }
+
+        .doc-asset .btn-launch {
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.08), rgba(195, 0, 47, 0.08));
+            border: 1px solid rgba(255, 51, 102, 0.25);
+            color: var(--primary);
+        }
+        .doc-asset .btn-launch:hover {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.35);
+        }
+
+        .btn-launch svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* INTEGRATIONS SUB-LINKS */
+        .integration-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            align-items: center;
+        }
+
+        .integration-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-right: 0.3rem;
+            font-weight: 500;
+        }
+
+        .integration-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .integration-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .integration-link svg {
+            width: 10px;
+            height: 10px;
+            fill: currentColor;
+        }
+
+        /* METADATA FOOTER PANEL */
+        .meta-container {
+            margin-top: 4rem;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(12, 15, 29, 0.5) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .meta-section h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.4rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-list {
+            list-style: none;
+        }
+
+        .meta-list li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-list li strong {
+            color: var(--text-primary);
+        }
+
+        .meta-bullet {
+            width: 5px;
+            height: 5px;
+            background-color: var(--cyan);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* FOOTER & CTA */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 4rem;
+            background: #04060a;
+        }
+
+        footer p.footer-sig {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+        
+        footer p.footer-disclaimer {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.15);
+            max-width: 600px;
+            margin: 0.5rem auto 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo-badge">
+                <span></span> ANAROCK GROWTH • STRATEGIC PORTFOLIO
+            </div>
+            <h1>Mandate Underwriting & GTM Strategy Hub</h1>
+            <p class="subtitle">Proprietary analytical dashboards, financial underwriting engines, GTM stage-gate playbooks, and n8n webhook automations configured for Meda East Winds Project, Bangalore.</p>
+        </header>
+
+        <!-- CATEGORY 1: INTERACTIVE ANALYTICS & SIMULATORS -->
+        <div class="category-header cat-interactive">
+            <h2 class="category-title"><span class="indicator"></span>1. Interactive Analytics & Decision Simulators</h2>
+            <span class="category-count">6 Assets</span>
+        </div>
+        
+        <div class="portfolio-grid">
+            
+            <!-- CARD 1: SCORECARD -->
+            <div class="portfolio-card interactive">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">BI Dashboard</span>
+                        <span class="format-badge html">HTML</span>
+                    </div>
+                    <h3>Developer Mandate Health Scorecard</h3>
+                </div>
+                <div class="card-body">
+                    <p>Transparent, client-facing dashboard mapping Sales Velocity, Collection Efficiencies, and Channel Partner mobilization. Equipped with real-time Chart.js interactive widgets, a strategic Balanced Radar Index, and micro-sparklines modeling developer contract hurdles.</p>
+                </div>
+                <a href="./Anarock_Developer_Mandate_Scorecard.html" class="btn-launch">
+                    Launch Interactive Dashboard
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+                <div class="integration-row">
+                    <span class="integration-label">Integrations:</span>
+                    <a href="./Anarock_Developer_Mandate_Scorecard.pdf" target="_blank" class="integration-link">
+                        <span class="format-badge pdf">PDF</span> Scorecard
+                    </a>
+                    <a href="./Anarock%20Growth%20_%20Client%20Mandate%20Performance%20Scorecard.pdf" target="_blank" class="integration-link">
+                        <span class="format-badge pdf">PDF</span> Client Version
+                    </a>
+                    <a href="./Charts%20Summary%20in%20mandate%20scorecard.docx" target="_blank" class="integration-link">
+                        <span class="format-badge docx">DOCX</span> Chart Summary
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARD 2: PLAYBOOK -->
+            <div class="portfolio-card interactive">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">GTM Playbook</span>
+                        <span class="format-badge html">HTML</span>
+                    </div>
+                    <h3>Anarock GTM Stage-Gate Playbook</h3>
+                </div>
+                <div class="card-body">
+                    <p>Multi-stage GTM launch execution playbook adapted for Meda East Winds. Features an inline interactive gating simulator representing stages from discovery to public launch, pricing risk models, and direct navigation links across the pitch suite.</p>
+                </div>
+                <a href="./Anarock_GTM_Stage_Gate_Playbook.html" class="btn-launch">
+                    Launch GTM Playbook
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+                <div class="integration-row">
+                    <span class="integration-label">Integrations:</span>
+                    <a href="./Anarock_GTM_Stage_Gate_Playbook.pdf" target="_blank" class="integration-link">
+                        <span class="format-badge pdf">PDF</span> Playbook
+                    </a>
+                    <a href="./Anarock_GTM_Lifecycle_Mapping.md" target="_blank" class="integration-link">
+                        <span class="format-badge md">MD</span> Lifecycle Map
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARD 3: FINANCIAL HURDLE MODELS -->
+            <div class="portfolio-card interactive">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Underwriting</span>
+                        <span class="format-badge html">HTML</span>
+                    </div>
+                    <h3>Developer Financial Hurdle Model</h3>
+                </div>
+                <div class="card-body">
+                    <p>Analytical cash flow and debt service modeling simulator built for Meda Projects. Evaluates peak funding deficits, cash flow waterfall mechanics, DSCR coverage, and equity IRR sensitivity matrices using an inline bisection-derived numeric solver.</p>
+                </div>
+                <a href="./Anarock_Financial_Hurdle_Models.html" class="btn-launch">
+                    Launch Hurdle Calculator
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
+
+            <!-- CARD 4: MICRO-MARKET DEMAND HEATMAP -->
+            <div class="portfolio-card interactive">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Feasibility</span>
+                        <span class="format-badge html">HTML</span>
+                    </div>
+                    <h3>Spatial Demand & Feasibility Heatmap</h3>
+                </div>
+                <div class="card-body">
+                    <p>Spatial micro-market demand simulator mapped to Bangalore's tech corridors (Panathur/Sarjapur Corridor). Integrates RERA case study coordinates, absorption volumes, pricing thresholds, and interactive distance rings around major tech parks.</p>
+                </div>
+                <a href="./Anarock_Micro_Market_Demand_Heat_Map.html" class="btn-launch">
+                    Launch Spatial Heatmap
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
+
+            <!-- CARD 5: ASTRA PROPENSITY ENGINE -->
+            <div class="portfolio-card interactive">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Lead Scoring</span>
+                        <span class="format-badge html">HTML</span>
+                    </div>
+                    <h3>Astra Platinum Lead Propensity Engine</h3>
+                </div>
+                <div class="card-body">
+                    <p>Diagnostic dashboard scoring incoming lead quality based on budget conformity, engagement frequency, and B2C conversational indicators. Allows real-time weight adjustments, profile breakdowns, and Chart.js funnels.</p>
+                </div>
+                <a href="./Anarock_Astra_Platinum_Lead_Scoring.html" class="btn-launch">
+                    Launch Propensity Engine
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
+
+            <!-- CARD 6: VIDEO WALKTHROUGH -->
+            <div class="portfolio-card interactive">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Video Demo</span>
+                        <span class="format-badge mp4">MP4</span>
+                    </div>
+                    <h3>Astra Phoenix Webhook Re-Engagement Demo</h3>
+                </div>
+                <div class="card-body">
+                    <p>Walkthrough video recording showcasing the Astra Phoenix automation workflow triggering, routing, and successfully resurrecting cold dropouts via WhatsApp generative AI messaging.</p>
+                    <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); position: relative; height: 120px; background: #000; margin-bottom: 0.5rem;">
+                        <video style="width: 100%; height: 100%; object-fit: cover;" controls>
+                            <source src="./Anarock_AI_Lead_Revival_Automation_final.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <a href="./Anarock_AI_Lead_Revival_Automation_final.mp4" target="_blank" class="btn-launch">
+                    View Video Fullscreen
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- CATEGORY 2: AI & AUTOMATION BLUEPRINTS -->
+        <div class="category-header cat-ai">
+            <h2 class="category-title"><span class="indicator"></span>2. AI & Automation Blueprints</h2>
+            <span class="category-count">5 Assets</span>
+        </div>
+
+        <div class="portfolio-grid">
+
+            <!-- CARD 1: N8N BLUEPRINT -->
+            <div class="portfolio-card ai-spec">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Automation Blueprint</span>
+                        <span class="format-badge json">JSON</span>
+                    </div>
+                    <h3>Astra Phoenix n8n Workflow</h3>
+                </div>
+                <div class="card-body">
+                    <p>Importable JSON blueprint mapping n8n flow steps: webhook lead catchers, GPT-4o reason classifiers, location/pricing routers, CRM state writers, and WhatsApp API payloads.</p>
+                </div>
+                <a href="./Astra_Phoenix_Lead_Revival_n8n_Workflow.json" target="_blank" class="btn-launch">
+                    View Workflow JSON
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </a>
+                <div class="integration-row">
+                    <span class="integration-label">Alternates:</span>
+                    <a href="./Anarock_AI_Revival_n8n.json" target="_blank" class="integration-link">
+                        <span class="format-badge json">JSON</span> Standard Blueprint
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARD 2: WEBHOOK SCHEMA -->
+            <div class="portfolio-card ai-spec">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">API Specification</span>
+                        <span class="format-badge json">JSON</span>
+                    </div>
+                    <h3>Genie AI Webhook API Schema</h3>
+                </div>
+                <div class="card-body">
+                    <p>Technical REST API schema outlining HTTP POST payloads, key-value mappings (lead profiles, site visits, sentiment indicators), and return headers required to link WhatsApp engines to the CRM.</p>
+                </div>
+                <a href="./Anarock_AI_Lead_Revival_Gemini_HTTP_Compatible.json" target="_blank" class="btn-launch">
+                    View JSON Schema
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </a>
+            </div>
+
+            <!-- CARD 3: GENIE PROMPTS -->
+            <div class="portfolio-card ai-spec">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">AI Instruction</span>
+                        <span class="format-badge md">MD</span>
+                    </div>
+                    <h3>Walk-in Genie System Prompts</h3>
+                </div>
+                <div class="card-body">
+                    <p>System prompts, budget verification logic, objection handlers, and lead verification rules used to configure B2C conversational WhatsApp agents for project qualification.</p>
+                </div>
+                <a href="./mock-assets/Anarock_Genie_System_Prompts.md" target="_blank" class="btn-launch">
+                    View Prompts Document
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </a>
+            </div>
+
+            <!-- CARD 4: CP DATABASE -->
+            <div class="portfolio-card ai-spec">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Channel Partner Data</span>
+                        <span class="format-badge json">JSON</span>
+                    </div>
+                    <h3>CP Ranker Broker Database</h3>
+                </div>
+                <div class="card-body">
+                    <p>Algorithmic database scoring East Bangalore brokers. Outlines deal completion velocities, past RERA registrations, broker tier labels, and dynamic slab commissions.</p>
+                </div>
+                <a href="./mock-assets/CP_Ranker_Mobilization_Database.json" target="_blank" class="btn-launch">
+                    View Broker Database
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- CATEGORY 3: GTM STAGE-WISE DELIVERABLES -->
+        <div class="category-header cat-gtm">
+            <h2 class="category-title"><span class="indicator"></span>3. GTM Stage-Gate Deliverables</h2>
+            <span class="category-count">3 Assets</span>
+        </div>
+
+        <div class="portfolio-grid">
+
+            <!-- CARD 1: CONJOINT REPORT -->
+            <div class="portfolio-card gtm-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Stage 1: Discover</span>
+                        <span class="format-badge html">HTML</span>
+                    </div>
+                    <h3>Competitor Conjoint Analysis Report</h3>
+                </div>
+                <div class="card-body">
+                    <p>Quantitative survey report of 1,200 tech professionals in East Bangalore. Visualizes attribute preferences (amenity levels, configurations) and price sensitivity thresholds using Van Westendorp curves.</p>
+                </div>
+                <a href="./mock-assets/Competitor_Conjoint_Analysis_Report.html" class="btn-launch">
+                    Launch Conjoint Presentation
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
+
+            <!-- CARD 2: BARBELL MODEL -->
+            <div class="portfolio-card gtm-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Stage 2: Position</span>
+                        <span class="format-badge html">HTML</span>
+                    </div>
+                    <h3>Barbell Inventory Calculator</h3>
+                </div>
+                <div class="card-body">
+                    <p>Real-time pricing split simulator modeling blended sft realizations and developer gross transaction value (GTV) based on compact vs. premium inventory distributions.</p>
+                </div>
+                <a href="./mock-assets/Barbell_Pricing_Model.html" class="btn-launch">
+                    Launch Barbell Pricing
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
+
+            <!-- CARD 3: MOCK ASSETS SUMMARY -->
+            <div class="portfolio-card gtm-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Deliverables Summary</span>
+                        <span class="format-badge docx">DOCX</span>
+                    </div>
+                    <h3>Stage-Gate Mock Deliverables Summary</h3>
+                </div>
+                <div class="card-body">
+                    <p>Executive-level brief outlining the integration, RERA boundaries, and business goals behind the conjoint models, barbell pricing calculators, and CP ranker database.</p>
+                </div>
+                <a href="./mock-assets/Mock%20Assets%20Summart.docx" target="_blank" class="btn-launch">
+                    Download Summary DOCX
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- CATEGORY 4: EXECUTIVE STRATEGY & COMMUNICATIONS -->
+        <div class="category-header cat-docs">
+            <h2 class="category-title"><span class="indicator"></span>4. Executive Strategy & Communications</h2>
+            <span class="category-count">11 Assets</span>
+        </div>
+
+        <div class="portfolio-grid">
+
+            <!-- CARD 1: LIFECYCLE MAPPING -->
+            <div class="portfolio-card doc-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Framework Sync</span>
+                        <span class="format-badge md">MD</span>
+                    </div>
+                    <h3>GTM Lifecycle Mapping</h3>
+                </div>
+                <div class="card-body">
+                    <p>Detailed matrix mapping Anarock Sales & GTM gates directly to developer structural and capstone construction lifecycles. Features high-fidelity Mermaid swimlane process flows.</p>
+                </div>
+                <a href="./Anarock_GTM_Lifecycle_Mapping.md" target="_blank" class="btn-launch">
+                    View Mapping Document
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </a>
+                <div class="integration-row">
+                    <span class="integration-label">Format:</span>
+                    <a href="./GTM%20Lifecycle%20Mapping.docx" target="_blank" class="integration-link">
+                        <span class="format-badge docx">DOCX</span> Word Version
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARD 2: STRATEGY PLAYBOOK -->
+            <div class="portfolio-card doc-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Marketing Strategy</span>
+                        <span class="format-badge md">MD</span>
+                    </div>
+                    <h3>Anarock Strategy Playbook</h3>
+                </div>
+                <div class="card-body">
+                    <p>A comprehensive markdown outline detailing customer persona maps, lead acquisition funnels, digital budget allocations, and pricing governance for the Meda East Winds pitch campaign.</p>
+                </div>
+                <a href="./Anarock_Strategy_Playbook.md" target="_blank" class="btn-launch">
+                    View Playbook Source
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </a>
+            </div>
+
+            <!-- CARD 3: PITCH ASSETS OVERVIEW -->
+            <div class="portfolio-card doc-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Pitch Blueprint</span>
+                        <span class="format-badge md">MD</span>
+                    </div>
+                    <h3>Pitch Package Delivery Plan</h3>
+                </div>
+                <div class="card-body">
+                    <p>Strategic pitch packaging plan outlining how to deliver these PoC assets to growth leadership. Contains draft templates for outreach messaging and post-connection pitches.</p>
+                </div>
+                <a href="./Anarock_Sunil_Mishra_Pitch_Assets.md" target="_blank" class="btn-launch">
+                    View Packaging Guide
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </a>
+                <div class="integration-row">
+                    <span class="integration-label">Outreach Drafts:</span>
+                    <a href="./Linkedin%20Message.docx" target="_blank" class="integration-link">
+                        <span class="format-badge docx">DOCX</span> LinkedIn Msg
+                    </a>
+                    <a href="./Sunil%20Mishra%20email%20draft.docx" target="_blank" class="integration-link">
+                        <span class="format-badge docx">DOCX</span> Email Draft
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARD 4: ADDITIONAL OUTREACH & PREP -->
+            <div class="portfolio-card doc-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Prep & Outreach</span>
+                        <span class="format-badge md">MD</span>
+                    </div>
+                    <h3>VC & Pitch Preparation Notes</h3>
+                </div>
+                <div class="card-body">
+                    <p>Internal preparation notes detailing leadership profiles, growth strategy questions, potential partnership models, and answers to common mandate inquiries.</p>
+                </div>
+                <a href="./sunil_mishra_vc_prep.md" target="_blank" class="btn-launch">
+                    View Prep Notes
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </a>
+                <div class="integration-row">
+                    <span class="integration-label">Briefings:</span>
+                    <a href="./Summary.docx" target="_blank" class="integration-link">
+                        <span class="format-badge docx">DOCX</span> Pitch Summary
+                    </a>
+                    <a href="./Sunil%20Mishra%20Summary.docx" target="_blank" class="integration-link">
+                        <span class="format-badge docx">DOCX</span> Exec Brief
+                    </a>
+                    <a href="./Talking%20Script.docx" target="_blank" class="integration-link">
+                        <span class="format-badge docx">DOCX</span> Talking Script
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARD 5: PROJECT SPECIFICATIONS -->
+            <div class="portfolio-card doc-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">Project Spec</span>
+                        <span class="format-badge docx">DOCX</span>
+                    </div>
+                    <h3>Meda East Winds Project Specifications</h3>
+                </div>
+                <div class="card-body">
+                    <p>Developer-sourced project specifications, configurations, structure layout descriptions, RERA parameters, and marketing brief for Meda East Winds.</p>
+                </div>
+                <a href="./Meda%20East%20Winds%20specifications.docx" target="_blank" class="btn-launch">
+                    Download Spec DOCX
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- PORTFOLIO DETAILS & METADATA -->
+        <div class="meta-container">
+            <div class="meta-section">
+                <h4>Project Parameters</h4>
+                <ul class="meta-list">
+                    <li><span class="meta-bullet"></span> Developer: <strong>Meda Projects</strong></li>
+                    <li><span class="meta-bullet"></span> Development: <strong>Meda East Winds</strong></li>
+                    <li><span class="meta-bullet"></span> Total GTV: <strong>₹833.6 Cr</strong></li>
+                    <li><span class="meta-bullet"></span> Total Inventory: <strong>542 Units (800k sft)</strong></li>
+                    <li><span class="meta-bullet"></span> RERA ID: <strong>PRM/KA/RERA/1251/446/PR/261224/007320</strong></li>
+                </ul>
+            </div>
+            
+            <div class="meta-section">
+                <h4>System Integrations</h4>
+                <ul class="meta-list">
+                    <li><span class="meta-bullet"></span> CRM Interface: <strong>Salesforce API Webhooks</strong></li>
+                    <li><span class="meta-bullet"></span> Conversation engine: <strong>Anarock B2C WhatsApp Genie</strong></li>
+                    <li><span class="meta-bullet"></span> Lead revive engine: <strong>Astra Phoenix Automation</strong></li>
+                    <li><span class="meta-bullet"></span> Lead grading: <strong>Astra Platinum Propensity AI</strong></li>
+                </ul>
+            </div>
+            
+            <div class="meta-section">
+                <h4>Author Profile</h4>
+                <ul class="meta-list">
+                    <li><span class="meta-bullet"></span> Strategist: <strong>Meghana Grama Satyan</strong></li>
+                    <li><span class="meta-bullet"></span> Background: <strong>ISB Alumna &amp; Real Estate Strategist</strong></li>
+                    <li><span class="meta-bullet"></span> Frameworks: <strong>ISB Capstone, RT Product Playbook</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-sig">Strategic Pitch Suite &bull; Prepared by Meghana Grama Satyan (ISB Alumna & Real Estate Strategist)</p>
+        <p class="footer-disclaimer">Proprietary and Confidential. Prepared for growth pitch and underwriting demonstrator purposes only.</p>
+    </footer>
+
+</body>
+</html>
