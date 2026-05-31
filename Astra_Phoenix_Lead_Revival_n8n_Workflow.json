@@ -1,0 +1,265 @@
+{
+  "name": "Astra Phoenix - AI Lead Revival Webhook Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "astra-phoenix-dropout",
+        "options": {}
+      },
+      "name": "CRM Lead Dropout Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ],
+      "id": "node-webhook-inbound"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "lead_id",
+              "value": "={{$json.body.lead_id}}"
+            },
+            {
+              "name": "lead_name",
+              "value": "={{$json.body.lead_name}}"
+            },
+            {
+              "name": "last_engagement",
+              "value": "={{$json.body.last_user_message}}"
+            },
+            {
+              "name": "qualification_state",
+              "value": "={{$json.body.qualification_state}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Extract CRM State",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        300,
+        300
+      ],
+      "id": "node-set-state"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.qualification_state}}",
+              "value2": "BUDGET_PASSED_VISIT_PENDING"
+            }
+          ]
+        }
+      },
+      "name": "Assess Lead Propensity",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ],
+      "id": "node-if-propensity"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "messageValues": [
+            {
+              "role": "system",
+              "message": "You are Astra Phoenix, Anarock's specialized lead resurrection engine. Your job is to draft a short, highly compelling, non-pushy WhatsApp outreach message to resurrect a tech-belt property buyer who dropped out during budget discussions. Focus on early-bird pricing privileges, limited-duration floor-plan options, or weekend HNI site tours."
+            },
+            {
+              "role": "user",
+              "message": "=Draft a personalized Whatsapp text for {{ $json.lead_name }}. Their last message in Genie chat was: \"{{ $json.last_engagement }}\". Ensure to hook them with an exclusive GTM pre-sales benefit (e.g. ₹5,000/sft base discount or a private Saturday slot)."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "name": "Astra Phoenix Message Generator",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        200
+      ],
+      "id": "node-openai-generator"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "1098234857",
+        "recipientPhoneNumber": "={{$json.phone_number}}",
+        "messageType": "text",
+        "textMessageBody": "={{$node[\"Astra Phoenix Message Generator\"].json.choices[0].message.content}}"
+      },
+      "name": "WhatsApp Outbound API",
+      "type": "n8n-nodes-base.whatsapp",
+      "typeVersion": 1,
+      "position": [
+        940,
+        200
+      ],
+      "id": "node-whatsapp-send"
+    },
+    {
+      "parameters": {
+        "amount": 24,
+        "unit": "hours"
+      },
+      "name": "Wait 24 Hours",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        200
+      ],
+      "id": "node-wait"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.salesforce.com/services/data/v55.0/sobjects/Lead/={{$node[\"Extract CRM State\"].json.lead_id}}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Status",
+              "value": "Resurrected_Astra_Phoenix"
+            },
+            {
+              "name": "Astra_Phoenix_Ping_Count__c",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Update Salesforce CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        200
+      ],
+      "id": "node-salesforce-update"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.salesforce.com/services/data/v55.0/sobjects/Lead/={{$node[\"Extract CRM State\"].json.lead_id}}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Status",
+              "value": "Cold_Nurture"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Route to Cold Nurture",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        720,
+        420
+      ],
+      "id": "node-cold-route"
+    }
+  ],
+  "connections": {
+    "CRM Lead Dropout Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract CRM State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract CRM State": {
+      "main": [
+        [
+          {
+            "node": "Assess Lead Propensity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assess Lead Propensity": {
+      "main": [
+        [
+          {
+            "node": "Astra Phoenix Message Generator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route to Cold Nurture",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Astra Phoenix Message Generator": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Outbound API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Outbound API": {
+      "main": [
+        [
+          {
+            "node": "Wait 24 Hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 24 Hours": {
+      "main": [
+        [
+          {
+            "node": "Update Salesforce CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "id": "1",
+  "meta": {
+    "templateId": "anarock-gtm-astra-phoenix"
+  }
+}

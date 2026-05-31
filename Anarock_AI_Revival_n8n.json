@@ -1,0 +1,334 @@
+{
+  "name": "Anarock_AI_Lead_Revival_n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "anarock-cold-lead",
+        "options": {}
+      },
+      "id": "1d8b76f5-56fa-4991-9876-0f8a3c8d1001",
+      "name": "On CRM Cold Lead Drop",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "leadName",
+              "value": "={{ $json.body.lead_name }}"
+            },
+            {
+              "name": "leadPhone",
+              "value": "={{ $json.body.lead_phone }}"
+            },
+            {
+              "name": "budget",
+              "value": "={{ $json.body.budget }}"
+            },
+            {
+              "name": "microMarket",
+              "value": "={{ $json.body.micromarket }}"
+            },
+            {
+              "name": "dropoutReason",
+              "value": "={{ $json.body.dropout_notes }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2d8b76f5-56fa-4991-9876-0f8a3c8d1002",
+      "name": "Parse Lead Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        450,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": {
+          "messageValues": [
+            {
+              "role": "system",
+              "content": "You are Anarock's Astra Phoenix AI Assistant, specializing in qualifying and reviving lost, cold, or failed residential real estate leads. Your task is to analyze the customer's historical dropout reason (e.g., price, size, location, timing) and generate a highly personalized, warm WhatsApp re-engagement message. Do not be overly salesy. Focus on offering a solution. Target ticket size: {{ $json.budget }}. Location context: {{ $json.microMarket }}."
+            },
+            {
+              "role": "user",
+              "content": "Lead Name: {{ $json.leadName }}\nDropout Notes: {{ $json.dropoutReason }}\n\nAnalyze this data and output a JSON response in the following schema:\n{\n  \"dropout_category\": \"Price\" | \"Location\" | \"Timing\",\n  \"revival_strategy\": \"Explain the custom offer or sister-project alternative we are proposing\",\n  \"whatsapp_draft\": \"Draft the direct copy-pasteable WhatsApp message in a friendly, professional tone. Keep it under 200 characters if possible. Mention their name and address their exact concern.\"\n}"
+            }
+          ]
+        },
+        "options": {
+          "responseFormat": "json_object"
+        }
+      },
+      "id": "3d8b76f5-56fa-4991-9876-0f8a3c8d1003",
+      "name": "AI Classifier (Astra Phoenix Helper)",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        650,
+        360
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "credential-openai-key-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ JSON.parse($json.choices[0].message.content).dropout_category }}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "Price"
+            },
+            {
+              "value2": "Location"
+            },
+            {
+              "value2": "Timing"
+            }
+          ]
+        }
+      },
+      "id": "4d8b76f5-56fa-4991-9876-0f8a3c8d1004",
+      "name": "Route by Drop-out Reason",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        870,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "revivalMessage",
+              "value": "={{ JSON.parse($json.choices[0].message.content).whatsapp_draft }}"
+            },
+            {
+              "name": "offerType",
+              "value": "Flexible Payment Plan (10:90 Subvention)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5d8b76f5-56fa-4991-9876-0f8a3c8d1005",
+      "name": "Draft Price Mitigation",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "revivalMessage",
+              "value": "={{ JSON.parse($json.choices[0].message.content).whatsapp_draft }}"
+            },
+            {
+              "name": "offerType",
+              "value": "Sister Project Recommendation (Better Connectivity)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6d8b76f5-56fa-4991-9876-0f8a3c8d1006",
+      "name": "Draft Location Alternative",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "revivalMessage",
+              "value": "={{ JSON.parse($json.choices[0].message.content).whatsapp_draft }}"
+            },
+            {
+              "name": "offerType",
+              "value": "90-Day Low Density Launch Nudge"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7d8b76f5-56fa-4991-9876-0f8a3c8d1007",
+      "name": "Schedule 90-Day Nudge",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.infobip.com/whatsapp/1/send/template",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "App token-placeholder"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "to",
+              "value": "={{ $('Parse Lead Data').item.json.leadPhone }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.revivalMessage }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8d8b76f5-56fa-4991-9876-0f8a3c8d1008",
+      "name": "Send WhatsApp via API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1380,
+        360
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "credential-infobip-header-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On CRM Cold Lead Drop": {
+      "main": [
+        [
+          {
+            "node": "Parse Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Lead Data": {
+      "main": [
+        [
+          {
+            "node": "AI Classifier (Astra Phoenix Helper)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Classifier (Astra Phoenix Helper)": {
+      "main": [
+        [
+          {
+            "node": "Route by Drop-out Reason",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Drop-out Reason": {
+      "main": [
+        [
+          {
+            "node": "Draft Price Mitigation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Draft Location Alternative",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Schedule 90-Day Nudge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Draft Price Mitigation": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp via API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Location Alternative": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp via API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule 90-Day Nudge": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp via API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
