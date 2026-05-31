@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anarock Growth | Bangalore Micro-Market Demand Heatmap</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for secondary market insights -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            /* Palette adapted to ANAROCK corporate styling: Crimson Red, Deep Charcoal, Premium Cyber Cyan & Gold */
+            --bg-primary: #07090E;
+            --bg-secondary: #0E1220;
+            --bg-tertiary: #161B2E;
+            --card-bg: rgba(22, 27, 45, 0.75);
+            --card-border: rgba(255, 51, 102, 0.15);
+            
+            --primary: #FF3366; /* Vibrant Crimson/Red */
+            --primary-gradient: linear-gradient(135deg, #FF3366, #C3002F);
+            --accent: #E5A93C; /* Premium Gold */
+            --accent-gradient: linear-gradient(135deg, #F9D04F, #D4AF37);
+            --cyan: #00E5FF; /* Cyber Cyan */
+            --cyan-gradient: linear-gradient(135deg, #00E5FF, #0086C3);
+            
+            --success: #00E676; /* Emerald Green */
+            --warning: #FFAB00;
+            --danger: #FF1744;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(14, 18, 32, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.04);
+            
+            /* Heatmap gradient variables updated dynamically */
+            --glow-color: rgba(0, 229, 255, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 229, 255, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(255, 51, 102, 0.05) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4, .font-outfit {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 5rem 1.5rem;
+        }
+
+        /* HEADER BLOCK */
+        header {
+            position: relative;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(14, 18, 32, 0) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 3.5rem 1.5rem 3rem 1.5rem;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.25);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFFFFF 30%, #F1F5F9 75%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0.5rem auto 1.5rem auto;
+            font-weight: 300;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--accent);
+        }
+
+        /* NAVIGATION CTA BAR */
+        .nav-shortcuts {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-shortcut {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-shortcut:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: rgba(255, 51, 102, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-shortcut.active-asset {
+            background: rgba(0, 229, 255, 0.05);
+            border-color: rgba(0, 229, 255, 0.3);
+            color: var(--cyan);
+        }
+
+        .btn-shortcut svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* STRATEGIC OVERVIEW CARD */
+        .overview-banner {
+            background: linear-gradient(90deg, rgba(22, 27, 45, 0.8) 0%, rgba(14, 18, 32, 0.85) 100%);
+            border: 1px solid var(--glass-border);
+            border-left: 5px solid var(--primary);
+            border-radius: 16px;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .overview-banner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .overview-text h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.6rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .overview-text p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .overview-stats {
+            background: rgba(10, 13, 20, 0.6);
+            border-radius: 12px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .overview-stat-node {
+            text-align: center;
+        }
+
+        .overview-stat-node .val {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1.2;
+        }
+
+        .overview-stat-node .lbl {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* PRIMARY LAYOUT GRID */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* LEFT SIDEBAR: LAYER SELECTOR & SPATIAL MAP */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .control-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            border-left: 3px solid var(--primary);
+            padding-left: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* RADIO CARD TABS */
+        .layer-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .layer-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .layer-tab {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            position: relative;
+        }
+
+        .layer-tab:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .layer-tab.active {
+            background: rgba(0, 229, 255, 0.04);
+            border-color: var(--cyan);
+            box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.05);
+        }
+
+        .layer-tab.active::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 6px;
+            height: 6px;
+            background: var(--cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--cyan);
+        }
+
+        .layer-tab h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .layer-tab p {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+        }
+
+        /* SVG SPATIAL MAP */
+        .map-wrapper {
+            background: rgba(10, 13, 20, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: 420px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .map-svg {
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+        }
+
+        .map-region {
+            transition: fill 0.45s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease, filter 0.3s ease;
+            cursor: pointer;
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 2.5px;
+            stroke-linejoin: round;
+        }
+
+        .map-region:hover {
+            filter: drop-shadow(0 0 15px var(--glow-color));
+            stroke: #FFFFFF;
+            stroke-width: 3.5px;
+        }
+
+        .map-region.active {
+            stroke: var(--cyan);
+            stroke-width: 4px;
+            filter: drop-shadow(0 0 20px var(--glow-color));
+        }
+
+        .map-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            fill: #FFFFFF;
+            text-anchor: middle;
+            pointer-events: none;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.9);
+            letter-spacing: 0.05em;
+        }
+
+        /* CAMPAIGN SIMULATOR CARD */
+        .simulator-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+            border-top: 3px solid var(--accent);
+        }
+
+        .sim-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .sim-title h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .sim-badge {
+            background: rgba(229, 169, 60, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(229, 169, 60, 0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .sim-slider-group {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .slider-header label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .slider-header span.val-display {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(229, 169, 60, 0.1);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-control input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.08);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(229, 169, 60, 0.5);
+            transition: var(--transition);
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .range-limit {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            width: 50px;
+        }
+
+        .range-limit.right {
+            text-align: right;
+        }
+
+        .sim-impact-banner {
+            border-left: 4px solid var(--cyan);
+            background: rgba(0, 229, 255, 0.03);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .sim-impact-banner strong {
+            color: var(--cyan);
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        /* RIGHT PANEL: SELECTED REGION TELEMETRY */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .telemetry-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .telemetry-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary-gradient);
+        }
+
+        .region-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1rem;
+        }
+
+        .region-title h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .region-title p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .feasibility-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: 1px solid transparent;
+        }
+
+        .feasibility-badge.passed {
+            background: rgba(0, 230, 118, 0.1);
+            color: var(--success);
+            border-color: rgba(0, 230, 118, 0.2);
+        }
+
+        .feasibility-badge.failed {
+            background: rgba(255, 23, 68, 0.1);
+            color: var(--danger);
+            border-color: rgba(255, 23, 68, 0.2);
+        }
+
+        /* TELEMETRY METRIC WIDGETS */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .widget-node {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .widget-node:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .widget-node .lbl {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.2rem;
+        }
+
+        .widget-node .val {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.2;
+            display: flex;
+            align-items: baseline;
+            gap: 0.2rem;
+        }
+
+        .widget-node .val span.unit {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* CUSTOM GAUGES */
+        .widget-progress-container {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .widget-progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .widget-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .widget-progress-fill.cyan-fill { background: var(--cyan-gradient); }
+        .widget-progress-fill.gold-fill { background: var(--accent-gradient); }
+        .widget-progress-fill.pink-fill { background: var(--primary-gradient); }
+
+        .widget-progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+        }
+
+        /* STRATEGIC MEMO PANEL */
+        .memo-panel {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        .memo-panel::before {
+            content: 'Strategic Underwriter Note:';
+            display: block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.4rem;
+        }
+
+        /* METRIC TREND CHART */
+        .chart-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 220px;
+            width: 100%;
+        }
+
+        /* COMPLETE COMPARATIVE TABLE */
+        .table-section {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 2.2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 4rem;
+        }
+
+        .table-section h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .table-section p.subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        table.metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.88rem;
+        }
+
+        table.metrics-table th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 1rem 1.2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        table.metrics-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        table.metrics-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.metrics-table tr:hover td {
+            background: rgba(255, 255, 255, 0.015);
+            color: var(--text-primary);
+        }
+
+        table.metrics-table tr.active-row td {
+            background: rgba(0, 229, 255, 0.02);
+            color: var(--text-primary);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+        }
+
+        .table-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .table-badge.pass { background: rgba(0, 230, 118, 0.15); color: var(--success); }
+        .table-badge.fail { background: rgba(255, 23, 68, 0.15); color: var(--danger); }
+
+        /* FOOTER / SIGNATURE */
+        footer {
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 4rem;
+        }
+
+        footer p.sig {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        footer p.sig strong {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header>
+            <div class="logo-badge">
+                <span></span> ANAROCK GROWTH • STRATEGIC UNDERWRITING ASSET
+            </div>
+            <h1>Bangalore Micro-Market Demand Heatmap</h1>
+            <p class="subtitle">Proprietary Spatial Feasibility Analytics & Lead Velocity Modeling for Meda East Winds (Panathur Corridor)</p>
+            
+            <div class="header-meta">
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                    Developer Mandate: <strong>Meda Projects</strong>
+                </div>
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    Focus Corridor: <strong>Sarjapur Belt / Panathur Corridor</strong>
+                </div>
+            </div>
+        </header>
+
+        <!-- NAVIGATION SHORTCUTS -->
+        <div class="nav-shortcuts">
+            <a href="Anarock_GTM_Stage_Gate_Playbook.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                GTM Stage-Gate Playbook
+            </a>
+            <a href="#" class="btn-shortcut active-asset">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Micro-Market Demand Heatmap
+            </a>
+            <a href="Anarock_Developer_Mandate_Scorecard.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                Developer Mandate Scorecard
+            </a>
+            <a href="Anarock_Financial_Hurdle_Models.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5z"/></svg>
+                Financial Hurdle Models
+            </a>
+        </div>
+
+        <!-- OVERVIEW BANNER -->
+        <div class="overview-banner">
+            <div class="overview-text">
+                <h2>
+                    <svg style="width: 22px; height: 22px; fill: var(--primary);" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    Underwriting Feasibility: Stage 1 Gate 1
+                </h2>
+                <p>Exclusive developer mandates succeed or fail based on **early micro-market scoping**. By tracking real-time spatial indicators—sales absorption velocity, inventory overhang, broker alignments, and AI qualification rates—Anarock ensures that GTM strategies are tailored exactly to sub-locality buyer profiles before spending marketing dollars.</p>
+                <p>Adjust the telemetry layers below to explore real-time demand variations across Bangalore's major real estate belts.</p>
+            </div>
+            <div class="overview-stats">
+                <div class="overview-stat-node">
+                    <span class="val">₹2.13 Cr</span>
+                    <span class="lbl">Blended Price Point</span>
+                </div>
+                <div class="overview-stat-node">
+                    <span class="val">80.2%</span>
+                    <span class="lbl">Astra ML Score</span>
+                </div>
+                <div class="overview-stat-node">
+                    <span class="val">1,135</span>
+                    <span class="lbl">CP Broker Pool</span>
+                </div>
+                <div class="overview-stat-node">
+                    <span class="val">23.2%</span>
+                    <span class="lbl">Blended Proj. IRR</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN LAYOUT GRID -->
+        <div class="dashboard-grid">
+
+            <!-- LEFT COLUMN: LAYER SELECTOR & SPATIAL MAP & SIMULATOR -->
+            <div class="left-panel">
+                
+                <!-- LAYER SELECTOR -->
+                <div class="control-card">
+                    <div class="panel-title">
+                        <span>Select Feasibility Heat Layer</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">4 Lenses Mapped</span>
+                    </div>
+                    <div class="layer-selector">
+                        <div class="layer-tab active" id="tab-svi" onclick="switchLayer('svi')">
+                            <h4>Absorption Velocity (SVI)</h4>
+                            <p>Monthly sales units absorbed</p>
+                        </div>
+                        <div class="layer-tab" id="tab-price" onclick="switchLayer('price')">
+                            <h4>Average Launch Price</h4>
+                            <p>Ticket sizes in ₹ Crores</p>
+                        </div>
+                        <div class="layer-tab" id="tab-propensity" onclick="switchLayer('propensity')">
+                            <h4>Astra AI Lead Propensity</h4>
+                            <p>ML-scored lead quality rate</p>
+                        </div>
+                        <div class="layer-tab" id="tab-cps" onclick="switchLayer('cps')">
+                            <h4>Active Channel Partners</h4>
+                            <p>CP Ranker mapped brokers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAP WRAPPER -->
+                <div class="control-card" style="padding: 1.5rem;">
+                    <div class="panel-title" style="margin-bottom: 0.8rem;">
+                        <span>Interactive Spatial Map (Bangalore belts)</span>
+                        <span style="font-size: 0.72rem; color: var(--cyan); background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.25); padding: 0.1rem 0.4rem; border-radius: 4px;">Click a Belt to Underwrite</span>
+                    </div>
+                    
+                    <div class="map-wrapper">
+                        <!-- INLINE VECTOR MAP (Contiguous Bangalore Mosaic) -->
+                        <svg class="map-svg" viewBox="0 0 600 500">
+                            <!-- Definitions for glows and filters -->
+                            <defs>
+                                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="6" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                            </defs>
+
+                            <!-- West Bangalore -->
+                            <polygon id="region-west" class="map-region" points="110,140 210,140 220,280 120,280" onclick="selectRegion('west')" />
+                            <text x="165" y="210" class="map-label">WEST BELT</text>
+
+                            <!-- North Bangalore (Hebbal & Devanahalli) -->
+                            <polygon id="region-north" class="map-region" points="210,40 370,40 390,140 210,140" onclick="selectRegion('north')" />
+                            <text x="290" y="90" class="map-label">NORTH BELT</text>
+
+                            <!-- East Bangalore - Whitefield -->
+                            <polygon id="region-east-wf" class="map-region" points="390,140 500,140 510,260 380,260 350,200" onclick="selectRegion('east-wf')" />
+                            <text x="435" y="200" class="map-label">WHITEFIELD E</text>
+
+                             <!-- East Bangalore - Sarjapur / Panathur -->
+                             <polygon id="region-east-sj" class="map-region" points="380,260 510,260 490,380 340,380" onclick="selectRegion('east-sj')" />
+                             <text x="425" y="320" class="map-label">PANATHUR / SJ</text>
+
+                            <!-- South Bangalore (JP Nagar / Kanakapura Road) -->
+                            <polygon id="region-south" class="map-region" points="120,280 250,280 230,420 100,420" onclick="selectRegion('south')" />
+                            <text x="175" y="350" class="map-label">SOUTH BELT</text>
+
+                            <!-- Southeast Bangalore (Electronic City & HSR) -->
+                            <polygon id="region-se-ec" class="map-region" points="250,280 340,280 340,420 230,420" onclick="selectRegion('se-ec')" />
+                            <text x="295" y="350" class="map-label">E-CITY SE</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- CAMPAIGN SIMULATOR CARD -->
+                <div class="simulator-card">
+                    <div class="sim-header-row">
+                        <div class="sim-title">
+                            <h3>Astra Phoenix Campaign Simulator</h3>
+                            <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.1rem;">Simulate ad-spend shifts to Failed-Lead whatsapp pipelines</p>
+                        </div>
+                        <span class="sim-badge">Astra.AI Integration</span>
+                    </div>
+
+                    <div class="sim-slider-group">
+                        <div class="slider-header">
+                            <label for="slider-revival">Automated Lead Revival Allocation</label>
+                            <span class="val-display" id="val-revival">15% spend</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">10% Default</span>
+                            <input type="range" id="slider-revival" min="10" max="60" step="5" value="15" oninput="updateSimulation()">
+                            <span class="range-limit right">60% Max</span>
+                        </div>
+                    </div>
+
+                    <div class="sim-impact-banner" id="sim-impact-box">
+                        <strong>Phoenix Revival Activated:</strong> 
+                        <p id="sim-impact-desc">Lead dropouts are routed to n8n webhook pipelines with dynamic LLM script offers. Blended lead acquisition CAC lowered by **0.08%** across all Bangalore micro-markets.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: SELECTED REGION TELEMETRY & MEMOS -->
+            <div class="right-panel">
+
+                <div class="telemetry-card">
+                    
+                    <!-- Region Header -->
+                    <div class="region-header">
+                        <div class="region-title">
+                            <h2 id="disp-region-name">East Bangalore - Whitefield</h2>
+                            <p id="disp-region-tag">Primary IT Corridor & Tech Belt</p>
+                        </div>
+                        <span class="feasibility-badge passed" id="disp-feasibility">Gate 1 Pass</span>
+                    </div>
+
+                    <!-- Telemetry Widgets -->
+                    <div class="widgets-grid">
+                        
+                        <!-- Widget 1: IRR -->
+                        <div class="widget-node">
+                            <span class="lbl">Estimated Project IRR</span>
+                            <span class="val" id="disp-irr">24.5%</span>
+                            <div class="widget-progress-container">
+                                <div class="widget-progress-bar">
+                                    <div class="widget-progress-fill cyan-fill" id="fill-irr" style="width: 70%;"></div>
+                                </div>
+                                <div class="widget-progress-text">
+                                    <span>Hurdle: 20%</span>
+                                    <span class="status-pos">Safe</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Widget 2: Absorption SVI -->
+                        <div class="widget-node">
+                            <span class="lbl">Absorption Rate (SVI)</span>
+                            <span class="val" id="disp-svi">38 <span class="unit">units/mo</span></span>
+                            <div class="widget-progress-container">
+                                <div class="widget-progress-bar">
+                                    <div class="widget-progress-fill pink-fill" id="fill-svi" style="width: 85%;"></div>
+                                </div>
+                                <div class="widget-progress-text">
+                                    <span>Hurdle: 12/mo</span>
+                                    <span class="status-pos" style="color: var(--success);" id="disp-svi-tag">High Velocity</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Widget 3: Avg Price -->
+                        <div class="widget-node">
+                            <span class="lbl">Avg Ticket Size</span>
+                            <span class="val" id="disp-price">₹2.8 Cr</span>
+                            <div class="widget-progress-container">
+                                <div class="widget-progress-bar">
+                                    <div class="widget-progress-fill gold-fill" id="fill-price" style="width: 78%;"></div>
+                                </div>
+                                <div class="widget-progress-text">
+                                    <span>Scale Range</span>
+                                    <span style="color: var(--accent);">Premium Core</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Widget 4: CP Broker Density -->
+                        <div class="widget-node">
+                            <span class="lbl">Active CP Density</span>
+                            <span class="val" id="disp-cps">260 <span class="unit">brokers</span></span>
+                            <div class="widget-progress-container">
+                                <div class="widget-progress-bar">
+                                    <div class="widget-progress-fill cyan-fill" id="fill-cps" style="width: 86%;"></div>
+                                </div>
+                                <div class="widget-progress-text">
+                                    <span>Hurdle: 150 CPs</span>
+                                    <span class="status-pos">Mobilized</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Widget 5: Lead CAC -->
+                        <div class="widget-node">
+                            <span class="lbl">Acquisition CAC</span>
+                            <span class="val" id="disp-cac">1.94%</span>
+                            <div class="widget-progress-container">
+                                <div class="widget-progress-bar">
+                                    <div class="widget-progress-fill pink-fill" id="fill-cac" style="width: 65%;"></div>
+                                </div>
+                                <div class="widget-progress-text">
+                                    <span>Cap Limit: 2.50%</span>
+                                    <span class="status-pos" id="disp-cac-status">Optimal Yield</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Widget 6: Overhang -->
+                        <div class="widget-node">
+                            <span class="lbl">Supply Overhang</span>
+                            <span class="val" id="disp-overhang">9.5 <span class="unit">months</span></span>
+                            <div class="widget-progress-container">
+                                <div class="widget-progress-bar">
+                                    <div class="widget-progress-fill gold-fill" id="fill-overhang" style="width: 45%;"></div>
+                                </div>
+                                <div class="widget-progress-text">
+                                    <span>Target: &le;18 mo</span>
+                                    <span class="status-pos" style="color: var(--success);" id="disp-overhang-status">Extremely Lean</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Strategic Memo -->
+                    <div class="memo-panel" id="disp-memo">
+                        Whitefield remains Anarock's highest velocity market. Buyer ticket-size tolerances are robust, backed by continuous IT belt absorption. Astra AI lead qualification rates stand at 88%, validating the deployment of large creative preparation spends for Stage 2.
+                    </div>
+
+                </div>
+
+                <!-- REAL-TIME ANALYSIS CHART -->
+                <div class="chart-card">
+                    <div class="panel-title" style="margin-bottom: 1rem;">
+                        <span>Micro-Market Absorption Comparison (Units/Mo)</span>
+                        <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">Bangalore Corridors</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="demandComparisonChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- COMPLETE COMPARATIVE TABLE -->
+        <div class="table-section">
+            <h2>Detailed Bangalore Micro-Market Feasibility Ledger</h2>
+            <p class="subtitle">Complete telemetry dashboard summarizing all Stage 1 Gate 1 pass-fail parameters across Bangalore real-estate corridors.</p>
+            
+            <div class="table-container">
+                <table class="metrics-table">
+                    <thead>
+                        <tr>
+                            <th>Corridor Name</th>
+                            <th>Avg Launch Price</th>
+                            <th>Absorption Velocity</th>
+                            <th>Overhang Index</th>
+                            <th>Active CP Density</th>
+                            <th>Astra ML Score</th>
+                            <th>Project IRR (%)</th>
+                            <th>Gate 1 Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- North Bangalore -->
+                        <tr id="row-north" onclick="selectRegion('north')">
+                            <td style="font-weight: 600; color: #fff;">North Bangalore (Airport Belt)</td>
+                            <td>₹2.20 Cr</td>
+                            <td>18 units/mo</td>
+                            <td>14.5 months</td>
+                            <td>140 brokers</td>
+                            <td>76.0%</td>
+                            <td>21.5%</td>
+                            <td><span class="table-badge pass">Pass</span></td>
+                        </tr>
+                        <!-- East Bangalore - Whitefield -->
+                        <tr id="row-east-wf" class="active-row" onclick="selectRegion('east-wf')">
+                            <td style="font-weight: 600; color: #fff;">East Bangalore - Whitefield Core</td>
+                            <td>₹2.80 Cr</td>
+                            <td>38 units/mo</td>
+                            <td>9.5 months</td>
+                            <td>260 brokers</td>
+                            <td>88.0%</td>
+                            <td>24.5%</td>
+                            <td><span class="table-badge pass">Pass</span></td>
+                        </tr>
+                        <!-- East Bangalore - Sarjapur / Panathur -->
+                        <tr id="row-east-sj" onclick="selectRegion('east-sj')">
+                            <td style="font-weight: 600; color: #fff;">East Bangalore - Sarjapur Belt / Panathur</td>
+                            <td>₹10,420/sft</td>
+                            <td>25 units/mo</td>
+                            <td>9.5 months</td>
+                            <td>214 brokers</td>
+                            <td>82.0%</td>
+                            <td>23.2%</td>
+                            <td><span class="table-badge pass">Pass</span></td>
+                        </tr>
+                        <!-- South Bangalore -->
+                        <tr id="row-south" onclick="selectRegion('south')">
+                            <td style="font-weight: 600; color: #fff;">South Bangalore (JP Nagar Core)</td>
+                            <td>₹2.50 Cr</td>
+                            <td>20 units/mo</td>
+                            <td>15.0 months</td>
+                            <td>185 brokers</td>
+                            <td>79.0%</td>
+                            <td>22.0%</td>
+                            <td><span class="table-badge pass">Pass</span></td>
+                        </tr>
+                        <!-- Southeast Bangalore -->
+                        <tr id="row-se-ec" onclick="selectRegion('se-ec')">
+                            <td style="font-weight: 600; color: #fff;">Southeast Bangalore - E-City Belt</td>
+                            <td>₹1.30 Cr</td>
+                            <td>32 units/mo</td>
+                            <td>12.5 months</td>
+                            <td>245 brokers</td>
+                            <td>85.0%</td>
+                            <td>23.5%</td>
+                            <td><span class="table-badge pass">Pass</span></td>
+                        </tr>
+                        <!-- West Bangalore -->
+                        <tr id="row-west" onclick="selectRegion('west')">
+                            <td style="font-weight: 600; color: #fff;">West Bangalore (Yeshwanthpur)</td>
+                            <td>₹3.20 Cr</td>
+                            <td>12 units/mo</td>
+                            <td>20.5 months</td>
+                            <td>95 brokers</td>
+                            <td>71.0%</td>
+                            <td>18.5%</td>
+                            <td><span class="table-badge fail">Failed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FOOTER & STRATEGIC NOTE -->
+        <footer>
+            <p class="sig">Bangalore Feasibility Model • Prepared by <strong>Meghana Grama Satyan</strong></p>
+        </footer>
+
+    </div>
+
+    <!-- MAIN INTERACTIVE SCRIPTS -->
+    <script>
+        // SPATIAL DATABASE MAPPING
+        const regionDb = {
+            'north': {
+                name: 'North Bangalore',
+                tag: 'Airport Corridor & Tech Belt Feasibility',
+                irr: 21.5,
+                svi: 18,
+                price: 2.2,
+                cps: 140,
+                baseCac: 2.1,
+                cac: 2.1,
+                overhang: 14.5,
+                propensity: 76.0,
+                feasibility: 'Gate 1 Pass',
+                memo: 'North Bangalore airport belt is displaying steady mid-tier absorption. The IRR passes developer hurdle levels easily, but active broker networks require an incentive boost in Stage 2 GTM to trigger higher CP pull.'
+            },
+            'east-wf': {
+                name: 'East Bangalore - Whitefield',
+                tag: 'Primary Tech Corridor & High-Velocity Belt',
+                irr: 24.5,
+                svi: 38,
+                price: 2.8,
+                cps: 260,
+                baseCac: 1.9,
+                cac: 1.9,
+                overhang: 9.5,
+                propensity: 88.0,
+                feasibility: 'Gate 1 Pass',
+                memo: 'Whitefield remains Anarock\'s highest velocity market. Buyer ticket-size tolerances are robust, backed by continuous IT belt absorption. Astra AI lead qualification rates stand at 88%, validating the deployment of large creative preparation spends for Stage 2.'
+            },
+            'east-sj': {
+                name: 'East Bangalore - Sarjapur Belt / Panathur',
+                tag: 'High-Density Residential Tech Belt Corridor',
+                irr: 23.2,
+                svi: 25,
+                price: 10420,
+                cps: 214,
+                baseCac: 2.1,
+                cac: 2.1,
+                overhang: 9.5,
+                propensity: 82.0,
+                feasibility: 'Gate 1 Pass',
+                memo: 'East Bangalore - Sarjapur Belt / Panathur corridor is featured as an active client mandate case study. Meda East Winds (RERA ID: PRM/KA/RERA/1251/446/PR/261224/007320) spans an 8.36-acre parcel, introducing 542 premium units to the Outer Ring Road tech corridor. With base rates of ₹9.4k compact, ₹10.2k core premium, and ₹12.7k luxury, the barbell allocation yields a blended base rate of ₹10,420/sft. This supports a robust Gross Transaction Value of ₹833.6 Crore and an estimated 23.2% Project IRR. Gate 1 Pass cleared successfully.'
+            },
+            'south': {
+                name: 'South Bangalore',
+                tag: 'Established Premium Residential Corridor',
+                irr: 22.0,
+                svi: 20,
+                price: 2.5,
+                cps: 185,
+                baseCac: 2.15,
+                cac: 2.15,
+                overhang: 15.0,
+                propensity: 79.0,
+                feasibility: 'Gate 1 Pass',
+                memo: 'JP Nagar and Kanakapura corridors hold a premium, steady buyer profile. Launch pricing must remain anchored under ₹2.5 Cr. Debt servicing constraints are met with 22.0% estimated project IRR, clearing Gate 1 safely.'
+            },
+            'se-ec': {
+                name: 'Southeast Bangalore - Electronic City',
+                tag: 'Tech & Value Segment Growth Belt',
+                irr: 23.5,
+                svi: 32,
+                price: 1.3,
+                baseCac: 1.8,
+                cac: 1.8,
+                cps: 245,
+                overhang: 12.5,
+                propensity: 85.0,
+                feasibility: 'Gate 1 Pass',
+                memo: 'Electronic City delivers high volume at lower ticket sizes. Excellent entry-level absorption rate (32 units/mo) and robust CP network. Recommended to structure Stage 2 design under compact 2 BHK value models to drive high-velocity cash flows.'
+            },
+            'west': {
+                name: 'West Bangalore',
+                tag: 'Traditional Industrial Redevelopment & Core Belt',
+                irr: 18.5,
+                svi: 12,
+                price: 3.2,
+                cps: 95,
+                baseCac: 2.35,
+                cac: 2.35,
+                overhang: 20.5,
+                propensity: 71.0,
+                feasibility: 'Gate 1 Blocked',
+                memo: 'West Bangalore fails to clear the Gate 1 hurdle. Estimated IRR (18.5%) falls below the 20% developer feasibility floor, coupled with a high inventory overhang index (20.5 months) and insufficient CP broker density (95 brokers). Direct corrective Barbell pricing action required!'
+            }
+        };
+ 
+        let currentActiveRegion = 'east-sj';
+        let currentActiveLayer = 'svi';
+
+        // THEME GRADIENT COLORS BASED ON HEATMETRICS
+        const heatScales = {
+            'svi': {
+                high: '#00E676', // Emerald
+                mid: '#E5A93C',  // Gold
+                low: '#FF3366',  // Crimson
+                glow: 'rgba(0, 230, 118, 0.4)'
+            },
+            'price': {
+                high: '#D4AF37', // Gold
+                mid: '#00E5FF',  // Cyan
+                low: '#94A3B8',  // Muted Slate
+                glow: 'rgba(229, 169, 60, 0.4)'
+            },
+            'propensity': {
+                high: '#00E5FF', // Cyan
+                mid: '#00E676',  // Emerald
+                low: '#FF3366',  // Crimson
+                glow: 'rgba(0, 229, 255, 0.4)'
+            },
+            'cps': {
+                high: '#E5A93C', // Gold
+                mid: '#FF9100',  // Orange
+                low: '#FF1744',  // Red
+                glow: 'rgba(229, 169, 60, 0.4)'
+            }
+        };
+
+        // RENDER SPATIAL HEATMAP COLORS
+        function renderHeatColors() {
+            const scale = heatScales[currentActiveLayer];
+            document.documentElement.style.setProperty('--glow-color', scale.glow);
+
+            for (const [key, value] of Object.entries(regionDb)) {
+                const element = document.getElementById('region-' + key);
+                if (!element) continue;
+
+                let fillVal = '#ffffff';
+
+                if (currentActiveLayer === 'svi') {
+                    const val = value.svi;
+                    if (val >= 30) fillVal = scale.high;
+                    else if (val >= 18) fillVal = scale.mid;
+                    else fillVal = scale.low;
+                } else if (currentActiveLayer === 'price') {
+                    const val = value.price;
+                    if (val >= 2.5) fillVal = scale.high;
+                    else if (val >= 1.6) fillVal = scale.mid;
+                    else fillVal = scale.low;
+                } else if (currentActiveLayer === 'propensity') {
+                    const val = value.propensity;
+                    if (val >= 82) fillVal = scale.high;
+                    else if (val >= 75) fillVal = scale.mid;
+                    else fillVal = scale.low;
+                } else if (currentActiveLayer === 'cps') {
+                    const val = value.cps;
+                    if (val >= 220) fillVal = scale.high;
+                    else if (val >= 130) fillVal = scale.mid;
+                    else fillVal = scale.low;
+                }
+
+                // Add slight opacity to the polygon filling so the dark backdrop grid glows through!
+                element.setAttribute('fill', fillVal + '44');
+            }
+        }
+
+        // SWITCH LAYER LAYER
+        function switchLayer(layerKey) {
+            // Update tabs UI
+            document.querySelectorAll('.layer-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById('tab-' + layerKey).classList.add('active');
+
+            currentActiveLayer = layerKey;
+            renderHeatColors();
+        }
+
+        // REGION SELECTION
+        function selectRegion(regionKey) {
+            currentActiveRegion = regionKey;
+
+            // Highlight Map region
+            document.querySelectorAll('.map-region').forEach(reg => {
+                reg.classList.remove('active');
+            });
+            const activeReg = document.getElementById('region-' + regionKey);
+            if (activeReg) activeReg.classList.add('active');
+
+            // Highlight table rows
+            document.querySelectorAll('#table-body tr').forEach(row => {
+                row.classList.remove('active-row');
+            });
+            const activeRow = document.getElementById('row-' + regionKey);
+            if (activeRow) activeRow.classList.add('active-row');
+
+            // Update Telemetry display
+            const rData = regionDb[regionKey];
+            document.getElementById('disp-region-name').innerText = rData.name;
+            document.getElementById('disp-region-tag').innerText = rData.tag;
+            document.getElementById('disp-irr').innerText = rData.irr.toFixed(1) + '%';
+            document.getElementById('disp-svi').innerHTML = rData.svi + ' <span class="unit">units/mo</span>';
+            if (rData.price > 1000) {
+                document.getElementById('disp-price').innerHTML = '₹' + rData.price.toLocaleString('en-IN') + ' <span class="unit">/sft</span>';
+            } else {
+                document.getElementById('disp-price').innerHTML = '₹' + rData.price.toFixed(1) + ' <span class="unit">Cr</span>';
+            }
+            document.getElementById('disp-cps').innerHTML = rData.cps + ' <span class="unit">brokers</span>';
+            document.getElementById('disp-cac').innerText = rData.cac.toFixed(2) + '%';
+            document.getElementById('disp-overhang').innerHTML = rData.overhang.toFixed(1) + ' <span class="unit">months</span>';
+            document.getElementById('disp-memo').innerText = rData.memo;
+
+            // Update Gauges progress widths
+            document.getElementById('fill-irr').style.width = Math.min((rData.irr / 35) * 100, 100) + '%';
+            document.getElementById('fill-svi').style.width = Math.min((rData.svi / 45) * 100, 100) + '%';
+            document.getElementById('fill-price').style.width = Math.min((rData.price > 1000 ? rData.price / 15000 : rData.price / 3.5) * 100, 100) + '%';
+            document.getElementById('fill-cps').style.width = Math.min((rData.cps / 300) * 100, 100) + '%';
+            document.getElementById('fill-cac').style.width = Math.min((rData.cac / 3.0) * 100, 100) + '%';
+            document.getElementById('fill-overhang').style.width = Math.min((rData.overhang / 25) * 100, 100) + '%';
+
+            // Check and update Pass-Fail UI indicators
+            const statusBadge = document.getElementById('disp-feasibility');
+            if (rData.feasibility.includes('Pass')) {
+                statusBadge.innerText = 'Gate 1 Pass';
+                statusBadge.className = 'feasibility-badge passed';
+            } else {
+                statusBadge.innerText = 'Gate 1 Blocked';
+                statusBadge.className = 'feasibility-badge failed';
+            }
+
+            // SVI rating label
+            const sviTag = document.getElementById('disp-svi-tag');
+            if (rData.svi >= 30) {
+                sviTag.innerText = 'High Velocity';
+                sviTag.style.color = 'var(--success)';
+            } else if (rData.svi >= 18) {
+                sviTag.innerText = 'Moderate Absorption';
+                sviTag.style.color = 'var(--accent)';
+            } else {
+                sviTag.innerText = 'Slow Absorption';
+                sviTag.style.color = 'var(--danger)';
+            }
+
+            // Overhang label
+            const ohTag = document.getElementById('disp-overhang-status');
+            if (rData.overhang <= 12) {
+                ohTag.innerText = 'Extremely Lean';
+                ohTag.style.color = 'var(--success)';
+            } else if (rData.overhang <= 18) {
+                ohTag.innerText = 'Healthy Core';
+                ohTag.style.color = 'var(--cyan)';
+            } else {
+                ohTag.innerText = 'Supply Overhang High';
+                ohTag.style.color = 'var(--danger)';
+            }
+        }
+
+        // SIMULATION MULTIPLIER FOR ASTRA PHOENIX whatsapp revival pipeline
+        function updateSimulation() {
+            const revivalAllocation = parseInt(document.getElementById('slider-revival').value);
+            document.getElementById('val-revival').innerText = revivalAllocation + '% spend';
+
+            // Calculate CAC reduction multiplier (increasing revival spend redirects traditional expensive performance budgets)
+            const reduction = (revivalAllocation - 10) * 0.012; // E.g. at 50% revival, 40 * 0.012 = 0.48% CAC reduction!
+            
+            // Apply dynamically to all regions in regionDb
+            for (const [key, value] of Object.entries(regionDb)) {
+                value.cac = value.baseCac - reduction;
+                // Minimum clamp
+                if (value.cac < 1.1) value.cac = 1.1;
+            }
+
+            // Update UI for currently selected region
+            const currentCacVal = regionDb[currentActiveRegion].cac;
+            document.getElementById('disp-cac').innerText = currentCacVal.toFixed(2) + '%';
+            document.getElementById('fill-cac').style.width = Math.min((currentCacVal / 3.0) * 100, 100) + '%';
+
+            // Update display message
+            const impactBox = document.getElementById('sim-impact-box');
+            const impactDesc = document.getElementById('sim-impact-desc');
+
+            const blendedCacSaving = (revivalAllocation - 10) * 0.012;
+            impactDesc.innerHTML = `Lead dropouts are routed to n8n webhook pipelines with dynamic LLM script offers. Blended lead acquisition CAC lowered by **${blendedCacSaving.toFixed(2)}%** across all Bangalore micro-markets.`;
+
+            // Adjust colors of the CAC widget tag
+            const cacStatus = document.getElementById('disp-cac-status');
+            if (currentCacVal <= 1.8) {
+                cacStatus.innerText = 'Exceptional Yield';
+                cacStatus.style.color = 'var(--success)';
+            } else if (currentCacVal <= 2.2) {
+                cacStatus.innerText = 'Optimal Yield';
+                cacStatus.style.color = 'var(--cyan)';
+            } else if (currentCacVal <= 2.5) {
+                cacStatus.innerText = 'Within Cap Limit';
+                cacStatus.style.color = 'var(--accent)';
+            } else {
+                cacStatus.innerText = 'CAC Spill Over';
+                cacStatus.style.color = 'var(--danger)';
+            }
+
+            // Sync with comparative table rows
+            for (const key of Object.keys(regionDb)) {
+                // Table rows are statically pre-drawn, but we can dynamically update the CAC values if necessary!
+            }
+        }
+
+        // CHART SETUP USING Chart.js
+        let ctx = document.getElementById('demandComparisonChart').getContext('2d');
+        let demandChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['North Belt', 'Whitefield E', 'Sarjapur E', 'South Belt', 'E-City SE', 'West Belt'],
+                datasets: [{
+                    label: 'Monthly Unit Absorption (SVI)',
+                    data: [18, 38, 28, 20, 32, 12],
+                    backgroundColor: [
+                        'rgba(0, 229, 255, 0.45)', // Cyan
+                        'rgba(0, 230, 118, 0.55)', // Emerald
+                        'rgba(0, 230, 118, 0.45)', // Emerald
+                        'rgba(0, 229, 255, 0.45)', // Cyan
+                        'rgba(0, 230, 118, 0.45)', // Emerald
+                        'rgba(255, 51, 102, 0.45)'  // Crimson
+                    ],
+                    borderColor: [
+                        '#00E5FF',
+                        '#00E676',
+                        '#00E676',
+                        '#00E5FF',
+                        '#00E676',
+                        '#FF3366'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#94A3B8',
+                            font: {
+                                family: 'Inter',
+                                size: 10
+                            }
+                        },
+                        suggestedMax: 45
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#94A3B8',
+                            font: {
+                                family: 'Inter',
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // WINDOW LOAD INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            selectRegion('east-sj');
+            renderHeatColors();
+        });
+    </script>
+</body>
+</html>

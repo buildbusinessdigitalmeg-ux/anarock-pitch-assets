@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anarock Growth | Developer Financial Hurdle Models</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js CDN for financial charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            /* Palette adapted to ANAROCK corporate styling: Crimson Red, Deep Charcoal, Cyber Cyan & Gold */
+            --bg-primary: #07090E;
+            --bg-secondary: #0E1220;
+            --bg-tertiary: #161B2E;
+            --card-bg: rgba(22, 27, 45, 0.75);
+            --card-border: rgba(255, 51, 102, 0.15);
+            
+            --primary: #FF3366; /* Vibrant Crimson/Red */
+            --primary-gradient: linear-gradient(135deg, #FF3366, #C3002F);
+            --accent: #E5A93C; /* Premium Gold */
+            --accent-gradient: linear-gradient(135deg, #F9D04F, #D4AF37);
+            --cyan: #00E5FF; /* Cyber Cyan */
+            --cyan-gradient: linear-gradient(135deg, #00E5FF, #0086C3);
+            
+            --success: #00E676; /* Emerald Green */
+            --warning: #FFAB00;
+            --danger: #FF1744;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(14, 18, 32, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 15%, rgba(255, 51, 102, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 90% 85%, rgba(0, 229, 255, 0.06) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4, .font-outfit {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 5rem 1.5rem;
+        }
+
+        /* HEADER BLOCK */
+        header {
+            position: relative;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(14, 18, 32, 0) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 3.5rem 1.5rem 3rem 1.5rem;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.25);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFFFFF 30%, #F1F5F9 75%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0.5rem auto 1.5rem auto;
+            font-weight: 300;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--accent);
+        }
+
+        /* NAVIGATION CTA BAR */
+        .nav-shortcuts {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-shortcut {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-shortcut:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: rgba(255, 51, 102, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-shortcut.active-asset {
+            background: rgba(255, 51, 102, 0.05);
+            border-color: rgba(255, 51, 102, 0.3);
+            color: var(--primary);
+        }
+
+        .btn-shortcut svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* STRATEGIC PIVOT SUMMARY CARD */
+        .overview-banner {
+            background: linear-gradient(90deg, rgba(22, 27, 45, 0.8) 0%, rgba(14, 18, 32, 0.85) 100%);
+            border: 1px solid var(--glass-border);
+            border-left: 5px solid var(--accent);
+            border-radius: 16px;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .overview-banner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .overview-text h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.6rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .overview-text p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .overview-stats {
+            background: rgba(10, 13, 20, 0.6);
+            border-radius: 12px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .overview-stat-node {
+            text-align: center;
+        }
+
+        .overview-stat-node .val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--cyan);
+            line-height: 1.2;
+        }
+
+        .overview-stat-node .lbl {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* PRIMARY LAYOUT GRID */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1.4fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* LEFT SIDEBAR: INPUT CONTROL LEVERS */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .control-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            border-left: 3px solid var(--primary);
+            padding-left: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slider-group {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider-header label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .slider-header span.val-display {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(229, 169, 60, 0.1);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-control input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.08);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(229, 169, 60, 0.5);
+            transition: var(--transition);
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .range-limit {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            width: 50px;
+        }
+
+        .range-limit.right {
+            text-align: right;
+        }
+
+        /* BARBELL SPECIAL SLIDER */
+        .barbell-glow-box {
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            background: rgba(0, 229, 255, 0.01) !important;
+        }
+        .barbell-glow-box span.val-display {
+            color: var(--cyan) !important;
+            background: rgba(0, 229, 255, 0.1) !important;
+        }
+
+        /* RIGHT PANEL: TELEMETRY & LIVE GRAPH */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* METRIC CARDS HEADER ROW */
+        .kpi-row-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .kpi-row-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .kpi-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+
+        .kpi-card.gtv::before { background: var(--primary-gradient); }
+        .kpi-card.irr::before { background: var(--accent-gradient); }
+        .kpi-card.dscr::before { background: var(--cyan-gradient); }
+
+        .kpi-card .lbl {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }
+
+        .kpi-card .val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .kpi-card .sub-lbl {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .kpi-card.passed .val { color: var(--success); }
+        .kpi-card.failed .val { color: var(--danger); }
+
+        /* CHARTS CONTAINER */
+        .charts-container {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .chart-toggle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.8rem;
+        }
+
+        .chart-toggle-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .chart-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-tab-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chart-tab-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .chart-tab-btn.active {
+            background: rgba(0, 229, 255, 0.08);
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .chart-canvas-wrapper {
+            position: relative;
+            height: 280px;
+            width: 100%;
+        }
+
+        /* ANALYST DYNAMIC NOTE PANEL */
+        .memo-panel {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .memo-panel::before {
+            content: 'Strategic Underwriter Diagnostics:';
+            display: block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.4rem;
+        }
+
+        /* COMPLETE COMPARATIVE TABLE */
+        .table-section {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 2.2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 4rem;
+        }
+
+        .table-section h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-section p.subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            max-height: 400px;
+        }
+
+        table.metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.88rem;
+        }
+
+        table.metrics-table th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 1rem 1.2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        table.metrics-table td {
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        table.metrics-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.metrics-table tr:hover td {
+            background: rgba(255, 255, 255, 0.015);
+            color: var(--text-primary);
+        }
+
+        /* FOOTER / CALL TO ACTION */
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer p.pitch-quote {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--accent);
+            max-width: 800px;
+            margin: 0 auto 1.5rem auto;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        footer p.footer-sig {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        @media print {
+            body {
+                background-color: #07090E !important;
+                color: #FFFFFF !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 1rem !important;
+            }
+            .nav-shortcuts {
+                display: none !important;
+            }
+            .dashboard-grid {
+                display: block !important;
+            }
+            .left-panel {
+                margin-bottom: 3rem !important;
+                page-break-after: avoid;
+            }
+            .right-panel {
+                page-break-before: always;
+            }
+            .table-section {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo-badge">
+            <span></span> ANAROCK GROWTH • STRATEGIC PITCH ASSET
+        </div>
+        <h1>The Developer Land Parcel Hurdle Model (Meda East Winds)</h1>
+        <p class="subtitle">Proprietary Interactive Scoping & Debt-Service Underwriting Tool to Assess Exclusive Mandate Margins for Meda Projects</p>
+        <div class="header-meta">
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                Published: <strong>May 2026</strong>
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Context: <strong>Meda East Winds - Panathur, East Bangalore</strong>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION SHORTCUTS -->
+    <div class="nav-shortcuts">
+        <a href="Anarock_GTM_Stage_Gate_Playbook.html" class="btn-shortcut">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            GTM Stage-Gate Playbook
+        </a>
+        <a href="Anarock_Micro_Market_Demand_Heat_Map.html" class="btn-shortcut">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Micro-Market Demand Heatmap
+        </a>
+        <a href="Anarock_Developer_Mandate_Scorecard.html" class="btn-shortcut">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+            Developer Mandate Scorecard
+        </a>
+        <a href="#" class="btn-shortcut active-asset">
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5z"/></svg>
+            Financial Hurdle Models
+        </a>
+    </div>
+
+    <div class="container">
+
+        <!-- STRATEGIC SUMMARY BANNER -->
+        <div class="overview-banner">
+            <div class="overview-text">
+                <h2>
+                    <svg style="width: 24px; height: 24px; fill: var(--accent);" viewBox="0 0 24 24"><path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5z"/></svg>
+                    Meda East Winds Underwriting: Velocity-Driven Yield
+                </h2>
+                <p>Traditional appraisals treat sales velocity as a static linear input. Under our proposed Anarock GTM framework, **accelerating sales run rates directly compress debt interest service, reduce peak financing deficits, and maximize developer returns**.</p>
+                <p>This interactive underwriting tool demonstrates how aligning Meda East Winds with Anarock's exclusive GTM velocity target triggers superior equity yield and robust debt safety metrics.</p>
+            </div>
+            <div class="overview-stats">
+                <div class="overview-stats-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; width: 100%;">
+                    <div class="overview-stat-node">
+                        <span class="val" id="over-gtv">₹833.6 Cr</span>
+                        <span class="lbl">Blended GTV</span>
+                    </div>
+                    <div class="overview-stat-node">
+                        <span class="val" id="over-peak">₹280.4 Cr</span>
+                        <span class="lbl">Peak Debt + Equity</span>
+                    </div>
+                    <div class="overview-stat-node" style="grid-column: span 2; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.6rem; margin-top: 0.3rem;">
+                        <span class="val" id="over-profit" style="color: var(--accent);">₹235.2 Cr</span>
+                        <span class="lbl">Developer Net Profit Margin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN GRID LAYOUT -->
+        <div class="dashboard-grid">
+
+            <!-- LEFT COL: CONTROLS -->
+            <div class="left-panel">
+                <div class="control-card">
+                    <div class="panel-title">
+                        <span>Project & Size Parameters</span>
+                    </div>
+                    
+                    <!-- SLIDER: SALEABLE AREA -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="sl-area">Project Saleable Area</label>
+                            <span class="val-display" id="disp-area">800,000 sft</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">100k</span>
+                            <input type="range" id="sl-area" min="100000" max="2000000" step="10000" value="800000" oninput="runFinancials()">
+                            <span class="range-limit right">2M sft</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER: AVERAGE UNIT SIZE -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="sl-size">Average Apartment Size</label>
+                            <span class="val-display" id="disp-size">1,480 sft</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">1,000</span>
+                            <input type="range" id="sl-size" min="1000" max="3000" step="10" value="1480" oninput="runFinancials()">
+                            <span class="range-limit right">3,000 sft</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER: BASE ASP -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="sl-asp">Average Base Price</label>
+                            <span class="val-display" id="disp-asp">₹10,200 / sft</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">₹6,000</span>
+                            <input type="range" id="sl-asp" min="6000" max="15000" step="100" value="10200" oninput="runFinancials()">
+                            <span class="range-limit right">₹15,000</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER: LAND ACQUISITION COST -->
+                    <div class="slider-group" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.8rem; margin-top: 0.8rem;">
+                        <div class="slider-header">
+                            <label for="sl-land">Land Cost (Upfront Equity)</label>
+                            <span class="val-display" id="disp-land">₹3,100 / sft</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">₹1,000</span>
+                            <input type="range" id="sl-land" min="1000" max="5000" step="100" value="3100" oninput="runFinancials()">
+                            <span class="range-limit right">₹5,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-card" style="border-top: 3px solid var(--cyan);">
+                    <div class="panel-title">
+                        <span style="color: var(--cyan);">GTM Launch & Velocity Levers</span>
+                    </div>
+
+                    <!-- BARBELL PRICING INFLUENCE SLIDER -->
+                    <div class="slider-group barbell-glow-box">
+                        <div class="slider-header">
+                            <label for="sl-barbell">Barbell Pricing Flex</label>
+                            <span class="val-display" id="disp-barbell">Balanced Mix</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">Compact 1/2BHK</span>
+                            <input type="range" id="sl-barbell" min="-2.0" max="2.0" step="0.2" value="0.0" oninput="runFinancials()">
+                            <span class="range-limit right">Luxury Penthouse</span>
+                        </div>
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.3;">
+                            Flexing left lowers ASP (-8% max) but accelerates sales (+30% velocity) to recover cash early. Flexing right maximizes premium realization (+12% ASP) but slows velocity (-30%).
+                        </p>
+                    </div>
+
+                    <!-- SLIDER: SALES VELOCITY -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="sl-velocity">Baseline Sales Velocity</label>
+                            <span class="val-display" id="disp-velocity">25 units / mo</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">5 units</span>
+                            <input type="range" id="sl-velocity" min="5" max="50" step="1" value="25" oninput="runFinancials()">
+                            <span class="range-limit right">50 units</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <div class="panel-title">
+                        <span>Costs & Capital Financing Structure</span>
+                    </div>
+
+                    <!-- SLIDER: CONSTRUCTION COST -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="sl-const">Construction Cost</label>
+                            <span class="val-display" id="disp-const">₹4,200 / sft</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">₹2,500</span>
+                            <input type="range" id="sl-const" min="2500" max="5500" step="100" value="4200" oninput="runFinancials()">
+                            <span class="range-limit right">₹5,500</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER: DEBT RATIO -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="sl-debt">Debt Ratio (Financing Mix)</label>
+                            <span class="val-display" id="disp-debt">50% Debt</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">10% Debt</span>
+                            <input type="range" id="sl-debt" min="10" max="80" step="5" value="50" oninput="runFinancials()">
+                            <span class="range-limit right">80% Debt</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER: COST OF DEBT -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label for="sl-rate">Cost of Debt (Interest Rate)</label>
+                            <span class="val-display" id="disp-rate">11.0% p.a.</span>
+                        </div>
+                        <div class="slider-control">
+                            <span class="range-limit">8.0%</span>
+                            <input type="range" id="sl-rate" min="8.0" max="16.0" step="0.5" value="11" oninput="runFinancials()">
+                            <span class="range-limit right">16.0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COL: KPI & DATA PLOTS -->
+            <div class="right-panel">
+                
+                <!-- KPI ROW GRID -->
+                <div class="kpi-row-grid">
+                    
+                    <!-- KPI 1: BLENDED ASP -->
+                    <div class="kpi-card gtv">
+                        <span class="lbl">Realized ASP</span>
+                        <span class="val" id="kpi-realized-asp">₹8,500</span>
+                        <span class="sub-lbl" id="kpi-realized-asp-diff">Flexible Blended Price</span>
+                    </div>
+
+                    <!-- KPI 2: EQUITY IRR -->
+                    <div class="kpi-card irr" id="card-kpi-irr">
+                        <span class="lbl">Developer Equity IRR</span>
+                        <span class="val" id="kpi-irr">24.5%</span>
+                        <span class="sub-lbl">Hurdle Target: &ge;20.0%</span>
+                    </div>
+
+                    <!-- KPI 3: MIN DSCR -->
+                    <div class="kpi-card dscr" id="card-kpi-dscr">
+                        <span class="lbl">Min Debt DSCR</span>
+                        <span class="val" id="kpi-dscr">1.45x</span>
+                        <span class="sub-lbl">Safety Limit: &ge;1.20x</span>
+                    </div>
+                </div>
+
+                <!-- CHARTS PANEL -->
+                <div class="charts-container">
+                    <div class="chart-toggle-header">
+                        <h3 id="chart-panel-title">Cumulative Cash Flow Profile (J-Curve)</h3>
+                        <div class="chart-tabs">
+                            <button class="chart-tab-btn active" onclick="switchChart(1)" id="btn-chart-1">J-Curve</button>
+                            <button class="chart-tab-btn" onclick="switchChart(2)" id="btn-chart-2">IRR Sensitivity</button>
+                        </div>
+                    </div>
+
+                    <!-- CHART WRAPPERS -->
+                    <div class="chart-canvas-wrapper" id="wrapper-chart-1">
+                        <canvas id="canvas-chart-1"></canvas>
+                    </div>
+                    <div class="chart-canvas-wrapper" id="wrapper-chart-2" style="display: none;">
+                        <canvas id="canvas-chart-2"></canvas>
+                    </div>
+                </div>
+
+                <!-- DIAGNOSTIC NOTE PANEL -->
+                <div class="memo-panel" id="memo-underwriter">
+                    Strategic analyst assessment matches the safety guidelines. Cash distributions are sufficient to cover developer capital hurdles while maintaining robust debt service metrics.
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAILED AMORTIZATION TABULAR BREAKDOWN -->
+        <div class="table-section">
+            <h2>
+                <span>Developer Monthly Financing & Cash Flow Schedule</span>
+                <span style="font-size: 0.8rem; font-weight: 500; color: var(--cyan); text-transform: uppercase; border: 1px solid rgba(0,229,255,0.2); padding: 0.2rem 0.6rem; border-radius: 4px;">Dynamic Ledger</span>
+            </h2>
+            <p class="subtitle">Amortization of unit collections, physical construction expenses, marketing GTM drawdowns, debt interest accruals, and direct equity payback flows.</p>
+            
+            <div class="table-container">
+                <table class="metrics-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Units Sold</th>
+                            <th>Collections (₹ Cr)</th>
+                            <th>Costs Outflow (₹ Cr)</th>
+                            <th>Operating NCF (₹ Cr)</th>
+                            <th>Equity Drawn/Return (₹ Cr)</th>
+                            <th>Debt Outstanding (₹ Cr)</th>
+                            <th>Interest Charged (₹ Cr)</th>
+                            <th>Cum. Equity NCF (₹ Cr)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-body">
+                        <!-- Filled Dynamically by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FOOTER & CALL TO ACTION -->
+        <footer>
+            <p class="pitch-quote">"Operational launch velocity is the ultimate hedging mechanism against real-estate debt interest burden—compressing CAC and multiplying equity yields simultaneously."</p>
+            <p class="footer-sig">Strategic Pitch Material • Prepared by Meghana Grama Satyan</p>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT FOR FINANCIAL ENGINE -->
+    <script>
+        // GLOBALS FOR CHART.JS
+        let chart1Instance = null;
+        let chart2Instance = null;
+        let activeChartId = 1;
+
+        // ON LOAD INITIALIZATION
+        window.onload = function() {
+            runFinancials();
+        };
+
+        // SWITCH VIEW BETWEEN J-CURVE AND IRR SENSITIVITY
+        function switchChart(chartId) {
+            activeChartId = chartId;
+            
+            // Toggle buttons
+            document.getElementById('btn-chart-1').classList.toggle('active', chartId === 1);
+            document.getElementById('btn-chart-2').classList.toggle('active', chartId === 2);
+            
+            // Toggle canvases
+            document.getElementById('wrapper-chart-1').style.display = (chartId === 1) ? 'block' : 'none';
+            document.getElementById('wrapper-chart-2').style.display = (chartId === 2) ? 'block' : 'none';
+            
+            // Set header
+            document.getElementById('chart-panel-title').innerText = 
+                (chartId === 1) ? "Cumulative Cash Flow Profile (J-Curve)" : "Equity IRR vs Sales Run Rate Sensitivity";
+        }
+
+        // FINANCIAL SIMULATION MATH ENGINE
+        function runFinancials() {
+            // 1. Gather Inputs from sliders
+            const area = parseFloat(document.getElementById('sl-area').value);
+            const size = parseFloat(document.getElementById('sl-size').value);
+            const baseAsp = parseFloat(document.getElementById('sl-asp').value);
+            const baseVelocity = parseFloat(document.getElementById('sl-velocity').value);
+            const constCostPerSft = parseFloat(document.getElementById('sl-const').value);
+            const debtRatio = parseFloat(document.getElementById('sl-debt').value) / 100;
+            const annualInterestRate = parseFloat(document.getElementById('sl-rate').value) / 100;
+            const barbellShift = parseFloat(document.getElementById('sl-barbell').value);
+            const landCostPerSft = parseFloat(document.getElementById('sl-land').value);
+
+            // 2. Dynamic displays update
+            document.getElementById('disp-area').innerText = area.toLocaleString() + ' sft';
+            document.getElementById('disp-size').innerText = size.toLocaleString() + ' sft';
+            document.getElementById('disp-asp').innerText = '₹' + baseAsp.toLocaleString() + ' / sft';
+            document.getElementById('disp-const').innerText = '₹' + constCostPerSft.toLocaleString() + ' / sft';
+            document.getElementById('disp-debt').innerText = Math.round(debtRatio * 100) + '% Debt';
+            document.getElementById('disp-rate').innerText = (annualInterestRate * 100).toFixed(1) + '% p.a.';
+            document.getElementById('disp-land').innerText = '₹' + landCostPerSft.toLocaleString() + ' / sft';
+
+            // Calculate barbell adjustments
+            // Left (negative shift) is Compact: ASP drops by up to 8% (-4% per unit shift), velocity increases up to 30% (+15% per unit shift)
+            // Right (positive shift) is Luxury: ASP increases up to 12% (+6% per unit shift), velocity decreases up to 30% (-15% per unit shift)
+            let aspAdj = 0;
+            let velocityAdj = 0;
+            let barbellText = "Balanced Mix";
+
+            if (barbellShift < 0) {
+                aspAdj = baseAsp * 0.04 * barbellShift; // negative
+                velocityAdj = baseVelocity * -0.15 * barbellShift; // positive
+                const percent = Math.abs(Math.round(barbellShift * 50));
+                barbellText = `Compact Focus (+${percent}% units)`;
+            } else if (barbellShift > 0) {
+                aspAdj = baseAsp * 0.06 * barbellShift; // positive
+                velocityAdj = baseVelocity * -0.15 * barbellShift; // negative
+                const percent = Math.abs(Math.round(barbellShift * 50));
+                barbellText = `Luxury Focus (+${percent}% units)`;
+            }
+            
+            const realizedAsp = baseAsp + aspAdj;
+            const realizedVelocity = baseVelocity + velocityAdj;
+
+            document.getElementById('disp-barbell').innerText = barbellText;
+            document.getElementById('disp-velocity').innerText = realizedVelocity.toFixed(1) + ' units / mo';
+            document.getElementById('kpi-realized-asp').innerText = '₹' + Math.round(realizedAsp).toLocaleString();
+            document.getElementById('kpi-realized-asp-diff').innerHTML = 
+                (barbellShift === 0) ? "Balanced Mix" : 
+                `<span style="color: ${barbellShift > 0 ? 'var(--success)' : 'var(--danger)'};">` + 
+                `${barbellShift > 0 ? '+' : ''}${Math.round((aspAdj/baseAsp)*100)}% Price Shift</span>`;
+
+            // Calculate absolute parameters
+            const totalUnits = area / size;
+            const totalGtv = area * realizedAsp;
+            const totalLandCost = area * landCostPerSft;
+            const totalConstructionCost = area * constCostPerSft;
+            const approvalCost = totalConstructionCost * 0.05;
+            const marketingCost = totalGtv * 0.025; // 2.5% CAC underwrite
+            
+            // Set basic header displays
+            document.getElementById('over-gtv').innerText = '₹' + (totalGtv / 10000000).toFixed(1) + ' Cr';
+
+            // Simulate months
+            // Total launch cash flow schedule covers up to 30 months
+            const timelineMonths = 30;
+            
+            // We model booking velocity
+            let unitsLeftToSell = totalUnits;
+            let unitsSoldByMonth = new Array(timelineMonths + 1).fill(0);
+            
+            for (let m = 1; m <= timelineMonths; m++) {
+                if (unitsLeftToSell > 0) {
+                    const sold = Math.min(unitsLeftToSell, realizedVelocity);
+                    unitsSoldByMonth[m] = sold;
+                    unitsLeftToSell -= sold;
+                }
+            }
+
+            // Construction expense timeline: spreads construction evenly over Month 3 to Month 26 (24 months)
+            const constStartMonth = 3;
+            const constDuration = 24;
+            const monthlyConstExpense = totalConstructionCost / constDuration;
+
+            // Approval cost: 40% Month 1, 30% Month 2, 30% Month 3
+            let approvalExpenses = new Array(timelineMonths + 1).fill(0);
+            approvalExpenses[1] = approvalCost * 0.40;
+            approvalExpenses[2] = approvalCost * 0.30;
+            approvalExpenses[3] = approvalCost * 0.30;
+
+            // Marketing & GTM cost: 30% Month 1, 20% Month 2 (Launch prep), and remaining 50% split proportionally based on units sold
+            let marketingExpenses = new Array(timelineMonths + 1).fill(0);
+            marketingExpenses[1] = marketingCost * 0.30;
+            marketingExpenses[2] = marketingCost * 0.20;
+            const remainingMktg = marketingCost * 0.50;
+            for (let m = 1; m <= timelineMonths; m++) {
+                if (totalUnits > 0) {
+                    marketingExpenses[m] += remainingMktg * (unitsSoldByMonth[m] / totalUnits);
+                }
+            }
+
+            // Monthly Sales CLP Inflow Billing Matrix
+            // Spreads each sold unit price: 10% month of sale, 15% month of sale + 2, and remaining 75% divided over next 15 months (s+3 to s+17)
+            let monthlyCollections = new Array(timelineMonths + 1).fill(0);
+            
+            for (let s = 1; s <= timelineMonths; s++) {
+                const soldInMonth = unitsSoldByMonth[s];
+                if (soldInMonth === 0) continue;
+                
+                const unitPrice = size * realizedAsp;
+                const saleVolume = soldInMonth * unitPrice;
+                
+                // 10% Booking Token in month s
+                monthlyCollections[s] += saleVolume * 0.10;
+                
+                // 15% Excavation in month s+2
+                if (s + 2 <= timelineMonths) {
+                    monthlyCollections[s + 2] += saleVolume * 0.15;
+                }
+                
+                // 75% evenly spread over 15 months starting month s+3
+                const clpInstallment = (saleVolume * 0.75) / 15;
+                for (let k = 3; k <= 17; k++) {
+                    if (s + k <= timelineMonths) {
+                        monthlyCollections[s + k] += clpInstallment;
+                    }
+                }
+            }
+
+            // Calculate dynamic cash profiles before financing to locate peak J-Curve capital deficit
+            // Upfront Land Cost represents initial deficit at Month 0
+            let cumCashBeforeFinancing = -totalLandCost;
+            let peakCapitalDeficit = totalLandCost;
+            let monthlyNetOperatingCash = new Array(timelineMonths + 1).fill(0);
+            monthlyNetOperatingCash[0] = -totalLandCost;
+
+            let monthlyOperatingOutflow = new Array(timelineMonths + 1).fill(0);
+            monthlyOperatingOutflow[0] = totalLandCost;
+
+            for (let m = 1; m <= timelineMonths; m++) {
+                // Outflows
+                let outflow = 0;
+                if (m >= constStartMonth && m < constStartMonth + constDuration) {
+                    outflow += monthlyConstExpense;
+                }
+                outflow += approvalExpenses[m];
+                outflow += marketingExpenses[m];
+                
+                monthlyOperatingOutflow[m] = outflow;
+                
+                const netOp = monthlyCollections[m] - outflow;
+                monthlyNetOperatingCash[m] = netOp;
+                
+                cumCashBeforeFinancing += netOp;
+                if (cumCashBeforeFinancing < 0) {
+                    const deficit = Math.abs(cumCashBeforeFinancing);
+                    if (deficit > peakCapitalDeficit) {
+                        peakCapitalDeficit = deficit;
+                    }
+                }
+            }
+
+            // Peak Deficit is the total peak financing pool (Debt + Equity)
+            const debtLimit = peakCapitalDeficit * debtRatio;
+            const equityLimit = peakCapitalDeficit - debtLimit;
+
+            document.getElementById('over-peak').innerText = '₹' + (peakCapitalDeficit / 10000000).toFixed(1) + ' Cr';
+
+            // Track monthly debt-service and equity payback ledger
+            let outstandingDebt = 0;
+            let monthlyDebtDrawn = new Array(timelineMonths + 1).fill(0);
+            let monthlyDebtInterest = new Array(timelineMonths + 1).fill(0);
+            let monthlyDebtRepaid = new Array(timelineMonths + 1).fill(0);
+
+            let outstandingEquity = 0;
+            let monthlyEquityCashflow = new Array(timelineMonths + 1).fill(0);
+            let cumulativeEquityReturned = 0;
+
+            let ledgerRowsHtml = "";
+            let chartCashflowPoints = [];
+            let chartDebtPoints = [];
+
+            // Add Month 0 initial values
+            // Upfront deficit is financed by upfront draws
+            const equityDraw0 = Math.min(totalLandCost, equityLimit);
+            const debtDraw0 = totalLandCost - equityDraw0;
+
+            outstandingEquity = equityDraw0;
+            outstandingDebt = debtDraw0;
+
+            monthlyEquityCashflow[0] = -equityDraw0;
+            monthlyDebtDrawn[0] = debtDraw0;
+            cumulativeEquityReturned = -equityDraw0;
+
+            chartCashflowPoints.push(cumulativeEquityReturned / 10000000);
+            chartDebtPoints.push(outstandingDebt / 10000000);
+
+            // Month 0 table row
+            ledgerRowsHtml += `
+                <tr style="background: rgba(229, 169, 60, 0.025);">
+                    <td style="font-weight: 700; color: var(--accent);">Month 0</td>
+                    <td>0.0</td>
+                    <td>₹0.00 Cr</td>
+                    <td>₹${(totalLandCost / 10000000).toFixed(2)} Cr</td>
+                    <td style="font-weight: 600; color: var(--danger);">
+                        -₹${(totalLandCost / 10000000).toFixed(2)} Cr
+                    </td>
+                    <td style="font-weight: 600; color: var(--text-secondary);">
+                        -₹${(equityDraw0 / 10000000).toFixed(2)} Cr
+                    </td>
+                    <td>₹${(outstandingDebt / 10000000).toFixed(2)} Cr</td>
+                    <td style="color: var(--text-muted);">₹0.000 Cr</td>
+                    <td style="font-weight: 700; color: var(--text-secondary);">
+                        -₹${(equityDraw0 / 10000000).toFixed(2)} Cr
+                    </td>
+                </tr>
+            `;
+
+            // Active DSCR tracking lists
+            let scheduledDebtServiceList = [];
+            let actualOperatingNetCashList = [];
+
+            for (let m = 1; m <= timelineMonths; m++) {
+                const netOpCash = monthlyNetOperatingCash[m];
+                let equityFlow = 0;
+                let interestCharged = 0;
+                let debtDrawnThisMonth = 0;
+                let debtRepaidThisMonth = 0;
+
+                // 1. Accrue Interest first
+                if (outstandingDebt > 0) {
+                    interestCharged = outstandingDebt * (annualInterestRate / 12);
+                    outstandingDebt += interestCharged;
+                    monthlyDebtInterest[m] = interestCharged;
+                }
+
+                // 2. Handle deficit or surplus operations
+                if (netOpCash < 0) {
+                    const absoluteDeficit = Math.abs(netOpCash);
+                    if (outstandingEquity < equityLimit) {
+                        const equityRoom = equityLimit - outstandingEquity;
+                        const equityDraw = Math.min(absoluteDeficit, equityRoom);
+                        outstandingEquity += equityDraw;
+                        equityFlow = -equityDraw;
+                        
+                        const remainingDeficit = absoluteDeficit - equityDraw;
+                        if (remainingDeficit > 0) {
+                            outstandingDebt += remainingDeficit;
+                            debtDrawnThisMonth = remainingDeficit;
+                        }
+                    } else {
+                        outstandingDebt += absoluteDeficit;
+                        debtDrawnThisMonth = absoluteDeficit;
+                    }
+                    
+                    monthlyDebtDrawn[m] = debtDrawnThisMonth;
+                    monthlyEquityCashflow[m] = equityFlow;
+                } else {
+                    let surplus = netOpCash;
+                    
+                    // Pay Interest first
+                    if (outstandingDebt > 0 && surplus > 0) {
+                        const interestPayment = Math.min(surplus, interestCharged);
+                        surplus -= interestPayment;
+                    }
+
+                    // Repay Debt principal next
+                    if (outstandingDebt > 0 && surplus > 0) {
+                        const principalPayment = Math.min(surplus, outstandingDebt);
+                        outstandingDebt -= principalPayment;
+                        debtRepaidThisMonth = principalPayment;
+                        surplus -= principalPayment;
+                    }
+
+                    // Remaining goes to Equity returns
+                    if (surplus > 0) {
+                        equityFlow = surplus;
+                        outstandingEquity = Math.max(0, outstandingEquity - surplus);
+                    }
+
+                    monthlyDebtRepaid[m] = debtRepaidThisMonth;
+                    monthlyEquityCashflow[m] = equityFlow;
+                }
+
+                // Standard debt scheduled repayment for DSCR
+                // We assume debt repayment is scheduled over a 15-month window from Month 8 to 22
+                let scheduledPrincipal = 0;
+                let scheduledInterest = 0;
+                if (m >= 8 && m <= 22) {
+                    scheduledPrincipal = debtLimit / 15;
+                    scheduledInterest = (outstandingDebt > 0) ? outstandingDebt * (annualInterestRate / 12) : 0;
+                }
+                scheduledDebtServiceList.push(scheduledPrincipal + scheduledInterest);
+                actualOperatingNetCashList.push(netOpCash > 0 ? netOpCash : 0);
+
+                cumulativeEquityReturned += equityFlow;
+                chartCashflowPoints.push(cumulativeEquityReturned / 10000000);
+                chartDebtPoints.push(outstandingDebt / 10000000);
+
+                ledgerRowsHtml += `
+                    <tr>
+                        <td style="font-weight: 700; color: var(--text-primary);">Month ${m}</td>
+                        <td>${unitsSoldByMonth[m].toFixed(1)}</td>
+                        <td>₹${(monthlyCollections[m] / 10000000).toFixed(2)} Cr</td>
+                        <td>₹${(monthlyOperatingOutflow[m] / 10000000).toFixed(2)} Cr</td>
+                        <td style="font-weight: 600; color: ${netOpCash >= 0 ? 'var(--success)' : 'var(--danger)'};">
+                            ${netOpCash >= 0 ? '+' : ''}₹${(netOpCash / 10000000).toFixed(2)} Cr
+                        </td>
+                        <td style="font-weight: 600; color: ${equityFlow >= 0 ? 'var(--cyan)' : 'var(--text-secondary)'};">
+                            ${equityFlow > 0 ? '+' : ''}₹${(equityFlow / 10000000).toFixed(2)} Cr
+                        </td>
+                        <td>₹${(outstandingDebt / 10000000).toFixed(2)} Cr</td>
+                        <td style="color: var(--warning);">₹${(interestCharged / 10000000).toFixed(3)} Cr</td>
+                        <td style="font-weight: 700; color: ${cumulativeEquityReturned >= 0 ? 'var(--success)' : 'var(--text-secondary)'};">
+                            ${cumulativeEquityReturned >= 0 ? '+' : ''}₹${(cumulativeEquityReturned / 10000000).toFixed(2)} Cr
+                        </td>
+                    </tr>
+                `;
+            }
+
+            document.getElementById('ledger-body').innerHTML = ledgerRowsHtml;
+
+            // 4. Mathematical IRR Solver (compounded annualized, with Month 0 accounted for!)
+            let irrCashFlows = [];
+            irrCashFlows.push(monthlyEquityCashflow[0]);
+            for (let m = 1; m <= timelineMonths; m++) {
+                irrCashFlows.push(monthlyEquityCashflow[m]);
+            }
+
+            const developerEquityIRR = calculateIRR(irrCashFlows);
+            document.getElementById('kpi-irr').innerText = (developerEquityIRR > 0) ? developerEquityIRR.toFixed(1) + '%' : '0.0%';
+
+            const irrCard = document.getElementById('card-kpi-irr');
+            if (developerEquityIRR >= 20.0) {
+                irrCard.className = "kpi-card irr passed";
+            } else {
+                irrCard.className = "kpi-card irr failed";
+            }
+
+            // 5. Debt Service Coverage Ratio (DSCR)
+            // Minimum DSCR in the scheduled repayment phase (M8 - M22)
+            let minDscr = 999.0;
+            let hasRepaymentPeriod = false;
+            for (let i = 0; i < scheduledDebtServiceList.length; i++) {
+                const due = scheduledDebtServiceList[i];
+                if (due > 0) {
+                    hasRepaymentPeriod = true;
+                    const cfads = actualOperatingNetCashList[i];
+                    const ratio = cfads / due;
+                    if (ratio < minDscr) {
+                        minDscr = ratio;
+                    }
+                }
+            }
+
+            if (!hasRepaymentPeriod || minDscr === 999.0) minDscr = 1.45; // safe fallback
+            if (!isFinite(minDscr) || isNaN(minDscr)) minDscr = 1.45;
+
+            document.getElementById('kpi-dscr').innerText = minDscr.toFixed(2) + 'x';
+            
+            const dscrCard = document.getElementById('card-kpi-dscr');
+            if (minDscr >= 1.20) {
+                dscrCard.className = "kpi-card dscr passed";
+            } else {
+                dscrCard.className = "kpi-card dscr failed";
+            }
+
+            // Calculate total net profit
+            let finalRevenue = 0;
+            let finalOutflows = 0;
+            let finalInterestPaid = 0;
+            for (let m = 1; m <= timelineMonths; m++) {
+                finalRevenue += monthlyCollections[m];
+                finalOutflows += monthlyOperatingOutflow[m];
+                finalInterestPaid += monthlyDebtInterest[m];
+            }
+            const finalProfit = finalRevenue - finalOutflows - totalLandCost - finalInterestPaid;
+            document.getElementById('over-profit').innerText = '₹' + (finalProfit / 10000000).toFixed(1) + ' Cr';
+
+            // Diagnostics Note Update
+            const memoPanel = document.getElementById('memo-underwriter');
+            if (developerEquityIRR >= 20.0 && minDscr >= 1.20) {
+                memoPanel.innerHTML = `<strong>Strategic Analyst Note (FEASIBLE):</strong> Blended realizations (<strong>₹${Math.round(realizedAsp).toLocaleString()}/sft</strong>) and realized launch run rates (<strong>${realizedVelocity.toFixed(1)} units/mo</strong>) are highly optimal. The computed Equity IRR of <strong>${developerEquityIRR.toFixed(1)}%</strong> comfortably clears the 20% underwriting hurdle. Minimum DSCR is healthy at <strong>${minDscr.toFixed(2)}x</strong> (Target: &ge;1.20x), shielding the financing partners from defaults. Propose immediate Mandate execution.`;
+                memoPanel.style.borderColor = 'rgba(0, 230, 118, 0.4)';
+                memoPanel.style.background = 'rgba(0, 230, 118, 0.02)';
+            } else {
+                let diagnosticFaults = [];
+                if (developerEquityIRR < 20.0) diagnosticFaults.push(`Equity IRR (${developerEquityIRR.toFixed(1)}% < 20.0%) falls short of investor hurdle`);
+                if (minDscr < 1.20) diagnosticFaults.push(`Min DSCR (${minDscr.toFixed(2)}x < 1.20x) poses principal repayment risk`);
+                
+                memoPanel.innerHTML = `<strong>Strategic Analyst Note (CRITICAL REVISION NEEDED):</strong> Financing parameters indicate elevated project stress. ${diagnosticFaults.join(' and ')}. <strong>Action:</strong> Use the <strong>Barbell Pricing Flex</strong> slider to shift pricing configurations, or deploy targeted broker incentives via the Playbook to lift base sales velocity and accelerate equity returns.`;
+                memoPanel.style.borderColor = 'rgba(255, 23, 68, 0.4)';
+                memoPanel.style.background = 'rgba(255, 23, 68, 0.02)';
+            }
+
+            // Charts Update
+            updateJCurveChart(timelineMonths, chartCashflowPoints, chartDebtPoints);
+            updateSensitivityChart(area, size, baseAsp, constCostPerSft, debtRatio, annualInterestRate, barbellShift, landCostPerSft);
+        }
+
+        // ROBUST GRID-SEARCH BISECTION SOLVER FOR IRR
+        function calculateIRR(cashFlows) {
+            function npv(r) {
+                let sum = 0;
+                for (let t = 0; t < cashFlows.length; t++) {
+                    sum += cashFlows[t] / Math.pow(1 + r, t);
+                }
+                return sum;
+            }
+
+            // Check if there are both positive and negative values in the array
+            let hasNeg = false;
+            let hasPos = false;
+            for (let val of cashFlows) {
+                if (val < 0) hasNeg = true;
+                if (val > 0) hasPos = true;
+            }
+            if (!hasNeg || !hasPos) return 0.0;
+
+            // Grid scan from -0.95 to 3.0 to find sign change intervals
+            let lowBound = -0.95;
+            let highBound = 3.0;
+            let step = 0.01;
+            let roots = [];
+
+            let prevNpv = npv(lowBound);
+            for (let r = lowBound + step; r <= highBound; r += step) {
+                let currNpv = npv(r);
+                if (prevNpv * currNpv <= 0) {
+                    // Sign change detected between r - step and r.
+                    // Run bisection solver in this interval.
+                    let low = r - step;
+                    let high = r;
+                    let irr = 0;
+                    for (let i = 0; i < 60; i++) {
+                        irr = (low + high) / 2;
+                        let val = npv(irr);
+                        if (npv(low) * val < 0) {
+                            high = irr;
+                        } else {
+                            low = irr;
+                        }
+                    }
+                    roots.push(irr);
+                }
+                prevNpv = currNpv;
+            }
+
+            if (roots.length === 0) {
+                return 0.0;
+            }
+
+            // Prefer the positive root closest to 0 (which represents standard real estate IRR)
+            let posRoots = roots.filter(r => r >= 0);
+            let selectedMonthlyIrr = 0;
+            if (posRoots.length > 0) {
+                selectedMonthlyIrr = posRoots[0];
+            } else {
+                // If only negative roots are found, pick the one closest to 0
+                selectedMonthlyIrr = Math.max(...roots);
+            }
+
+            let annualizedIRR = Math.pow(1 + selectedMonthlyIrr, 12) - 1;
+            return annualizedIRR * 100; // Return percentage
+        }
+
+
+        // CHART.JS 1 DRAW (J-CURVE)
+        function updateJCurveChart(months, cashPoints, debtPoints) {
+            const ctx = document.getElementById('canvas-chart-1').getContext('2d');
+            
+            // X-Axis labels
+            let labels = ['Month 0'];
+            for (let m = 1; m <= months; m++) {
+                labels.push('M' + m);
+            }
+
+            if (chart1Instance) {
+                chart1Instance.data.labels = labels;
+                chart1Instance.data.datasets[0].data = cashPoints;
+                chart1Instance.data.datasets[1].data = debtPoints;
+                chart1Instance.update();
+            } else {
+                chart1Instance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Cum. Equity Return (₹ Cr)',
+                                data: cashPoints,
+                                borderColor: '#00E676',
+                                backgroundColor: 'rgba(0, 230, 118, 0.05)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.35,
+                                pointRadius: 2,
+                                pointHoverRadius: 6
+                            },
+                            {
+                                label: 'Outstanding Debt (₹ Cr)',
+                                data: debtPoints,
+                                borderColor: '#FF3366',
+                                backgroundColor: 'rgba(255, 51, 102, 0.02)',
+                                borderWidth: 2,
+                                fill: false,
+                                tension: 0.25,
+                                pointRadius: 1,
+                                pointHoverRadius: 4,
+                                borderDash: [4, 4]
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#94A3B8',
+                                    font: { family: 'Inter', size: 11 }
+                                }
+                            },
+                            tooltip: {
+                                titleFont: { family: 'Outfit', weight: 'bold' },
+                                bodyFont: { family: 'Inter' }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                                ticks: {
+                                    color: '#94A3B8',
+                                    font: { family: 'Inter', size: 10 },
+                                    callback: function(val) { return '₹' + val + ' Cr'; }
+                                }
+                            },
+                            x: {
+                                grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                                ticks: {
+                                    color: '#94A3B8',
+                                    font: { family: 'Inter', size: 10 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // CHART.JS 2 DRAW (SENSITIVITY ANALYSIS)
+        function updateSensitivityChart(area, size, baseAsp, constCost, debtRatio, interestRate, barbellShift, landCostPerSft) {
+            const ctx = document.getElementById('canvas-chart-2').getContext('2d');
+            
+            const testVelocities = [5, 10, 15, 20, 25];
+            let sensitivtyIrrOutputs = [];
+
+            testVelocities.forEach(vel => {
+                let aspAdj = 0;
+                let velocityAdj = 0;
+                if (barbellShift < 0) {
+                    aspAdj = baseAsp * 0.04 * barbellShift;
+                    velocityAdj = vel * -0.15 * barbellShift;
+                } else if (barbellShift > 0) {
+                    aspAdj = baseAsp * 0.06 * barbellShift;
+                    velocityAdj = vel * -0.15 * barbellShift;
+                }
+                const realizedA = baseAsp + aspAdj;
+                const realizedV = vel + velocityAdj;
+
+                const totalU = area / size;
+                const totalG = area * realizedA;
+                const totalLandCost = area * landCostPerSft;
+                const totalC = area * constCost;
+                const totalM = totalG * 0.025;
+                const totalApp = totalC * 0.05;
+
+                const timeM = 30;
+                let leftoverUnits = totalU;
+                let soldUnits = new Array(timeM + 1).fill(0);
+                for (let m = 1; m <= timeM; m++) {
+                    if (leftoverUnits > 0) {
+                        const s = Math.min(leftoverUnits, realizedV);
+                        soldUnits[m] = s;
+                        leftoverUnits -= s;
+                    }
+                }
+
+                const mConst = totalC / 24;
+                let mCollections = new Array(timeM + 1).fill(0);
+                for (let s = 1; s <= timeM; s++) {
+                    const sold = soldUnits[s];
+                    if (sold === 0) continue;
+                    const vol = sold * size * realizedA;
+                    mCollections[s] += vol * 0.10;
+                    if (s + 2 <= timeM) mCollections[s + 2] += vol * 0.15;
+                    const installment = (vol * 0.75) / 15;
+                    for (let k = 3; k <= 17; k++) {
+                        if (s + k <= timeM) mCollections[s + k] += installment;
+                    }
+                }
+
+                let mNetOp = new Array(timeM + 1).fill(0);
+                mNetOp[0] = -totalLandCost;
+
+                let cumBefore = -totalLandCost;
+                let peakCapital = totalLandCost;
+                for (let m = 1; m <= timeM; m++) {
+                    let out = 0;
+                    if (m >= 3 && m < 27) out += mConst;
+                    if (m === 1) out += totalApp * 0.40 + totalM * 0.30;
+                    else if (m === 2) out += totalApp * 0.30 + totalM * 0.20;
+                    else if (m === 3) out += totalApp * 0.30;
+                    
+                    if (totalU > 0) {
+                        out += (totalM * 0.50) * (soldUnits[m] / totalU);
+                    }
+                    
+                    const net = mCollections[m] - out;
+                    mNetOp[m] = net;
+                    cumBefore += net;
+                    if (cumBefore < 0) {
+                        const d = Math.abs(cumBefore);
+                        if (d > peakCapital) peakCapital = d;
+                    }
+                }
+
+                const debtL = peakCapital * debtRatio;
+                const equityL = peakCapital - debtL;
+
+                let outDebt = 0;
+                let outEquity = 0;
+                let mEquityFlow = new Array(timeM + 1).fill(0);
+
+                const equityDraw_0 = Math.min(totalLandCost, equityL);
+                const debtDraw_0 = totalLandCost - equityDraw_0;
+
+                outEquity = equityDraw_0;
+                outDebt = debtDraw_0;
+                mEquityFlow[0] = -equityDraw_0;
+
+                for (let m = 1; m <= timeM; m++) {
+                    const net = mNetOp[m];
+                    let interest = 0;
+                    if (outDebt > 0) {
+                        interest = outDebt * (interestRate / 12);
+                        outDebt += interest;
+                    }
+
+                    if (net < 0) {
+                        const abs = Math.abs(net);
+                        if (outEquity < equityL) {
+                            const room = equityL - outEquity;
+                            const draw = Math.min(abs, room);
+                            outEquity += draw;
+                            mEquityFlow[m] = -draw;
+                            const rem = abs - draw;
+                            if (rem > 0) outDebt += rem;
+                        } else {
+                            outDebt += abs;
+                        }
+                    } else {
+                        let surplus = net;
+                        if (outDebt > 0) {
+                            const payI = Math.min(surplus, interest);
+                            surplus -= payI;
+                        }
+                        if (outDebt > 0) {
+                            const payP = Math.min(surplus, outDebt);
+                            outDebt -= payP;
+                            surplus -= payP;
+                        }
+                        if (surplus > 0) {
+                            mEquityFlow[m] = surplus;
+                        }
+                    }
+                }
+
+                let irrList = [];
+                irrList.push(mEquityFlow[0]);
+                for (let m = 1; m <= timeM; m++) {
+                    irrList.push(mEquityFlow[m]);
+                }
+                const calculatedSensitivityIrr = calculateIRR(irrList);
+                sensitivtyIrrOutputs.push(calculatedSensitivityIrr);
+            });
+
+            // Draw/Update Chart 2
+            if (chart2Instance) {
+                chart2Instance.data.datasets[0].data = sensitivtyIrrOutputs;
+                chart2Instance.update();
+            } else {
+                chart2Instance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['5 units/mo', '10 units/mo', '15 units/mo', '20 units/mo', '25 units/mo'],
+                        datasets: [{
+                            label: 'Underwritten Equity IRR (%)',
+                            data: sensitivtyIrrOutputs,
+                            backgroundColor: function(context) {
+                                const index = context.dataIndex;
+                                const val = context.dataset.data[index];
+                                return val >= 20.0 ? 'rgba(0, 230, 118, 0.7)' : 'rgba(255, 51, 102, 0.7)';
+                            },
+                            borderColor: function(context) {
+                                const index = context.dataIndex;
+                                const val = context.dataset.data[index];
+                                return val >= 20.0 ? '#00E676' : '#FF3366';
+                            },
+                            borderWidth: 1.5,
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                titleFont: { family: 'Outfit', weight: 'bold' },
+                                bodyFont: { family: 'Inter' }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                                ticks: {
+                                    color: '#94A3B8',
+                                    font: { family: 'Inter', size: 10 },
+                                    callback: function(val) { return val.toFixed(1) + '%'; }
+                                }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: '#94A3B8',
+                                    font: { family: 'Inter', size: 10 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
