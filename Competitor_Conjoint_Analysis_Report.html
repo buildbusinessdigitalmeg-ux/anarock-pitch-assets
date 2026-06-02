@@ -405,7 +405,65 @@
                         ticks: { color: colors.textMuted }
                     }
                 }
-            }
+            },
+            plugins: [{
+                id: 'priceAnnotations',
+                afterDraw: (chart) => {
+                    const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+                    const annotations = [
+                        { price: 9400, label: 'Marginal Cheapness: ₹9,400', color: colors.success, yOffset: 25 },
+                        { price: 10200, label: 'Indifference Price: ₹10,200', color: colors.cyan, yOffset: 65 },
+                        { price: 12700, label: 'Marginal Expensiveness: ₹12,700', color: colors.primary, yOffset: 105 }
+                    ];
+                    
+                    annotations.forEach(ann => {
+                        // Linear interpolation of category index:
+                        // Index 0 = 8500, Index 10 = 13500. So index = (price - 8500) / 500
+                        const index = (ann.price - 8500) / 500;
+                        const xPos = x.getPixelForValue(index);
+                        
+                        // Draw vertical dashed threshold line
+                        ctx.save();
+                        ctx.strokeStyle = ann.color;
+                        ctx.lineWidth = 1.5;
+                        ctx.setLineDash([4, 4]);
+                        ctx.beginPath();
+                        ctx.moveTo(xPos, top);
+                        ctx.lineTo(xPos, bottom);
+                        ctx.stroke();
+                        
+                        // Draw label capsule
+                        ctx.font = 'bold 9px "Inter", sans-serif';
+                        const textWidth = ctx.measureText(ann.label).width;
+                        
+                        const rectX = xPos - (textWidth / 2) - 6;
+                        const rectY = top + ann.yOffset;
+                        const rectW = textWidth + 12;
+                        const rectH = 18;
+                        
+                        // Capsule background with deep glass look
+                        ctx.fillStyle = 'rgba(10, 13, 20, 0.95)';
+                        ctx.strokeStyle = ann.color;
+                        ctx.lineWidth = 1;
+                        
+                        ctx.beginPath();
+                        if (ctx.roundRect) {
+                            ctx.roundRect(rectX, rectY, rectW, rectH, 4);
+                        } else {
+                            ctx.rect(rectX, rectY, rectW, rectH);
+                        }
+                        ctx.fill();
+                        ctx.stroke();
+                        
+                        // Capsule text
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(ann.label, xPos, rectY + 9);
+                        ctx.restore();
+                    });
+                }
+            }]
         });
     </script>
 </body>
