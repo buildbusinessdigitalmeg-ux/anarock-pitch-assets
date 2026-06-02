@@ -161,6 +161,7 @@
         .cat-ai span.indicator { background-color: var(--purple); box-shadow: 0 0 8px var(--purple); }
         .cat-gtm span.indicator { background-color: var(--accent); box-shadow: 0 0 8px var(--accent); }
         .cat-docs span.indicator { background-color: var(--primary); box-shadow: 0 0 8px var(--primary); }
+        .cat-purva span.indicator { background-color: var(--blue); box-shadow: 0 0 8px var(--blue); }
 
         .category-count {
             font-size: 0.85rem;
@@ -217,11 +218,13 @@
         .portfolio-card.ai-spec { border-top-color: var(--purple); }
         .portfolio-card.gtm-asset { border-top-color: var(--accent); }
         .portfolio-card.doc-asset { border-top-color: var(--primary); }
+        .portfolio-card.purva-asset { border-top-color: var(--blue); }
 
         .portfolio-card.interactive:hover { box-shadow: 0 15px 40px rgba(0, 229, 255, 0.1), var(--shadow); }
         .portfolio-card.ai-spec:hover { box-shadow: 0 15px 40px rgba(168, 85, 247, 0.1), var(--shadow); }
         .portfolio-card.gtm-asset:hover { box-shadow: 0 15px 40px rgba(229, 169, 60, 0.1), var(--shadow); }
         .portfolio-card.doc-asset:hover { box-shadow: 0 15px 40px rgba(255, 51, 102, 0.1), var(--shadow); }
+        .portfolio-card.purva-asset:hover { box-shadow: 0 15px 40px rgba(59, 130, 246, 0.15), var(--shadow); }
 
         /* HEADERS */
         .card-header-block {
@@ -251,6 +254,7 @@
         .ai-spec .card-tag { background: rgba(168, 85, 247, 0.08); color: var(--purple); border: 1px solid rgba(168, 85, 247, 0.15); }
         .gtm-asset .card-tag { background: rgba(229, 169, 60, 0.08); color: var(--accent); border: 1px solid rgba(229, 169, 60, 0.15); }
         .doc-asset .card-tag { background: rgba(255, 51, 102, 0.08); color: var(--primary); border: 1px solid rgba(255, 51, 102, 0.15); }
+        .purva-asset .card-tag { background: rgba(59, 130, 246, 0.08); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.15); }
 
         /* FILE FORMAT BADGES */
         .format-badge {
@@ -343,6 +347,17 @@
             background: var(--primary);
             color: #ffffff;
             box-shadow: 0 0 15px rgba(255, 51, 102, 0.35);
+        }
+ 
+        .purva-asset .btn-launch {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(29, 78, 216, 0.08));
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: var(--blue);
+        }
+        .purva-asset .btn-launch:hover {
+            background: var(--blue);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.35);
         }
 
         .btn-launch svg {
@@ -925,6 +940,38 @@
                 </a>
             </div>
 
+        </div>
+
+        <!-- CATEGORY 5: PURAVANKARA DEVELOPER GTM SOLUTIONS -->
+        <div class="category-header cat-purva">
+            <h2 class="category-title"><span class="indicator"></span>5. Puravankara Developer GTM Solutions (MVP Showcase)</h2>
+            <span class="category-count">1 Asset</span>
+        </div>
+ 
+        <div class="portfolio-grid" style="margin-bottom: 4rem;">
+            <!-- CARD 1: PURAVANKARA PPTX PDF -->
+            <div class="portfolio-card purva-asset">
+                <div class="card-header">
+                    <div class="card-badge-row">
+                        <span class="card-tag">GTM Engineering</span>
+                        <span class="format-badge pdf">PDF</span>
+                    </div>
+                    <h3>Puravankara GTM Engineering Presentation</h3>
+                </div>
+                <div class="card-body">
+                    <p>Go-To-Market and GTM Engineering strategic presentation compiled for Puravankara Developer. Outlines real estate development scoping frameworks, launching systems, and sales-yield acceleration blueprints. Integrated as an interactive full-slide viewer MVP.</p>
+                </div>
+                <a href="./Puravankara_GTM_Engineering.html" class="btn-launch">
+                    Launch Slide Viewer
+                    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+                <div class="integration-row">
+                    <span class="integration-label">Integrations:</span>
+                    <a href="./Puravankara_GTM_Engineering_Presentation.pdf" target="_blank" class="integration-link">
+                        <span class="format-badge pdf">PDF</span> Web-Optimized Slides (1.5 MB)
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- PORTFOLIO DETAILS & METADATA -->
