@@ -350,8 +350,9 @@
                 datasets: [
                     {
                         label: 'Too Cheap',
-                        data: [95, 75, 45, 20, 5, 0, 0, 0, 0, 0, 0],
-                        borderColor: colors.danger,
+                        data: [95, 45, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                        borderColor: colors.cyan,
+                        borderDash: [],
                         borderWidth: 2,
                         tension: 0.3,
                         fill: false,
@@ -359,8 +360,9 @@
                     },
                     {
                         label: 'Cheap',
-                        data: [98, 92, 85, 72, 52, 35, 18, 5, 0, 0, 0],
-                        borderColor: colors.success,
+                        data: [98, 92, 85, 40, 15, 12, 10, 9, 8, 2, 0],
+                        borderColor: colors.cyan,
+                        borderDash: [5, 5],
                         borderWidth: 2,
                         tension: 0.3,
                         fill: false,
@@ -368,8 +370,9 @@
                     },
                     {
                         label: 'Expensive',
-                        data: [0, 3, 10, 22, 38, 52, 72, 85, 92, 98, 100],
-                        borderColor: colors.accent,
+                        data: [0, 1, 12, 22, 42, 55, 72, 85, 92, 98, 100],
+                        borderColor: colors.primary,
+                        borderDash: [5, 5],
                         borderWidth: 2,
                         tension: 0.3,
                         fill: false,
@@ -377,8 +380,9 @@
                     },
                     {
                         label: 'Too Expensive',
-                        data: [0, 0, 0, 2, 8, 22, 52, 78, 95, 98, 100],
+                        data: [0, 0, 0, 0, 0, 0, 0, 1, 2, 11, 95],
                         borderColor: colors.primary,
+                        borderDash: [],
                         borderWidth: 2,
                         tension: 0.3,
                         fill: false,
@@ -410,15 +414,50 @@
                 id: 'priceAnnotations',
                 afterDraw: (chart) => {
                     const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+                    
+                    // Draw Range of Acceptable Prices horizontal bar & arrows
+                    const xPMC = x.getPixelForValue(1.8);
+                    const xPME = x.getPixelForValue(8.4);
+                    const arrowY = top + 15;
+                    
+                    ctx.save();
+                    ctx.strokeStyle = colors.textMuted;
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(xPMC, arrowY);
+                    ctx.lineTo(xPME, arrowY);
+                    ctx.stroke();
+                    
+                    // Draw left arrowhead
+                    ctx.beginPath();
+                    ctx.moveTo(xPMC, arrowY);
+                    ctx.lineTo(xPMC + 6, arrowY - 4);
+                    ctx.lineTo(xPMC + 6, arrowY + 4);
+                    ctx.fillStyle = colors.textMuted;
+                    ctx.fill();
+                    
+                    // Draw right arrowhead
+                    ctx.beginPath();
+                    ctx.moveTo(xPME, arrowY);
+                    ctx.lineTo(xPME - 6, arrowY - 4);
+                    ctx.lineTo(xPME - 6, arrowY + 4);
+                    ctx.fillStyle = colors.textMuted;
+                    ctx.fill();
+                    
+                    // Draw "Range of Acceptable Prices" label
+                    ctx.font = 'bold 9px "Inter", sans-serif';
+                    ctx.fillStyle = colors.textSecondary;
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Range of Acceptable Prices', (xPMC + xPME) / 2, arrowY - 6);
+                    ctx.restore();
+
                     const annotations = [
-                        { price: 9400, label: 'Marginal Cheapness: ₹9,400', color: colors.success, yOffset: 25 },
-                        { price: 10200, label: 'Indifference Price: ₹10,200', color: colors.cyan, yOffset: 65 },
-                        { price: 12700, label: 'Marginal Expensiveness: ₹12,700', color: colors.primary, yOffset: 105 }
+                        { price: 9400, label: 'Point of Marginal Cheapness: ₹9,400', color: colors.success, yOffset: 35 },
+                        { price: 10200, label: 'Indifference Price (IPP): ₹10,200', color: colors.cyan, yOffset: 75 },
+                        { price: 12700, label: 'Point of Marginal Expensiveness: ₹12,700', color: colors.primary, yOffset: 35 }
                     ];
                     
                     annotations.forEach(ann => {
-                        // Linear interpolation of category index:
-                        // Index 0 = 8500, Index 10 = 13500. So index = (price - 8500) / 500
                         const index = (ann.price - 8500) / 500;
                         const xPos = x.getPixelForValue(index);
                         
