@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anarock Growth | GTM Financial Underwriting Model</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- SheetJS CDN for client-side Excel parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <style>
+        :root {
+            /* Palette adapted to ANAROCK corporate styling: Crimson Red, Deep Charcoal, Cyber Cyan & Gold */
+            --bg-primary: #07090E;
+            --bg-secondary: #0E1220;
+            --bg-tertiary: #161B2E;
+            --card-bg: rgba(22, 27, 45, 0.75);
+            --card-border: rgba(255, 51, 102, 0.15);
+            
+            --primary: #FF3366; /* Vibrant Crimson/Red */
+            --primary-gradient: linear-gradient(135deg, #FF3366, #C3002F);
+            --accent: #E5A93C; /* Premium Gold */
+            --accent-gradient: linear-gradient(135deg, #F9D04F, #D4AF37);
+            --cyan: #00E5FF; /* Cyber Cyan */
+            --cyan-gradient: linear-gradient(135deg, #00E5FF, #0086C3);
+            
+            --success: #00E676; /* Emerald Green */
+            --warning: #FFAB00;
+            --danger: #FF1744;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(14, 18, 32, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.04);
+            
+            /* Excel Grid Colors */
+            --excel-border: rgba(255, 255, 255, 0.06);
+            --excel-header-bg: #1e253c;
+            --excel-header-text: #94a3b8;
+            --excel-cell-bg: #0f1325;
+            --excel-formula-bar-bg: #0b0e1a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 15%, rgba(255, 51, 102, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 90% 85%, rgba(0, 229, 255, 0.06) 0%, transparent 45%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, .font-outfit {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem 1.5rem;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER BLOCK */
+        header {
+            position: relative;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(14, 18, 32, 0.8) 100%);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            text-align: center;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(229, 169, 60, 0.1);
+            border: 1px solid rgba(229, 169, 60, 0.25);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--accent);
+            animation: pulse-gold 1.5s infinite;
+        }
+
+        @keyframes pulse-gold {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFFFFF 30%, #F1F5F9 75%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 850px;
+            margin: 0.5rem auto 1.5rem auto;
+            font-weight: 300;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .meta-item svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--cyan);
+        }
+
+        /* NAVIGATION SHORTCUTS */
+        .nav-shortcuts {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-shortcut {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-shortcut:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: rgba(255, 51, 102, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-shortcut.active-asset {
+            background: rgba(229, 169, 60, 0.08);
+            border-color: rgba(229, 169, 60, 0.3);
+            color: var(--accent);
+        }
+
+        .btn-shortcut svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+
+        /* STRATEGIC SUMMARY BANNER */
+        .summary-banner {
+            background: linear-gradient(90deg, rgba(22, 27, 45, 0.8) 0%, rgba(14, 18, 32, 0.85) 100%);
+            border: 1px solid var(--glass-border);
+            border-left: 5px solid var(--accent);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .summary-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .summary-text h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-text p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .summary-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-download {
+            background: var(--accent-gradient);
+            color: #06090e;
+            box-shadow: 0 4px 15px rgba(229, 169, 60, 0.2);
+            border: none;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 169, 60, 0.35);
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* EXCEL VIEWER CONTAINER */
+        .excel-viewer-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 600px;
+            backdrop-filter: blur(12px);
+        }
+
+        /* FORMULA BAR */
+        .formula-bar-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--excel-formula-bar-bg);
+            border-bottom: 1px solid var(--excel-border);
+            padding: 0.6rem 1rem;
+            gap: 0.8rem;
+        }
+
+        .cell-address-display {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 0.3rem 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--cyan);
+            min-width: 60px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .formula-bar-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .formula-bar-label span {
+            color: var(--primary);
+            font-style: italic;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .formula-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .formula-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #E2E8F0;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .formula-input:focus {
+            border-color: rgba(0, 229, 255, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        /* WORKBOOK TABS */
+        .tab-scroll-container {
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--excel-border);
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+
+        .tab-scroll-container::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tab-scroll-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .sheet-tabs {
+            display: flex;
+            padding: 0 0.5rem;
+        }
+
+        .sheet-tab {
+            padding: 0.75rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .sheet-tab:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .sheet-tab.active {
+            color: var(--cyan);
+            border-bottom-color: var(--cyan);
+            background: rgba(0, 229, 255, 0.04);
+        }
+
+        .sheet-tab svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+
+        /* GRID VIEW */
+        .excel-grid-container {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+            background-color: #0c0f1d;
+            min-height: 450px;
+        }
+
+        .excel-table {
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            font-family: 'Inter', sans-serif;
+            table-layout: auto;
+            min-width: 100%;
+        }
+
+        /* Sticky top headers (Column A, B, C...) */
+        .excel-table th.col-header {
+            background-color: var(--excel-header-bg);
+            color: var(--excel-header-text);
+            font-weight: 500;
+            border-right: 1px solid var(--excel-border);
+            border-bottom: 1px solid var(--excel-border);
+            padding: 0.3rem 1rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            user-select: none;
+            min-width: 80px;
+        }
+
+        /* Sticky left row headers (1, 2, 3...) */
+        .excel-table td.row-header {
+            background-color: var(--excel-header-bg);
+            color: var(--excel-header-text);
+            font-weight: 500;
+            border-right: 1px solid var(--excel-border);
+            border-bottom: 1px solid var(--excel-border);
+            padding: 0.25rem 0.5rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            user-select: none;
+            width: 40px;
+            min-width: 40px;
+        }
+
+        /* Top left corner cell */
+        .excel-table th.corner-header {
+            background-color: #141a2f;
+            border-right: 2px solid var(--excel-border);
+            border-bottom: 2px solid var(--excel-border);
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 30;
+            width: 40px;
+            height: 25px;
+        }
+
+        .excel-table td.excel-cell {
+            border-right: 1px solid var(--excel-border);
+            border-bottom: 1px solid var(--excel-border);
+            padding: 0.35rem 0.6rem;
+            color: var(--text-secondary);
+            vertical-align: middle;
+            white-space: nowrap;
+            position: relative;
+            cursor: cell;
+            transition: background 0.1s ease;
+        }
+
+        .excel-table td.excel-cell:hover {
+            background: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        .excel-table td.excel-cell.selected-cell {
+            outline: 2px solid var(--cyan);
+            outline-offset: -2px;
+            background: rgba(0, 229, 255, 0.05) !important;
+            color: var(--text-primary);
+            z-index: 5;
+        }
+
+        /* Formula indicators */
+        .excel-cell.has-formula::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-style: solid;
+            border-width: 0 4px 4px 0;
+            border-color: transparent var(--cyan) transparent transparent;
+        }
+
+        /* Value highlighting styling based on standard financial modeling conventions */
+        .excel-cell.text-left { text-align: left; }
+        .excel-cell.text-right { text-align: right; }
+        .excel-cell.text-center { text-align: center; }
+
+        .excel-cell.font-bold {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Highlight special sheets sections */
+        .excel-cell.excel-input-cell {
+            background-color: rgba(229, 169, 60, 0.04);
+            color: var(--accent) !important;
+            font-weight: 500;
+        }
+        
+        .excel-cell.excel-total-row {
+            border-top: 1px solid rgba(255, 51, 102, 0.3);
+            border-bottom: 3px double rgba(255, 51, 102, 0.5) !important;
+            font-weight: 700;
+            color: var(--primary) !important;
+        }
+
+        .excel-cell.excel-section-header {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        /* LOADER */
+        .loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(6, 9, 14, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            gap: 1.5rem;
+            transition: opacity 0.4s ease;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(229, 169, 60, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* STATUS BAR */
+        .excel-status-bar {
+            background-color: var(--bg-tertiary);
+            border-top: 1px solid var(--excel-border);
+            padding: 0.4rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            user-select: none;
+            font-weight: 500;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--success);
+        }
+
+        .status-indicator span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--success);
+        }
+
+        .status-right {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* RESPONSIVE LAYOUT */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .summary-banner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .summary-actions {
+                width: 100%;
+            }
+            .btn-action {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo-badge">
+                <span></span> ANAROCK GROWTH • STRATEGIC PORTFOLIO
+            </div>
+            <h1>Anarock GTM Underwriting & Financial Model</h1>
+            <p class="subtitle">Interactive In-Browser Financial Engine Mapping Real-Time Revenue Waterfalls, Sensitivities, and Slab Commissions for Meda East Winds Project</p>
+            <div class="header-meta">
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                    Published: <strong>June 2026</strong>
+                </div>
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    Target: <strong>₹833.6 Cr GTV Underwriting</strong>
+                </div>
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 8C4.67 8 4 7.33 4 6.5S4.67 5 5.5 5 7 5.67 7 6.5 6.33 8 5.5 8z"/></svg>
+                    Standard: <strong>Formula-Driven Structure</strong>
+                </div>
+            </div>
+        </header>
+
+        <!-- NAVIGATION SHORTCUTS -->
+        <div class="nav-shortcuts">
+            <a href="index.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                Back to Hub
+            </a>
+            <a href="Anarock_GTM_Stage_Gate_Playbook.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                GTM Stage-Gate Playbook
+            </a>
+            <a href="Anarock_Micro_Market_Demand_Heat_Map.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Micro-Market Demand Heatmap
+            </a>
+            <a href="Anarock_Developer_Mandate_Scorecard.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                Developer Mandate Scorecard
+            </a>
+            <a href="Anarock_Financial_Hurdle_Models.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5z"/></svg>
+                Financial Hurdle Models
+            </a>
+            <a href="javascript:void(0)" class="btn-shortcut active-asset">
+                <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 4v4h4V8H5zm6 0v4h8V8h-8zm-6 6v4h4v-4H5zm6 0v4h8v-4h-8z"/></svg>
+                GTM Financial Model (Excel)
+            </a>
+            <a href="Anarock_Astra_Platinum_Lead_Scoring.html" class="btn-shortcut">
+                <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                Astra Lead Propensity Engine
+            </a>
+        </div>
+
+        <!-- STRATEGIC SUMMARY BANNER -->
+        <div class="summary-banner">
+            <div class="summary-text">
+                <h2>
+                    <svg style="width: 22px; height: 22px; fill: var(--accent);" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                    Interactive Spreadsheet: 522 Formulas Active
+                </h2>
+                <p>To avoid static appraisal limits, this model is 100% reactive. Pushing the original file to our live Mandate Hub parses its entire cell matrix. Click any cell below to track its formulas and linkages in the real-time <strong>Formula Bar</strong>, or download the original file to run scenario playbooks locally.</p>
+            </div>
+            <div class="summary-actions">
+                <a href="./Anarock_GTM_Financial_Model.xlsx" class="btn-action btn-download">
+                    <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                    Download Excel Model
+                </a>
+            </div>
+        </div>
+
+        <!-- EXCEL VIEWER CARD -->
+        <div class="excel-viewer-card">
+            <!-- Loader -->
+            <div id="loader" class="loader-overlay">
+                <div class="spinner"></div>
+                <div class="loader-text" id="loader-status">Initializing Web Underwriter Matrix...</div>
+            </div>
+
+            <!-- Formula Bar -->
+            <div class="formula-bar-container">
+                <div class="cell-address-display" id="cell-address">A1</div>
+                <div class="formula-bar-label"><span>fx</span></div>
+                <div class="formula-input-wrapper">
+                    <input type="text" class="formula-input" id="formula-bar" placeholder="Select a cell to view formula or raw value..." readonly>
+                </div>
+            </div>
+
+            <!-- Workbook Tabs -->
+            <div class="tab-scroll-container">
+                <div class="sheet-tabs" id="sheet-tabs">
+                    <!-- Tab buttons dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Grid Container -->
+            <div class="excel-grid-container" id="grid-container">
+                <!-- Spreadsheet dynamically inserted here as a table -->
+            </div>
+
+            <!-- Status Bar -->
+            <div class="excel-status-bar">
+                <div class="status-left">
+                    <div class="status-indicator">
+                        <span></span>
+                        <div id="status-text">Ready</div>
+                    </div>
+                    <div id="status-sheet-info">Sheet: Assumptions</div>
+                </div>
+                <div class="status-right">
+                    <div id="status-cell-info">Selected Cell: A1</div>
+                    <div id="status-formula-count">Formulas Scanned: 522</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let workbook = null;
+        let currentSheetName = "";
+
+        // Main initialization
+        window.addEventListener('DOMContentLoaded', async () => {
+            const loaderStatus = document.getElementById('loader-status');
+            try {
+                loaderStatus.textContent = "Fetching Anarock_GTM_Financial_Model.xlsx...";
+                const response = await fetch('./Anarock_GTM_Financial_Model.xlsx');
+                if (!response.ok) {
+                    throw new Error("Unable to fetch Excel file. Verify it is located in the root repository.");
+                }
+                
+                loaderStatus.textContent = "Parsing Excel Cell Matrix...";
+                const arrayBuffer = await response.arrayBuffer();
+                const data = new Uint8Array(arrayBuffer);
+                
+                // Read with formula parsing active
+                workbook = XLSX.read(data, {
+                    type: 'array',
+                    cellFormula: true,
+                    cellNF: true,
+                    cellStyles: true,
+                    cellText: true
+                });
+                
+                loaderStatus.textContent = "Assembling Interactive Sheet Viewers...";
+                initTabs();
+                
+                // Load first sheet
+                if (workbook.SheetNames.length > 0) {
+                    loadSheet(workbook.SheetNames[0]);
+                }
+                
+                // Hide loader
+                setTimeout(() => {
+                    const loader = document.getElementById('loader');
+                    loader.style.opacity = 0;
+                    setTimeout(() => loader.style.display = 'none', 400);
+                }, 600);
+
+            } catch (err) {
+                console.error(err);
+                loaderStatus.innerHTML = `<span style="color: var(--danger)">Initialization Failed</span><br><span style="font-size:0.9rem; color: var(--text-secondary)">${err.message}</span>`;
+                const spinner = document.querySelector('.spinner');
+                if (spinner) spinner.style.borderTopColor = 'var(--danger)';
+            }
+        });
+
+        // Initialize sheet tabs
+        function initTabs() {
+            const tabsContainer = document.getElementById('sheet-tabs');
+            tabsContainer.innerHTML = "";
+            
+            workbook.SheetNames.forEach((name, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `sheet-tab ${idx === 0 ? 'active' : ''}`;
+                btn.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    ${name}
+                `;
+                btn.addEventListener('click', () => {
+                    // Update active tab styling
+                    document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+                    btn.classList.add('active');
+                    loadSheet(name);
+                });
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        // Render sheet as table
+        function loadSheet(sheetName) {
+            currentSheetName = sheetName;
+            document.getElementById('status-sheet-info').textContent = `Sheet: ${sheetName}`;
+            
+            const sheet = workbook.Sheets[sheetName];
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.innerHTML = "";
+
+            if (!sheet || !sheet['!ref']) {
+                gridContainer.innerHTML = "<div style='padding:3rem; text-align:center; color: var(--text-muted)'>Sheet is empty or contains no readable range.</div>";
+                return;
+            }
+
+            const range = XLSX.utils.decode_range(sheet['!ref']);
+            const maxRow = range.e.r;
+            const maxCol = range.e.c;
+
+            const table = document.createElement('table');
+            table.className = 'excel-table';
+
+            // 1. Column headers row (A, B, C...)
+            const headerRow = document.createElement('tr');
+            
+            // Corner cell
+            const cornerTh = document.createElement('th');
+            cornerTh.className = 'corner-header';
+            headerRow.appendChild(cornerTh);
+
+            for (let c = 0; c <= maxCol; c++) {
+                const th = document.createElement('th');
+                th.className = 'col-header';
+                th.textContent = XLSX.utils.encode_col(c);
+                headerRow.appendChild(th);
+            }
+            table.appendChild(headerRow);
+
+            // 2. Data Rows
+            for (let r = 0; r <= maxRow; r++) {
+                const tr = document.createElement('tr');
+
+                // Row number header (1, 2, 3...)
+                const rowHeaderTd = document.createElement('td');
+                rowHeaderTd.className = 'row-header';
+                rowHeaderTd.textContent = r + 1;
+                tr.appendChild(rowHeaderTd);
+
+                for (let c = 0; c <= maxCol; c++) {
+                    const cellAddress = XLSX.utils.encode_cell({r: r, c: c});
+                    const cell = sheet[cellAddress];
+                    const td = document.createElement('td');
+                    td.className = 'excel-cell';
+                    td.setAttribute('data-address', cellAddress);
+
+                    if (cell) {
+                        // Display text
+                        let displayText = cell.w || cell.v || '';
+                        
+                        // Treat zero-valued cells cleanly
+                        if (cell.v === 0) displayText = "0";
+
+                        td.textContent = displayText;
+
+                        // Alignments based on type
+                        if (typeof cell.v === 'number') {
+                            td.classList.add('text-right');
+                        } else if (cell.v && (cell.v.toString().startsWith('₹') || cell.v.toString().endsWith('%'))) {
+                            td.classList.add('text-right');
+                        } else {
+                            td.classList.add('text-left');
+                        }
+
+                        // Check if it's a formula
+                        if (cell.f) {
+                            td.classList.add('has-formula');
+                            td.setAttribute('data-formula', '=' + cell.f);
+                        } else {
+                            td.setAttribute('data-formula', cell.v !== undefined ? cell.v : '');
+                        }
+
+                        // Strategic highlight styles
+                        const textUpper = displayText.toString().toUpperCase();
+                        const valStr = cell.v ? cell.v.toString().toUpperCase() : '';
+
+                        // Bold indicators
+                        if (textUpper.includes('TOTAL') || textUpper.includes('NET PROFIT') || textUpper.includes('IRR') || textUpper.includes('DSCR') || textUpper.includes('NPV')) {
+                            td.classList.add('font-bold');
+                            // Add extra total borders
+                            if (textUpper.includes('TOTAL') || textUpper.includes('NET PROFIT')) {
+                                td.classList.add('excel-total-row');
+                            }
+                        }
+
+                        // Yellow assumptions inputs highlight
+                        if (sheetName === 'Assumptions' && cell.v !== undefined && !cell.f && typeof cell.v === 'number' && c > 0) {
+                            td.classList.add('excel-input-cell');
+                        }
+
+                        // Check section headers (bold row)
+                        if (c === 0 && (displayText && !cell.f && typeof cell.v === 'string' && cell.v.length > 3 && !cell.v.includes('Total'))) {
+                            td.classList.add('font-bold');
+                            td.classList.add('excel-section-header');
+                        }
+
+                    } else {
+                        // Empty cell
+                        td.textContent = '';
+                        td.setAttribute('data-formula', '');
+                    }
+
+                    // Click handler to select and feed formula bar
+                    td.addEventListener('click', () => {
+                        selectCell(td, cellAddress);
+                    });
+
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+
+            gridContainer.appendChild(table);
+
+            // Select A1 initially on loading a sheet
+            const firstCell = table.querySelector('.excel-cell');
+            if (firstCell) {
+                selectCell(firstCell, firstCell.getAttribute('data-address'));
+            }
+        }
+
+        // Handle cell selection
+        function selectCell(td, address) {
+            // Remove previous selection
+            document.querySelectorAll('.excel-cell').forEach(c => c.classList.remove('selected-cell'));
+            
+            // Add new selection
+            td.classList.add('selected-cell');
+
+            // Update formula displays
+            const formula = td.getAttribute('data-formula') || '';
+            const formulaBar = document.getElementById('formula-bar');
+            formulaBar.value = formula;
+
+            // Focus selection details
+            document.getElementById('cell-address').textContent = address;
+            document.getElementById('status-cell-info').textContent = `Selected Cell: ${address}`;
+        }
+    </script>
+</body>
+</html>
