@@ -691,6 +691,7 @@ def create_cashflow(wb, params, computed):
     gtv = ref(A, 2, computed["Total Project GTV"])
     total_u = ref(A, 2, computed["Total Units (Sum)"])
     const_total = ref(A, 2, computed["Construction Cost (Total)"])
+    gtm_total = ref(A, 2, computed["Total Anarock GTM Cost"])
 
     # Quarterly plan: (quarter, months, stage, %_units, const_pct_of_total, gtm_lakhs)
     quarters = [
@@ -738,8 +739,8 @@ def create_cashflow(wb, params, computed):
         dc(ws.cell(row=r, column=7), num=True, fmt="#,##0.0")
 
         # GTM cost outflow (in Cr)
-        ws.cell(row=r, column=8, value=gtm_lakhs / 100)
-        dc(ws.cell(row=r, column=8), num=True, fmt="#,##0.0")
+        ws.cell(row=r, column=8, value=f"={gtm_total}*({gtm_lakhs}/2750)")
+        dc(ws.cell(row=r, column=8), num=True, fmt="#,##0.00")
 
         # Net Cash Flow = Revenue - Construction - GTM
         ws.cell(row=r, column=9, value=f"={cr(6,r)}-{cr(7,r)}-{cr(8,r)}")
